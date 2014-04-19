@@ -24,6 +24,15 @@
     <Filter Include="misc\other">
       <UniqueIdentifier>{425bd5d1-5dfd-46f6-a08b-070b536ea62d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="effect">
+      <UniqueIdentifier>{7f6f9a89-b258-40b3-b58f-dac3acffdd00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="effect\inc">
+      <UniqueIdentifier>{3a879d85-6561-4e4f-aa8d-84432b1247f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="effect\src">
+      <UniqueIdentifier>{960a8f7b-1190-451b-b987-7249a9d95677}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Direct3D8.cpp">
@@ -67,6 +76,15 @@
     </ClCompile>
     <ClCompile Include="..\src\Direct3D8Guid.cpp">
       <Filter>misc\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DebugUtils.cpp">
+      <Filter>effect\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PostProcessHandler.cpp">
+      <Filter>effect\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PostProcess.cpp">
+      <Filter>effect\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +141,15 @@
     </ClInclude>
     <ClInclude Include="..\src\Direct3D8to9Guid.h">
       <Filter>misc\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DebugUtils.h">
+      <Filter>effect\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PostProcessHandler.h">
+      <Filter>effect\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PostProcess.h">
+      <Filter>effect\inc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

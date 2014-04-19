@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Direct3D8.h"
+#include "PostProcessHandler.h"		// external...
 
 class CDirect3DCubeTexture8;
 class CDirect3DIndexBuffer8;
