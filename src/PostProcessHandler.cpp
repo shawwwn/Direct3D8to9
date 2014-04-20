@@ -66,6 +66,7 @@ namespace PP{
 		pViewport=NULL;
 		*/
 
+		
 		IDirect3DSurface9* t_pSurface = NULL;
 		D3DSURFACE_DESC t_Desc;
 		pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &t_pSurface);
@@ -73,7 +74,9 @@ namespace PP{
 		g_deviceWidth = t_Desc.Width;
 		g_deviceHeight = t_Desc.Height;
 		t_pSurface->Release();
-
+		
+		//g_deviceWidth = 800;
+		//g_deviceHeight = 600;
 		// Create textures for rendering
 		hr = pd3dDevice->CreateTexture(g_deviceWidth, g_deviceHeight, 1,
 									   D3DUSAGE_RENDERTARGET,
@@ -81,7 +84,10 @@ namespace PP{
 									   D3DPOOL_DEFAULT,
 									   &g_pSourceRT_Texture, NULL);
 		if (FAILED(hr))
+		{
+			MessageBox(NULL, "Fail to create texture!", "Error", MB_OK);
 			return hr;
+		}
 		hr = pd3dDevice->CreateTexture(g_deviceWidth, g_deviceHeight, 1,
 			                           D3DUSAGE_RENDERTARGET,
 									   D3DFMT_A16B16G16R16F,

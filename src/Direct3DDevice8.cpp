@@ -159,6 +159,13 @@ STDMETHODIMP CDirect3DDevice8::CreateAdditionalSwapChain(THIS_ D3D8PRESENT_PARAM
 
 STDMETHODIMP CDirect3DDevice8::Reset(THIS_ D3D8PRESENT_PARAMETERS* pPresentationParameters)
 {
+	// OnLostDevice - Cleanup
+	// TODO: Add loop to iterate the chain
+	PP::g_PostProcessChain[0].m_pEffect->OnLostDevice();
+	PP::g_pSourceRT_Texture->Release();
+	PP::g_pTargetRT_Texture->Release();
+	PP::g_pVertDeclPP->Release();
+
 	IDirect3D9* pDirect3D9 = NULL;
 	HRESULT hr = pDevice9->GetDirect3D(&pDirect3D9);
 	if (SUCCEEDED(hr))
@@ -181,6 +188,11 @@ STDMETHODIMP CDirect3DDevice8::Reset(THIS_ D3D8PRESENT_PARAMETERS* pPresentation
 		D3DPresentationParameters9.Windowed = pPresentationParameters->Windowed;
 		hr = pDevice9->Reset(&D3DPresentationParameters9);
 		pDirect3D9->Release();
+
+		// OnResetDevice - Allocate new
+		// TODO: Add loop to iterate the chain
+		PP::g_PostProcessChain[0].m_pEffect->OnResetDevice();
+		PP::InitGobals(pDevice9);
 	}
 
 	return hr;
@@ -723,6 +735,7 @@ STDMETHODIMP CDirect3DDevice8::DrawPrimitive(THIS_ D3DPRIMITIVETYPE PrimitiveTyp
 
 STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount)
 {
+	//return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 	DWORD alphaRef;
 	pDevice9->GetRenderState(D3DRS_ALPHAREF, &alphaRef);
 	if (g_Stride==36 && NumVertices==4 && primCount==2 && alphaRef==192)
