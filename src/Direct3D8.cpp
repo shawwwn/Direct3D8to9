@@ -1,6 +1,8 @@
 #include "Direct3D8.h"
 #include "Direct3DDevice8.h"
 
+#include "PostProcessHandler.h" // external...
+
 CDirect3D8::CDirect3D8(IDirect3D9* d3d)
 	: pDirect3D9(d3d)
 {

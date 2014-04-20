@@ -1,5 +1,8 @@
 #include "PostProcessHandler.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+
 namespace PP{
 	//
 	// Gobal Variables Definition
@@ -24,6 +27,8 @@ namespace PP{
 	IDirect3DTexture9* g_pTargetRT_Texture=NULL;
 
 	PostProcess g_PostProcessChain[1];
+
+	bool g_presented=false;
 
 	// Vertex declaration for post-processing
 	const D3DVERTEXELEMENT9 PPVERT::Decl[4] =
@@ -50,14 +55,24 @@ namespace PP{
 			MessageBox(NULL, "Create Vertex Declaration Fail!", "Error", MB_OK);
 			return hr;
 		}
+		
+		// TODO: fix the crash
+		/*
+		// Get screen dimensions
+		D3DVIEWPORT9 *pViewport=NULL;
+		pd3dDevice->GetViewport(pViewport);
+		g_deviceWidth = (UINT)pViewport->Width;
+		g_deviceHeight = (UINT)pViewport->Height;
+		pViewport=NULL;
+		*/
 
-		// Get device parameters
-		D3DDISPLAYMODE* pMode;
-		hr = pd3dDevice->GetDisplayMode(D3DADAPTER_DEFAULT, pMode);
-		if (FAILED(hr))
-			return hr;
-		g_deviceWidth = pMode->Width;
-		g_deviceHeight = pMode->Height;
+		IDirect3DSurface9* t_pSurface = NULL;
+		D3DSURFACE_DESC t_Desc;
+		pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &t_pSurface);
+		t_pSurface->GetDesc(&t_Desc);
+		g_deviceWidth = t_Desc.Width;
+		g_deviceHeight = t_Desc.Height;
+		t_pSurface->Release();
 
 		// Create textures for rendering
 		hr = pd3dDevice->CreateTexture(g_deviceWidth, g_deviceHeight, 1,
@@ -76,7 +91,7 @@ namespace PP{
 			return hr;
 
 		// Initialize effects
-		// TODO: Use vector implementation on PostProcessChain
+		// TODO: Use vector to iterate PostProcessChain
 		g_PostProcessChain[0].Init(pd3dDevice, "PP_ColorBloomH.fx");
 		return hr;
 	}
@@ -97,7 +112,7 @@ namespace PP{
 		//	backup render states
 		//
 		backupStates(pd3dDevice);
-
+		
 		//
 		// Set up our quad
 		//
@@ -153,7 +168,7 @@ namespace PP{
 		{
 			// TODO: add loop to iterate the effect chain
 			g_PostProcessChain[0].m_pEffect->SetTechnique("PostProcess");
-			pd3dDevice->SetVertexDeclaration(g_pVertDeclPP);	// Set the vertex declaration'
+			pd3dDevice->SetVertexDeclaration(g_pVertDeclPP);	// Set the vertex declaration
 			// Draw the quad
 			UINT cPasses, p;
 			g_PostProcessChain[0].m_pEffect->Begin(&cPasses, 0);
@@ -162,19 +177,15 @@ namespace PP{
 			g_PostProcessChain[0].m_pEffect->CommitChanges();
 			// clear the previous screen
 			pd3dDevice->Clear(0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L);
+			//
+			// Render
+			//
 			for(p = 0; p < cPasses; ++p)
 			{
-				//
-				// Render
-				//
-				if (SUCCEEDED(g_PostProcessChain[0].m_pEffect->BeginPass(p)))
-				{
-					pd3dDevice->SetStreamSource(0, pVB, 0, sizeof(PPVERT));
-					pd3dDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
-					g_PostProcessChain[0].m_pEffect->EndPass();
-				}
-				else
-					MessageBox(NULL, "Shader Error!", "Error", MB_OK);
+				g_PostProcessChain[0].m_pEffect->BeginPass(p);
+				pd3dDevice->SetStreamSource(0, pVB, 0, sizeof(PPVERT));
+				pd3dDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+				g_PostProcessChain[0].m_pEffect->EndPass();
 			}
 			g_PostProcessChain[0].m_pEffect->End();
 			pd3dDevice->EndScene(); // End the scene
@@ -197,7 +208,7 @@ namespace PP{
 		pd3dDevice->StretchRect(pNewRT_Surface, 0, pOldRT_Surface, 0, D3DTEXF_NONE);
 		pNewRT_Surface->Release();
 		pOldRT_Surface->Release();
-
+	
 		return D3D_OK;
 	}
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Direct3D8.h"
-#include "PostProcessHandler.h"		// external...
 
 class CDirect3DCubeTexture8;
 class CDirect3DIndexBuffer8;
@@ -24,7 +23,17 @@ private:
 	CDirect3D8* pDirect3D8;
 	BOOL zBufferDiscardingEnabled;
 	D3DDEVICE_CREATION_PARAMETERS deviceCreationParameters;
-	INT baseVertexIndex;
+	INT g_baseVertexIndex;
+
+	IDirect3DIndexBuffer9* g_pIndexData9;
+	UINT g_StreamNumber;
+	IDirect3DVertexBuffer9* g_pStreamData9;
+	UINT g_Stride;
+	DWORD g_Stage;
+	IDirect3DBaseTexture9* g_pTexture9;
+	D3DTRANSFORMSTATETYPE g_State;
+	D3DMATRIX* g_pMatrix;
+	DWORD g_FVFHandle;
 
 public:
 	CObjectPool<CDirect3DCubeTexture8>   CubeTexturePool;

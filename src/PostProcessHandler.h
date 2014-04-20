@@ -26,6 +26,8 @@ namespace PP{
 
 	extern PostProcess g_PostProcessChain[1];
 
+	extern bool g_presented;
+
 	// This is the vertex format used with the quad during post-process.
 	struct PPVERT
 	{

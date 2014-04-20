@@ -8,13 +8,18 @@
 #include "Direct3DVertexBuffer8.h"
 #include "Direct3DVolumeTexture8.h"
 
+#include "PostProcessHandler.h"		// external...
+#include "DebugUtils.h"				// external...
+
 CDirect3DDevice8::CDirect3DDevice8(IDirect3DDevice9* device, CDirect3D8* d3d)
 : pDevice9(device)
 , pDirect3D8(d3d)
 , zBufferDiscardingEnabled(FALSE)
-, baseVertexIndex(0)
+, g_baseVertexIndex(0)
 {
 	pDevice9->GetCreationParameters(&deviceCreationParameters);
+
+	PP::InitGobals(pDevice9);	// initialize globla setting for post process
 }
 
 CDirect3DDevice8::~CDirect3DDevice8()
@@ -183,6 +188,7 @@ STDMETHODIMP CDirect3DDevice8::Reset(THIS_ D3D8PRESENT_PARAMETERS* pPresentation
 
 STDMETHODIMP CDirect3DDevice8::Present(THIS_ CONST RECT* pSourceRect, CONST RECT* pDestRect, HWND hDestWindowOverride, CONST RGNDATA* pDirtyRegion)
 {
+	PP::g_presented = false;
 	return pDevice9->Present(pSourceRect, pDestRect, hDestWindowOverride, pDirtyRegion);
 }
 
@@ -446,6 +452,8 @@ STDMETHODIMP CDirect3DDevice8::Clear(THIS_ DWORD Count, CONST D3DRECT* pRects, D
 
 STDMETHODIMP CDirect3DDevice8::SetTransform(THIS_ D3DTRANSFORMSTATETYPE State, CONST D3DMATRIX* pMatrix)
 {
+	g_State=State;
+	g_pMatrix=(D3DMATRIX*)pMatrix;
 	return pDevice9->SetTransform(State, pMatrix);
 }
 
@@ -580,6 +588,8 @@ STDMETHODIMP CDirect3DDevice8::GetTexture(THIS_ DWORD Stage, IDirect3DBaseTextur
 STDMETHODIMP CDirect3DDevice8::SetTexture(THIS_ DWORD Stage, IDirect3DBaseTexture8* pTexture)
 {
 	IDirect3DBaseTexture9* pTexture9 = ((CDirect3DBaseTexture8*)pTexture)->ToNine();
+	g_Stage=Stage;
+	g_pTexture9=pTexture9;
 	return pDevice9->SetTexture(Stage, pTexture9);
 }
 
@@ -713,7 +723,27 @@ STDMETHODIMP CDirect3DDevice8::DrawPrimitive(THIS_ D3DPRIMITIVETYPE PrimitiveTyp
 
 STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount)
 {
-	return pDevice9->DrawIndexedPrimitive(Type, baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
+	DWORD alphaRef;
+	pDevice9->GetRenderState(D3DRS_ALPHAREF, &alphaRef);
+	if (g_Stride==36 && NumVertices==4 && primCount==2 && alphaRef==192)
+	{
+		if (!PP::g_presented)
+		{
+			PP::g_presented = true;
+			pDevice9->EndScene(); // end the scene first
+
+			PP::PerformPostProcess(pDevice9);
+
+			// restore the original process
+			pDevice9->BeginScene();													// begin the scene
+			pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
+			//pDevice9->SetTransform(g_State, g_pMatrix);							// dont need...
+			pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
+			pDevice9->SetIndices(g_pIndexData9);									// restore indices
+			pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
+		}
+	}
+	return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 }
 
 STDMETHODIMP CDirect3DDevice8::DrawPrimitiveUP(THIS_ D3DPRIMITIVETYPE PrimitiveType, UINT PrimitiveCount, CONST void* pVertexStreamZeroData, UINT VertexStreamZeroStride)
@@ -747,6 +777,7 @@ STDMETHODIMP CDirect3DDevice8::SetVertexShader(THIS_ DWORD Handle)
 	HRESULT hr = pDevice9->SetVertexShader(NULL);
 	if (SUCCEEDED(hr))
 	{
+		g_FVFHandle = Handle;
 		hr = pDevice9->SetFVF(Handle);
 	}
 	return hr;
@@ -785,6 +816,9 @@ STDMETHODIMP CDirect3DDevice8::GetVertexShaderFunction(THIS_ DWORD Handle, void*
 STDMETHODIMP CDirect3DDevice8::SetStreamSource(THIS_ UINT StreamNumber, IDirect3DVertexBuffer8* pStreamData, UINT Stride)
 {
 	IDirect3DVertexBuffer9* pStreamData9 = ((CDirect3DVertexBuffer8*)pStreamData)->ToNine();
+	g_Stride=Stride;
+	g_StreamNumber=StreamNumber;
+	g_pStreamData9=pStreamData9;
 	return pDevice9->SetStreamSource(StreamNumber, pStreamData9, 0, Stride);
 }
 
@@ -807,7 +841,8 @@ STDMETHODIMP CDirect3DDevice8::SetIndices(THIS_ IDirect3DIndexBuffer8* pIndexDat
 	HRESULT hr = pDevice9->SetIndices(pIndexData9);
 	if (SUCCEEDED(hr))
 	{
-		baseVertexIndex = BaseVertexIndex;
+		g_pIndexData9 = pIndexData9;
+		g_baseVertexIndex = BaseVertexIndex;
 	}
 	return hr;
 }
@@ -819,7 +854,7 @@ STDMETHODIMP CDirect3DDevice8::GetIndices(THIS_ IDirect3DIndexBuffer8** ppIndexD
 	if (SUCCEEDED(hr))
 	{
 		*ppIndexData = IndexBufferPool.Create(pIndexData9, this);
-		if (pBaseVertexIndex) *pBaseVertexIndex = baseVertexIndex;
+		if (pBaseVertexIndex) *pBaseVertexIndex = g_baseVertexIndex;
 	}
 	return hr;
 }
