@@ -4,8 +4,16 @@
 bool g_dbDebugOn=false;
 int g_dbDrawPrimitiveCount=0;
 
+// System Utils Functions
+#if _MSC_VER >= 1300    // for VC 7.0
+  // from ATL 7.0 sources
+  #ifndef _delayimp_h
+  extern "C" IMAGE_DOS_HEADER __ImageBase;
+  #endif
+#endif
 
-// Functions
+
+// D3D Debug Functions
 void saveBackBufferToImage(IDirect3DDevice9* pd3dDevice, bool post)
 {
 	char fullPath[64]="pics/";

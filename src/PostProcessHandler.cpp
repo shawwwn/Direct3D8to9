@@ -92,7 +92,7 @@ namespace PP{
 
 		// Initialize effects
 		// TODO: Use vector to iterate PostProcessChain
-		g_PostProcessChain[0].Init(pd3dDevice, "PP_ColorBloomH.fx");
+		g_PostProcessChain[0].Init(pd3dDevice, SHADER_BLOOM_H);
 		return hr;
 	}
 

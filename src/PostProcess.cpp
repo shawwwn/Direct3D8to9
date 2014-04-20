@@ -10,10 +10,13 @@ namespace PP {
 		m_hTexScene=NULL;
 	}
 	PostProcess::~PostProcess() {}
-	HRESULT PostProcess::Init(LPDIRECT3DDEVICE9 pDevice, LPCTSTR pSrcFile)
+	HRESULT PostProcess::Init(LPDIRECT3DDEVICE9 pDevice, UINT resourceRef)
 	{
 		HRESULT hr;
-		hr = D3DXCreateEffectFromFile(pDevice, pSrcFile, NULL, NULL,
+		//hr = D3DXCreateEffectFromFile(pDevice, pSrcFile, NULL, NULL,
+		//	                          0, // D3DXSHADER_DEBUG | D3DXSHADER_FORCE_VS_SOFTWARE_NOOPT
+		//							  NULL, &m_pEffect, NULL);
+		hr = D3DXCreateEffectFromResource(pDevice, GetCurrentModule(), MAKEINTRESOURCE(resourceRef), NULL, NULL,
 			                          0, // D3DXSHADER_DEBUG | D3DXSHADER_FORCE_VS_SOFTWARE_NOOPT
 									  NULL, &m_pEffect, NULL);
 		if(FAILED(hr))

@@ -28,6 +28,7 @@
     <ClCompile Include="..\src\PostProcess.cpp" />
     <ClCompile Include="..\src\PostProcessHandler.cpp" />
     <ClCompile Include="..\src\SpinLock.cpp" />
+    <ClCompile Include="..\src\SysUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ComptrGurad.h" />
@@ -51,11 +52,14 @@
     <ClInclude Include="..\src\PostProcess.h" />
     <ClInclude Include="..\src\PostProcessHandler.h" />
     <ClInclude Include="..\src\SpinLock.h" />
+    <ClInclude Include="..\src\SysUtils.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Direct3D8to9.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\res\PP_ColorBloomH.fx" />
     <None Include="Direct3D8to9.def" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
