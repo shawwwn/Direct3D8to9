@@ -4,7 +4,7 @@
 #include <d3dx9.h>
 
 namespace PP{
-	class PostProcess
+	struct PostProcess
 	{
 		LPD3DXEFFECT m_pEffect;					// Effect object for this technique
 		D3DXHANDLE  m_hTPostProcess;			// PostProcess technique handle
