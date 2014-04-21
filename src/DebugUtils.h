@@ -8,11 +8,13 @@
 #include <iostream>
 #include <fstream>
 
-extern bool g_dbDebugOn;
-extern int g_dbDrawPrimitiveCount;
+namespace DB {
+	extern bool g_dbDebugOn;
+	extern int g_dbDrawPrimitiveCount;
 
-void saveBackBufferToImage(IDirect3DDevice9* pd3dDevice, bool post);
-void restDrawPrimitiveCount();
-void increaseDrawPrimitiveCount();
-void saveRenderStatesUsingDrawPrimitiveCount(IDirect3DDevice9* pd3dDevice);
-void saveRenderStatesToFile(IDirect3DDevice9* pd3dDevice, char* fileName);
+	void saveBackBufferToImage(IDirect3DDevice9* pd3dDevice, bool post);
+	void restDrawPrimitiveCount();
+	void increaseDrawPrimitiveCount();
+	void saveRenderStatesUsingDrawPrimitiveCount(IDirect3DDevice9* pd3dDevice);
+	void saveRenderStatesToFile(IDirect3DDevice9* pd3dDevice, char* fileName);
+}
