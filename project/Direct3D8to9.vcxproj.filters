@@ -89,6 +89,12 @@
     <ClCompile Include="..\src\SysUtils.cpp">
       <Filter>effect\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\NormalMapHandler.cpp">
+      <Filter>effect\inc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\TextureTable.cpp">
+      <Filter>effect\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Direct3D8.h">
@@ -158,6 +164,12 @@
       <Filter>main\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SysUtils.h">
+      <Filter>effect\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\NormalMapHandler.h">
+      <Filter>effect\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\TextureTable.h">
       <Filter>effect\inc</Filter>
     </ClInclude>
   </ItemGroup>
