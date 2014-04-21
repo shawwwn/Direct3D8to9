@@ -333,4 +333,20 @@ namespace DB {
 
 		  myfile.close();
 	}
+	void logTextureDesc(IDirect3DDevice9* pd3dDevice, IDirect3DTexture9* pTexture, char* filename)
+	{
+		D3DSURFACE_DESC Desc;
+		pTexture->GetLevelDesc(2, &Desc);
+		std::ofstream myfile;
+		myfile.open (filename);
+		myfile << "Format: "             << (DWORD)(Desc.Format)             << "\n";
+		myfile << "Type: "               << (DWORD)(Desc.Type)               << "\n";
+		myfile << "Usage: "              << (DWORD)(Desc.Usage)              << "\n";
+		myfile << "Pool: "               << (DWORD)(Desc.Pool)               << "\n";
+		myfile << "MultiSampleType: "    << (DWORD)(Desc.MultiSampleType)    << "\n";
+		myfile << "MultiSampleQuality: " << (DWORD)(Desc.MultiSampleQuality) << "\n";
+		myfile << "Width: "              << (DWORD)(Desc.Width)              << "\n";
+		myfile << "Height: "             << (DWORD)(Desc.Height)             << "\n";
+		myfile.close();
+	}
 }

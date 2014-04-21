@@ -35,7 +35,7 @@ namespace NP {
 	// struct TextureItem
 	//
 	TextureItem::TextureItem() {}
-	TextureItem::TextureItem(IDirect3DTexture9* pTexture, bool Computed) : m_pTexture(pTexture), m_Computed(Computed) {}
+	TextureItem::TextureItem(IDirect3DTexture9* pTexture, bool Computed, UINT Width, UINT Height) : m_pTexture(pTexture), m_Computed(Computed), m_Width(Width), m_Height(Height) {}
 	bool TextureItem::operator ==(const TextureItem &right) const
 	{
 		return m_pTexture == right.m_pTexture;
@@ -49,10 +49,10 @@ namespace NP {
 	{
 		return m_Table.at(keys);
 	}
-	void TextureTable::addTexture(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4, IDirect3DTexture9* pTexture)
+	void TextureTable::addTexture(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4, IDirect3DTexture9* pTexture, UINT width, UINT height)
 	{
 		TextureKeys keys(dwKey1, dwKey2, dwKey3, dwKey4);
-		TextureItem item(pTexture, false);
+		TextureItem item(pTexture, false, width, height);
 		addTexture(keys, item);
 	}
 	void TextureTable::addTexture(TextureKeys &keys, TextureItem &item)
@@ -83,7 +83,7 @@ namespace NP {
 		catch (const std::out_of_range)
 		{
 			IDirect3DTexture9* pTexture = NULL;
-			TextureItem item(pTexture, false);	// not exists
+			TextureItem item(pTexture, false, width, height);	// not exists
 			m_Table.insert(std::pair<TextureKeys, TextureItem>(keys, item));
 		}
 	}

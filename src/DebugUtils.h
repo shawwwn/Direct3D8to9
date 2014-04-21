@@ -17,4 +17,5 @@ namespace DB {
 	void increaseDrawPrimitiveCount();
 	void saveRenderStatesUsingDrawPrimitiveCount(IDirect3DDevice9* pd3dDevice);
 	void saveRenderStatesToFile(IDirect3DDevice9* pd3dDevice, char* fileName);
+	void logTextureDesc(IDirect3DDevice9* pd3dDevice, IDirect3DTexture9* pTexture, char* filename);
 }

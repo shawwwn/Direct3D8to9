@@ -55,16 +55,6 @@ namespace PP{
 			MessageBox(NULL, "Create Vertex Declaration Fail!", "Error", MB_OK);
 			return hr;
 		}
-		
-		// TODO: fix the crash
-		/*
-		// Get screen dimensions
-		D3DVIEWPORT9 *pViewport=NULL;
-		pd3dDevice->GetViewport(pViewport);
-		g_deviceWidth = (UINT)pViewport->Width;
-		g_deviceHeight = (UINT)pViewport->Height;
-		pViewport=NULL;
-		*/
 
 		// Get screen dimensions
 		IDirect3DSurface9* t_pSurface = NULL;

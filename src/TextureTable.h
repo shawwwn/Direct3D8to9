@@ -20,11 +20,13 @@ namespace NP {
 	{
 		public:
 			TextureItem();
-			TextureItem(IDirect3DTexture9* pTexture, bool Computed);
+			TextureItem(IDirect3DTexture9* pTexture, bool Computed, UINT Width, UINT Height);
 			bool TextureItem::operator ==(const TextureItem &right) const;
 			// member variables
 			IDirect3DTexture9* m_pTexture;
 			bool m_Computed;
+			UINT m_Width;
+			UINT m_Height;
 	};
 
 	class TextureTable
@@ -32,7 +34,7 @@ namespace NP {
 		public:
 			TextureTable();
 			TextureItem& TextureTable::at(TextureKeys& keys);
-			void addTexture(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4, IDirect3DTexture9* pTexture);
+			void addTexture(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4, IDirect3DTexture9* pTexture, UINT width, UINT height);
 			void addTexture(TextureKeys &keys, TextureItem &item);
 			void addTextureEntry(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4, UINT width, UINT height);
 			void addTextureEntry(TextureKeys &keys, UINT width, UINT height);

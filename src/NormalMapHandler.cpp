@@ -1,8 +1,9 @@
 #include "NormalMapHandler.h"
+#include "DebugUtils.h"
 
 namespace NP {
 	TextureTable g_texTable;
-	DWORD g_AlphaValue = D3DCOLOR_ARGB(178,255,255,255);	// 70% transparency
+	DWORD g_AlphaValue = D3DCOLOR_ARGB(160,255,255,255);	// 60% transparency
 
 	DWORD g_pColorArg1_0;
 	DWORD g_pColorOp_0;
@@ -17,7 +18,29 @@ namespace NP {
 	{
 		g_texTable.cleanup();
 		// format: Stride, NumVertices, PrimCount, AlphaRef
-		g_texTable.addTextureEntry(32, 320, 153, 192, 128, 128);	// Human Farm
+		g_texTable.addTextureEntry(32, 320, 153, 192, 256, 256);	// Human Farm
+		g_texTable.addTextureEntry(32, 8,   6,   192, 256, 256);	// Human Townhall - base
+		g_texTable.addTextureEntry(32, 454, 209, 192, 512, 512);	// Human Townhall - body
+		g_texTable.addTextureEntry(32, 18,  10,  192, 256, 256);	// Human Townhall - top
+		g_texTable.addTextureEntry(32, 359, 302, 192, 256, 256);	// Human Altar - body
+		g_texTable.addTextureEntry(32, 99,  46,  192, 256, 256);	// Human Barracks - top
+		g_texTable.addTextureEntry(32, 387, 209, 192, 256, 256);	// Human Barracks - body
+		g_texTable.addTextureEntry(32, 386, 224, 192, 256, 256);	// Human Lumber Mill - body
+		g_texTable.addTextureEntry(32, 39,  24,  192, 256, 256);	// Human Arcane Vault - box
+		g_texTable.addTextureEntry(32, 251, 149, 192, 256, 128);	// Human Scout Tower
+		g_texTable.addTextureEntry(32, 1053,511, 192, 256, 256);	// Human Construction Set
+
+		g_texTable.addTextureEntry(32, 160, 104, 192, 256, 256);	// Orc Structure - base
+
+		g_texTable.addTextureEntry(32, 271, 239, 192, 256, 256);	// Gold Mine - mine
+		g_texTable.addTextureEntry(32, 84,  51,  192, 64,  64);		// Gold Mine - gold
+		g_texTable.addTextureEntry(32, 123, 60,  192, 256, 256);	// Gold Mine - base
+		g_texTable.addTextureEntry(32, 132, 68,  192, 256, 64);		// Gold Merchant - top
+		g_texTable.addTextureEntry(32, 474, 274, 192, 256, 256);	// Gold Merchant - body
+		g_texTable.addTextureEntry(32, 547, 442, 192, 256, 256);	// Tarven
+		g_texTable.addTextureEntry(32, 331, 346, 192, 512, 256);	// Fountain of Health
+		g_texTable.addTextureEntry(32, 491, 348, 192, 256, 256);	// Goblin Laboratory
+		g_texTable.addTextureEntry(32, 571, 394, 192, 256, 256);	// Mercenary Camp
 		// TODO: add more...
 	}
 
@@ -37,22 +60,17 @@ namespace NP {
 
 			if (!pItem->m_Computed || pItem->m_pTexture == NULL)
 			{
-				// TODO: Get below to work.
-				/*
-				hr = pd3dDevice->CreateTexture(256, 256,
-												1,
-												0,
-												D3DFMT_UNKNOWN,
-												D3DPOOL_MANAGED,
-												&item.m_pTexture,
-												NULL);
-				*/
-				hr = D3DXCreateTextureFromFile(pd3dDevice, "FarmNormalMap.bmp", &(pItem->m_pTexture));
+				// Create normal map texture
+				hr = D3DXCreateTexture(pd3dDevice, pItem->m_Width, pItem->m_Height, 0, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &(pItem->m_pTexture));
+				//hr = D3DXCreateTextureFromFile(pd3dDevice, "FarmNormalMap.bmp", &(pItem->m_pTexture));
 				if (FAILED(hr))
 					MessageBox(NULL, "Create Normal Map Texture Failed!", "Error", MB_OK);
-				hr = D3DXComputeNormalMap(pItem->m_pTexture, (IDirect3DTexture9*)pBaseTexture, 0, D3DX_NORMALMAP_MIRROR, D3DX_CHANNEL_BLUE, 10);
+				hr = D3DXComputeNormalMap(pItem->m_pTexture, (IDirect3DTexture9*)pBaseTexture, 0, D3DX_NORMALMAP_MIRROR, D3DX_CHANNEL_RED, 100);
 				if (FAILED(hr))
+				{
 					MessageBox(NULL, "Compute Normal Map Texture Failed!", "Error", MB_OK);
+					D3DXSaveTextureToFile("texture.bmp", D3DXIFF_BMP, pBaseTexture, NULL);
+				}
 				pItem->m_Computed = true;
 			}
 			pTexture = pItem->m_pTexture;
@@ -62,6 +80,7 @@ namespace NP {
 			return D3DERR_INVALIDCALL;	// not exists
 		}
 
+		DB::logTextureDesc(pd3dDevice, pTexture, "texture.txt");
 		//
 		// Render Normal Map
 		//
