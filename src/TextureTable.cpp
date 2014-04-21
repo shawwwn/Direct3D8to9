@@ -68,12 +68,12 @@ namespace NP {
 		}
 	
 	}
-	void TextureTable::addTextureEntry(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4)
+	void TextureTable::addTextureEntry(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4, UINT width, UINT height)
 	{
 		TextureKeys keys(dwKey1, dwKey2, dwKey3, dwKey4);
-		addTextureEntry(keys);
+		addTextureEntry(keys, width, height);
 	}
-	void TextureTable::addTextureEntry(TextureKeys &keys)
+	void TextureTable::addTextureEntry(TextureKeys &keys, UINT width, UINT height)
 	{
 		try
 		{
@@ -82,7 +82,8 @@ namespace NP {
 		}
 		catch (const std::out_of_range)
 		{
-			TextureItem item(NULL, false);	// not exists
+			IDirect3DTexture9* pTexture = NULL;
+			TextureItem item(pTexture, false);	// not exists
 			m_Table.insert(std::pair<TextureKeys, TextureItem>(keys, item));
 		}
 	}

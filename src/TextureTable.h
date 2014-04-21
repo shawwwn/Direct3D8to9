@@ -34,8 +34,8 @@ namespace NP {
 			TextureItem& TextureTable::at(TextureKeys& keys);
 			void addTexture(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4, IDirect3DTexture9* pTexture);
 			void addTexture(TextureKeys &keys, TextureItem &item);
-			void addTextureEntry(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4);
-			void addTextureEntry(TextureKeys &keys);
+			void addTextureEntry(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4, UINT width, UINT height);
+			void addTextureEntry(TextureKeys &keys, UINT width, UINT height);
 			void removeTexture(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4);
 			void removeTexture(TextureKeys &keys);
 			IDirect3DTexture9* queryTexture(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4);

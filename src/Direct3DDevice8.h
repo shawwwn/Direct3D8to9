@@ -23,7 +23,7 @@ private:
 	CDirect3D8* pDirect3D8;
 	BOOL zBufferDiscardingEnabled;
 	D3DDEVICE_CREATION_PARAMETERS deviceCreationParameters;
-	INT g_baseVertexIndex;
+	UINT g_baseVertexIndex;
 
 	IDirect3DIndexBuffer9* g_pIndexData9;
 	UINT g_StreamNumber;

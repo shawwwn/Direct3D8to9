@@ -21,6 +21,7 @@ CDirect3DDevice8::CDirect3DDevice8(IDirect3DDevice9* device, CDirect3D8* d3d)
 	pDevice9->GetCreationParameters(&deviceCreationParameters);
 
 	PP::InitGobals(pDevice9);	// initialize globla setting for post process
+	NP::InitGlobals();
 }
 
 CDirect3DDevice8::~CDirect3DDevice8()
@@ -739,6 +740,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 	//return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 	DWORD alphaRef;
 	pDevice9->GetRenderState(D3DRS_ALPHAREF, &alphaRef);
+	
 	if (g_Stride==36 && NumVertices==4 && primCount==2 && alphaRef==192)
 	{
 		if (!PP::g_presented)
@@ -756,6 +758,14 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 			pDevice9->SetIndices(g_pIndexData9);									// restore indices
 			pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
 		}
+	}
+	else
+	{
+		HRESULT hr = NP::PerformNormalMappping(pDevice9, g_pTexture9,
+                                               Type, g_baseVertexIndex, minIndex, startIndex,
+                                               g_Stride, NumVertices, primCount, alphaRef);
+		if (SUCCEEDED(hr))
+			return hr;	// return while the object has already been rendered
 	}
 	return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 }

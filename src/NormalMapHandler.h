@@ -5,12 +5,30 @@
 #include "TextureTable.h"
 
 namespace NP {
-
 	extern TextureTable g_texTable;
-	
-	// init global settings
+	extern DWORD g_AlphaValue;
+
+	extern DWORD g_pColorArg1_0;
+	extern DWORD g_pColorOp_0;
+	extern DWORD g_pColorArg2_0;
+	extern DWORD g_pAlphaOp_0;
+	extern DWORD g_pAlphaArg1_0;
+	extern DWORD g_pAlphaArg2_0;
+	extern DWORD g_pTexCoordIndex_0;
+	extern DWORD g_AlphaTestEnable;
+
+	// Init global settings
 	void InitGlobals();
-	// query texture and perform normal mapping
+	// Query texture and perform normal mapping
 	HRESULT PerformNormalMappping(IDirect3DDevice9* pd3dDevice, IDirect3DBaseTexture9* pBaseTexture,
-                                  DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4);
+                                  D3DPRIMITIVETYPE Type, UINT baseVertexIndex, UINT minIndex, UINT startIndex,
+                                  UINT Stride, UINT NumVertices, UINT primCount, DWORD AlphaRef);
+	// Backup TextureStageStates
+	void backupTextureStageStates(IDirect3DDevice9* pd3dDevice);
+	// Restore TextureStageStates
+	void restoreTextureStageStates(IDirect3DDevice9* pd3dDevice);
+	// Backup RenderStates
+	void backupRenderStates(IDirect3DDevice9* pd3dDevice);
+	// Restore RenderStates
+	void restoreRenderStates(IDirect3DDevice9* pd3dDevice);
 }
