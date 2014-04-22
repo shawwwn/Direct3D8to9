@@ -15,7 +15,12 @@ namespace NP {
 	extern DWORD g_pAlphaArg1_0;
 	extern DWORD g_pAlphaArg2_0;
 	extern DWORD g_pTexCoordIndex_0;
+
 	extern DWORD g_AlphaTestEnable;
+	extern DWORD g_AlphaBlendEnable;
+	extern DWORD g_SrcBlend;
+	extern DWORD g_DestBlend;
+	extern DWORD g_TextureFactor;
 
 	// Init global settings
 	void InitGlobals();
