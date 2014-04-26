@@ -4,30 +4,28 @@ namespace NP {
 	//
 	// struct TextureKeys
 	//
-	TextureKeys::TextureKeys(DWORD k1, DWORD k2, DWORD k3, DWORD k4) : dwKey1(k1), dwKey2(k2), dwKey3(k3), dwKey4(k4) {}
+	TextureKeys::TextureKeys(DWORD stride, DWORD numVertices, DWORD primCount)
+	{
+		m_Stride = stride;
+		m_NumVertices = numVertices;
+		m_PrimCount = primCount;
+	}
 	bool TextureKeys::operator <(const TextureKeys &right) const
 	{
-		if ( dwKey1 == right.dwKey1 )
+		if ( m_Stride == right.m_Stride )
 		{
-			if ( dwKey2 == right.dwKey2 ) 
+			if ( m_NumVertices == right.m_NumVertices ) 
 			{
-				if ( dwKey3 == right.dwKey3 )
-				{
-					return dwKey4 < right.dwKey4;
-				}
-				else
-				{
-					return dwKey3 < right.dwKey3;
-				}
+				return m_PrimCount < right.m_PrimCount;
 			}
 			else
 			{
-				return dwKey2 < right.dwKey2;
+				return m_NumVertices < right.m_NumVertices;
 			}
 		}
 		else
 		{
-			return dwKey1 < right.dwKey1;
+			return m_Stride < right.m_Stride;
 		}
 	}
 
@@ -35,10 +33,21 @@ namespace NP {
 	// struct TextureItem
 	//
 	TextureItem::TextureItem() {}
-	TextureItem::TextureItem(IDirect3DTexture9* pTexture, bool Computed, UINT Width, UINT Height) : m_pTexture(pTexture), m_Computed(Computed), m_Width(Width), m_Height(Height) {}
+	TextureItem::TextureItem(bool computed, IDirect3DTexture9* pBaseTexture, IDirect3DTexture9* pNormalTexture, UINT width, UINT height, bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef, bool isTransplantByDefault)
+	{
+		m_Computed = computed;
+		m_pBaseTexture = pBaseTexture;
+		m_pNormalTexture = pNormalTexture;
+		m_Width = width;
+		m_Height = height;
+		m_IsMask = isMask;
+		m_NormalAlphaRef = normalAlphaRef;
+		m_TransplantAlphaRef = transplantAlphaRef;
+		m_IsTransplantByDefault = isTransplantByDefault;
+	}
 	bool TextureItem::operator ==(const TextureItem &right) const
 	{
-		return m_pTexture == right.m_pTexture;
+		return m_pBaseTexture == right.m_pBaseTexture;
 	}
 
 	//
@@ -49,10 +58,12 @@ namespace NP {
 	{
 		return m_Table.at(keys);
 	}
-	void TextureTable::addTexture(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4, IDirect3DTexture9* pTexture, UINT width, UINT height)
+	void TextureTable::addTexture(DWORD stride, DWORD numVertices, DWORD primCount, UINT width, UINT height,
+		bool isMask=false, UINT normalAlphaRef=DEFAULT_NORMAL_ALPHAREF, UINT transplantAlphaRef=DEFAULT_TRANSPLANT_ALPHAREF, bool isTransplantByDefault=false,
+		IDirect3DTexture9* pBaseTexture=NULL, IDirect3DTexture9* pNormalTexture=NULL)
 	{
-		TextureKeys keys(dwKey1, dwKey2, dwKey3, dwKey4);
-		TextureItem item(pTexture, false, width, height);
+		TextureKeys keys(stride, numVertices, primCount);
+		TextureItem item(false, pBaseTexture, pNormalTexture, width, height, isMask, normalAlphaRef, transplantAlphaRef, isTransplantByDefault);
 		addTexture(keys, item);
 	}
 	void TextureTable::addTexture(TextureKeys &keys, TextureItem &item)
@@ -68,13 +79,16 @@ namespace NP {
 		}
 	
 	}
-	void TextureTable::addTextureEntry(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4, UINT width, UINT height)
+	void TextureTable::addTextureEntry(DWORD stride, DWORD numVertices, DWORD primCount, UINT width, UINT height,
+		bool isMask=false, UINT normalAlphaRef=DEFAULT_NORMAL_ALPHAREF, UINT transplantAlphaRef=DEFAULT_TRANSPLANT_ALPHAREF, bool isTransplantByDefault=false)
 	{
-		TextureKeys keys(dwKey1, dwKey2, dwKey3, dwKey4);
-		addTextureEntry(keys, width, height);
+		TextureKeys keys(stride, numVertices, primCount);
+		addTextureEntry(keys, width, height, isMask, normalAlphaRef, transplantAlphaRef, isTransplantByDefault);
 	}
-	void TextureTable::addTextureEntry(TextureKeys &keys, UINT width, UINT height)
+	void TextureTable::addTextureEntry(TextureKeys &keys, UINT width, UINT height,
+		bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef, bool isTransplantByDefault)
 	{
+		// TODO: Pass an constructed TextureItem and use addTexture instead
 		try
 		{
 			m_Table.at(keys);	// check if item exists
@@ -82,28 +96,40 @@ namespace NP {
 		}
 		catch (const std::out_of_range)
 		{
-			IDirect3DTexture9* pTexture = NULL;
-			TextureItem item(pTexture, false, width, height);	// not exists
+			TextureItem item(false, NULL, NULL, width, height, isMask, normalAlphaRef, transplantAlphaRef, isTransplantByDefault);	// not exists
 			m_Table.insert(std::pair<TextureKeys, TextureItem>(keys, item));
 		}
 	}
-	void TextureTable::removeTexture(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4)
+	void TextureTable::removeTexture(DWORD stride, DWORD numVertices, DWORD primCount)
 	{
-		TextureKeys keys(dwKey1, dwKey2, dwKey3, dwKey4);
+		TextureKeys keys(stride, numVertices, primCount);
 		removeTexture(keys);
 	}
 	void TextureTable::removeTexture(TextureKeys &keys)
 	{
 		m_Table.erase(keys);
 	}
-	IDirect3DTexture9* TextureTable::queryTexture(DWORD dwKey1, DWORD dwKey2, DWORD dwKey3, DWORD dwKey4)
+	IDirect3DTexture9* TextureTable::queryBaseTexture(DWORD stride, DWORD numVertices, DWORD primCount)
 	{
-		TextureKeys keys(dwKey1, dwKey2, dwKey3, dwKey4);
-		return queryTexture(keys);
+		TextureKeys keys(stride, numVertices, primCount);
+		return queryBaseTexture(keys);
 	}
-	IDirect3DTexture9* TextureTable::queryTexture(TextureKeys &keys)
+	IDirect3DTexture9* TextureTable::queryBaseTexture(TextureKeys &keys)
 	{
-		return m_Table[keys].m_pTexture;
+		return m_Table[keys].m_pBaseTexture;
+	}
+	IDirect3DTexture9* TextureTable::queryNormalTexture(DWORD stride, DWORD numVertices, DWORD primCount)
+	{
+		TextureKeys keys(stride, numVertices, primCount);
+		return queryBaseTexture(keys);
+	}
+	IDirect3DTexture9* TextureTable::queryNormalTexture(TextureKeys &keys)
+	{
+		return m_Table[keys].m_pNormalTexture;
+	}
+	void TextureTable::computeNormalTextures()
+	{
+		// TODO: Loop through the map and compute all base textures into normal texture
 	}
 	void TextureTable::cleanup()
 	{
