@@ -6,6 +6,43 @@ namespace DB {
 	int g_dbDrawPrimitiveCount=0;
 
 	// D3D Debug Functions
+	void savePrimitiveStatesUsingDrawPrimitiveCount(D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount, 
+                                UINT StreamNumber, UINT Stride, DWORD Stage, D3DTRANSFORMSTATETYPE State, DWORD FVFHandle,
+							    UINT baseVertexIndex, BOOL zBufferDiscardingEnabled, IDirect3DBaseTexture9* g_pTexture9)
+	{
+		char fullPath[64]="pics/";
+		char fileName[16];
+		char fileSuffix[16]="_prim.txt";
+		itoa(g_dbDrawPrimitiveCount, fileName, 10);
+		strcat(fullPath, fileName);
+		strcat(fullPath, fileSuffix);
+		savePrimitiveStatesToFile(Type, minIndex, NumVertices, startIndex, primCount, 
+			                   StreamNumber, Stride, Stage, State, FVFHandle,
+							   baseVertexIndex, zBufferDiscardingEnabled, g_pTexture9,
+							   fullPath);
+	}
+	void savePrimitiveStatesToFile(D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount, 
+                                UINT StreamNumber, UINT Stride, DWORD Stage, D3DTRANSFORMSTATETYPE State, DWORD FVFHandle,
+							    UINT baseVertexIndex, BOOL zBufferDiscardingEnabled, IDirect3DBaseTexture9* g_pTexture9,
+								char* filename)
+	{
+		std::ofstream myfile;
+		myfile.open (filename);
+		myfile << "D3DPRIMITIVETYPE: " << (UINT)Type << "\n";
+		myfile << "MinIndex: " << minIndex << "\n";
+		myfile << "NumVertices: " << NumVertices << "\n";
+		myfile << "StartIndex: " << startIndex << "\n";
+		myfile << "PrimCount: " << primCount << "\n";
+		myfile << "StreamNumber: " << StreamNumber << "\n";
+		myfile << "Stride: " << Stride << "\n";
+		myfile << "Stage: " << Stage << "\n";
+		myfile << "D3DTRANSFORMSTATETYPE: " << (UINT)State << "\n";
+		myfile << "FVFHandle: " << FVFHandle << "\n";
+		myfile << "BaseVertexIndex: " << baseVertexIndex << "\n";
+		myfile << "zBufferDiscardingEnabled: " << zBufferDiscardingEnabled << "\n";
+		myfile << "pTexture9: " << (UINT)g_pTexture9 << "\n";
+		myfile.close();
+	}
 	void saveBackBufferToImage(IDirect3DDevice9* pd3dDevice, bool post)
 	{
 		char fullPath[64]="pics/";

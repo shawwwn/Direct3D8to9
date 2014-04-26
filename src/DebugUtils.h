@@ -12,6 +12,13 @@ namespace DB {
 	extern bool g_dbDebugOn;
 	extern int g_dbDrawPrimitiveCount;
 
+	void savePrimitiveStatesUsingDrawPrimitiveCount(D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount, 
+                                UINT StreamNumber, UINT Stride, DWORD Stage, D3DTRANSFORMSTATETYPE State, DWORD FVFHandle,
+							    UINT baseVertexIndex, BOOL zBufferDiscardingEnabled, IDirect3DBaseTexture9* g_pTexture9);
+	void savePrimitiveStatesToFile(D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount, 
+                                UINT StreamNumber, UINT Stride, DWORD Stage, D3DTRANSFORMSTATETYPE State, DWORD FVFHandle,
+							    UINT baseVertexIndex, BOOL zBufferDiscardingEnabled, IDirect3DBaseTexture9* g_pTexture9,
+								char* filename);
 	void saveBackBufferToImage(IDirect3DDevice9* pd3dDevice, bool post);
 	void restDrawPrimitiveCount();
 	void increaseDrawPrimitiveCount();
