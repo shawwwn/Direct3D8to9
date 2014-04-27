@@ -21,7 +21,7 @@ CDirect3DDevice8::CDirect3DDevice8(IDirect3DDevice9* device, CDirect3D8* d3d)
 	pDevice9->GetCreationParameters(&deviceCreationParameters);
 
 	PP::InitGobals(pDevice9);	// initialize globla setting for post process
-	NP::InitGlobals();
+	NP::InitGlobals(pDevice9);
 }
 
 CDirect3DDevice8::~CDirect3DDevice8()
@@ -202,6 +202,13 @@ STDMETHODIMP CDirect3DDevice8::Reset(THIS_ D3D8PRESENT_PARAMETERS* pPresentation
 
 STDMETHODIMP CDirect3DDevice8::Present(THIS_ CONST RECT* pSourceRect, CONST RECT* pDestRect, HWND hDestWindowOverride, CONST RGNDATA* pDirtyRegion)
 {
+	//if (GetAsyncKeyState(VK_MENU))
+	//	MessageBox(NULL, "finish", "over", MB_OK);
+	if (GetAsyncKeyState(VK_MENU))
+		DB::g_dbDebugOn = true;
+	else
+		DB::g_dbDebugOn = false;
+	DB::restDrawPrimitiveCount();
 	PP::g_presented = false;
 	return pDevice9->Present(pSourceRect, pDestRect, hDestWindowOverride, pDirtyRegion);
 }
@@ -737,16 +744,26 @@ STDMETHODIMP CDirect3DDevice8::DrawPrimitive(THIS_ D3DPRIMITIVETYPE PrimitiveTyp
 
 STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount)
 {
-	if (NumVertices==191 && primCount==214 && GetAsyncKeyState(VK_MENU))
-	{
-		DB::saveRenderStatesToFile(pDevice9, "mainscreen.txt");
-	}
 	DWORD alphaRef;
 	pDevice9->GetRenderState(D3DRS_ALPHAREF, &alphaRef);
 	
+	if (DB::g_dbDebugOn)
+	//if (GetAsyncKeyState(VK_MENU) && false)
+	{
+		/*
+		DB::saveRenderStatesUsingDrawPrimitiveCount(pDevice9);
+		DB::savePrimitiveStatesUsingDrawPrimitiveCount(Type, minIndex, NumVertices, startIndex, primCount, 
+													   g_StreamNumber, g_Stride, g_Stage, g_State, g_FVFHandle,
+													   g_baseVertexIndex, zBufferDiscardingEnabled, g_pTexture9);
+		DB::saveBackBufferToImage(pDevice9, false);
+		DB::increaseDrawPrimitiveCount();
+		return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
+		*/
+	}
+
 	if (g_Stride==36 && NumVertices==4 && primCount==2 && alphaRef==192)
 	{
-		if (!PP::g_presented)
+		if (!PP::g_presented && GetAsyncKeyState(VK_SHIFT))
 		{
 			PP::g_presented = true;
 			pDevice9->EndScene(); // end the scene first
@@ -766,7 +783,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 	{
 		HRESULT hr = NP::PerformNormalMappping(pDevice9, g_pTexture9,
                                                Type, g_baseVertexIndex, minIndex, startIndex,
-                                               g_Stride, NumVertices, primCount, alphaRef);
+                                               g_Stride, NumVertices, primCount, alphaRef, (DWORD)g_State);
 		if (SUCCEEDED(hr))
 			return hr;	// return while the object has already been rendered
 	}

@@ -103,9 +103,6 @@
     <ClInclude Include="..\src\Direct3DBaseTexture8.h">
       <Filter>main\inc</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Direct3DCubeTexture8.h">
-      <Filter>main\inc</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Direct3DDevice8.h">
       <Filter>main\inc</Filter>
     </ClInclude>
@@ -171,6 +168,9 @@
     </ClInclude>
     <ClInclude Include="..\src\TextureTable.h">
       <Filter>effect\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Direct3DCubeTexture8.h">
+      <Filter>main\inc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

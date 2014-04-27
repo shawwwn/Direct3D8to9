@@ -35,6 +35,9 @@ private:
 	D3DMATRIX* g_pMatrix;
 	DWORD g_FVFHandle;
 
+	IDirect3DTexture9* g_pTempTerrainTexture;
+	IDirect3DTexture9* g_pTempTerrainNormalMapTexture;
+
 public:
 	CObjectPool<CDirect3DCubeTexture8>   CubeTexturePool;
 	CObjectPool<CDirect3DIndexBuffer8>   IndexBufferPool;
