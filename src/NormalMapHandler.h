@@ -3,6 +3,7 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "TextureTable.h"
+#include "NormalMapExceptionHandler.h"
 
 namespace NP {
 	#define NORMAL_AMPLITUDE -100

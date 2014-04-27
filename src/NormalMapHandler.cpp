@@ -146,6 +146,12 @@ namespace NP {
 		{
 			TextureItem* pItem = &(g_texTable.at(keys));	// check if item exists, return in reference
 
+			// Check if the TextureItem is excluded temporary
+			if (EXCP::isExcluded(pItem))
+			{
+				return D3DERR_INVALIDCALL;
+			}
+
 			if (!pItem->m_Computed)
 			{
 				// Create normal map texture
@@ -153,7 +159,12 @@ namespace NP {
 				{
 					hr = D3DXCreateTexture(pd3dDevice, pItem->m_Width, pItem->m_Height, 0, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &(pItem->m_pNormalTexture));
 					if (FAILED(hr))
-						MessageBox(NULL, "Create Normal Map Texture Failed!", "Error", MB_OK);
+					{
+						pItem->m_pNormalTexture = NULL;
+						EXCP::AddException(pItem);
+						//MessageBox(NULL, "Create Normal Map Texture Failed!", "Error", MB_OK);
+						return D3DERR_INVALIDCALL;	// return to normal rendering
+					}
 				}
 
 				// Compute normal map texture
@@ -161,11 +172,16 @@ namespace NP {
 				hr = D3DXComputeNormalMap(pItem->m_pNormalTexture, (IDirect3DTexture9*)pBaseTexture, 0, D3DX_NORMALMAP_MIRROR, D3DX_CHANNEL_LUMINANCE, NORMAL_AMPLITUDE*invertSign);
 				if (FAILED(hr))
 				{
-					MessageBox(NULL, "Compute Normal Map Texture Failed!", "Error", MB_OK);
-					DB::savePrimitiveStatesToFile(Type, minIndex, NumVertices, startIndex, primCount, 
-						0, Stride, 0, D3DTS_VIEW, 0,
-						baseVertexIndex, 0, pBaseTexture, "failTex.txt");
-					D3DXSaveTextureToFile("failTex.bmp", D3DXIFF_BMP, pBaseTexture, NULL);
+					EXCP::AddException(pItem);
+					pItem->m_pNormalTexture->Release();
+					pItem->m_pNormalTexture = NULL;
+
+					//MessageBox(NULL, "Compute Normal Map Texture Failed!", "Error", MB_OK);
+					//DB::savePrimitiveStatesToFile(Type, minIndex, NumVertices, startIndex, primCount, 
+					//	0, Stride, 0, D3DTS_VIEW, 0,
+					//	baseVertexIndex, 0, pBaseTexture, "failTex.txt");
+					//D3DXSaveTextureToFile("failTex.bmp", D3DXIFF_BMP, pBaseTexture, NULL);
+
 					return D3DERR_INVALIDCALL;	// return to normal rendering
 				}
 				pItem->m_Computed = true;

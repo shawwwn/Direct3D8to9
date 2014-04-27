@@ -210,6 +210,7 @@ STDMETHODIMP CDirect3DDevice8::Present(THIS_ CONST RECT* pSourceRect, CONST RECT
 		DB::g_dbDebugOn = false;
 	DB::restDrawPrimitiveCount();
 	PP::g_presented = false;
+	NP::EXCP::CheckAll();	// check exception list
 	return pDevice9->Present(pSourceRect, pDestRect, hDestWindowOverride, pDirtyRegion);
 }
 

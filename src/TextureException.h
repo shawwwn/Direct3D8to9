@@ -2,7 +2,7 @@
 
 #include "TextureTable.h"
 
-namespace NP {
+namespace NP { namespace EXCP {
 
 	//==========================================================================
 	//
@@ -25,4 +25,4 @@ namespace NP {
 			TextureItem* m_pTextureItem;
 	};
 
-}
+}}

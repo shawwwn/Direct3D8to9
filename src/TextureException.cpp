@@ -1,13 +1,13 @@
 #include "TextureException.h"
 
-namespace NP {
+namespace NP { namespace EXCP {
 
-	TextureException::TextureException(TextureItem* pWhichItem);
+	TextureException::TextureException(TextureItem* pWhichItem)
 	{
-		m_pWhichItem = pWhichItem;
+		m_pTextureItem = pWhichItem;
 		m_FrameCount = 0;
-		m_FailCount = 0;
+		m_FailCount = 1;
 	}
 
 	TextureException::~TextureException() {};
-}
+}}
