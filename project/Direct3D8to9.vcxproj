@@ -25,11 +25,13 @@
     <ClCompile Include="..\src\Direct3DVertexBuffer8.cpp" />
     <ClCompile Include="..\src\Direct3DVolume8.cpp" />
     <ClCompile Include="..\src\Direct3DVolumeTexture8.cpp" />
+    <ClCompile Include="..\src\NormalMapExceptionHandler.cpp" />
     <ClCompile Include="..\src\NormalMapHandler.cpp" />
     <ClCompile Include="..\src\PostProcess.cpp" />
     <ClCompile Include="..\src\PostProcessHandler.cpp" />
     <ClCompile Include="..\src\SpinLock.cpp" />
     <ClCompile Include="..\src\SysUtils.cpp" />
+    <ClCompile Include="..\src\TextureException.cpp" />
     <ClCompile Include="..\src\TextureTable.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -50,12 +52,14 @@
     <ClInclude Include="..\src\Direct3DVertexBuffer8.h" />
     <ClInclude Include="..\src\Direct3DVolume8.h" />
     <ClInclude Include="..\src\Direct3DVolumeTexture8.h" />
+    <ClInclude Include="..\src\NormalMapExceptionHandler.h" />
     <ClInclude Include="..\src\NormalMapHandler.h" />
     <ClInclude Include="..\src\ObjectPool.h" />
     <ClInclude Include="..\src\PostProcess.h" />
     <ClInclude Include="..\src\PostProcessHandler.h" />
     <ClInclude Include="..\src\SpinLock.h" />
     <ClInclude Include="..\src\SysUtils.h" />
+    <ClInclude Include="..\src\TextureException.h" />
     <ClInclude Include="..\src\TextureTable.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

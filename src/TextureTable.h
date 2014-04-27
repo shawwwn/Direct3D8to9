@@ -25,6 +25,7 @@ namespace NP {
 			TextureItem(bool computed, IDirect3DTexture9* pBaseTexture, IDirect3DTexture9* pNormalTexture, 
 						UINT width, UINT height, bool inverted, bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef);
 			bool TextureItem::operator ==(const TextureItem &right) const;
+			
 			// member variables
 			IDirect3DTexture9* m_pBaseTexture;
 			IDirect3DTexture9* m_pNormalTexture;

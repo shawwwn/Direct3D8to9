@@ -95,6 +95,12 @@
     <ClCompile Include="..\src\TextureTable.cpp">
       <Filter>effect\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\NormalMapExceptionHandler.cpp">
+      <Filter>effect\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\TextureException.cpp">
+      <Filter>effect\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Direct3D8.h">
@@ -171,6 +177,12 @@
     </ClInclude>
     <ClInclude Include="..\src\Direct3DCubeTexture8.h">
       <Filter>main\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\NormalMapExceptionHandler.h">
+      <Filter>effect\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\TextureException.h">
+      <Filter>effect\inc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
