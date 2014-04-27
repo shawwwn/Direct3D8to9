@@ -23,7 +23,7 @@ namespace NP {
 		public:
 			TextureItem();
 			TextureItem(bool computed, IDirect3DTexture9* pBaseTexture, IDirect3DTexture9* pNormalTexture, 
-						UINT width, UINT height, bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef, bool isTransplantByDefault);
+						UINT width, UINT height, bool inverted, bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef);
 			bool TextureItem::operator ==(const TextureItem &right) const;
 			// member variables
 			IDirect3DTexture9* m_pBaseTexture;
@@ -31,10 +31,10 @@ namespace NP {
 			bool m_Computed;
 			UINT m_Width;
 			UINT m_Height;
+			bool m_Inverted;
 			bool m_IsMask;
 			UINT m_TransplantAlphaRef;
 			UINT m_NormalAlphaRef;
-			bool m_IsTransplantByDefault;
 	};
 
 	class TextureTable
@@ -42,14 +42,14 @@ namespace NP {
 		public:
 			TextureTable();
 			TextureItem& TextureTable::at(TextureKeys& keys);
-			void addTexture(DWORD stride, DWORD numVertices, DWORD primCount, UINT width, UINT height,
-				bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef, bool isTransplantByDefault,
-				IDirect3DTexture9* pBaseTexture, IDirect3DTexture9* pNormalTexture);
+			void addTexture(DWORD stride, DWORD numVertices, DWORD primCount, UINT width, UINT height, bool inverted,
+				bool isMask=false, UINT normalAlphaRef=DEFAULT_NORMAL_ALPHAREF, UINT transplantAlphaRef=DEFAULT_TRANSPLANT_ALPHAREF,
+				IDirect3DTexture9* pBaseTexture=NULL, IDirect3DTexture9* pNormalTexture=NULL);
 			void addTexture(TextureKeys &keys, TextureItem &item);
-			void addTextureEntry(DWORD stride, DWORD numVertices, DWORD primCount, UINT width, UINT height,
-				bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef, bool isTransplantByDefault);
-			void addTextureEntry(TextureKeys &keys, UINT width, UINT height,
-				bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef, bool isTransplantByDefault);
+			void addTextureEntry(DWORD stride, DWORD numVertices, DWORD primCount, UINT width, UINT height, bool inverted,
+				bool isMask=false, UINT normalAlphaRef=DEFAULT_NORMAL_ALPHAREF, UINT transplantAlphaRef=DEFAULT_TRANSPLANT_ALPHAREF);
+			void addTextureEntry(TextureKeys &keys, UINT width, UINT height, bool inverted,
+				bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef);
 			void removeTexture(DWORD stride, DWORD numVertices, DWORD primCount);
 			void removeTexture(TextureKeys &keys);
 			IDirect3DTexture9* queryBaseTexture(DWORD stride, DWORD numVertices, DWORD primCount);

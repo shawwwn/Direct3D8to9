@@ -33,17 +33,17 @@ namespace NP {
 	// struct TextureItem
 	//
 	TextureItem::TextureItem() {}
-	TextureItem::TextureItem(bool computed, IDirect3DTexture9* pBaseTexture, IDirect3DTexture9* pNormalTexture, UINT width, UINT height, bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef, bool isTransplantByDefault)
+	TextureItem::TextureItem(bool computed, IDirect3DTexture9* pBaseTexture, IDirect3DTexture9* pNormalTexture, UINT width, UINT height, bool inverted, bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef)
 	{
 		m_Computed = computed;
 		m_pBaseTexture = pBaseTexture;
 		m_pNormalTexture = pNormalTexture;
 		m_Width = width;
 		m_Height = height;
+		m_Inverted = inverted;
 		m_IsMask = isMask;
 		m_NormalAlphaRef = normalAlphaRef;
 		m_TransplantAlphaRef = transplantAlphaRef;
-		m_IsTransplantByDefault = isTransplantByDefault;
 	}
 	bool TextureItem::operator ==(const TextureItem &right) const
 	{
@@ -59,11 +59,11 @@ namespace NP {
 		return m_Table.at(keys);
 	}
 	void TextureTable::addTexture(DWORD stride, DWORD numVertices, DWORD primCount, UINT width, UINT height,
-		bool isMask=false, UINT normalAlphaRef=DEFAULT_NORMAL_ALPHAREF, UINT transplantAlphaRef=DEFAULT_TRANSPLANT_ALPHAREF, bool isTransplantByDefault=false,
-		IDirect3DTexture9* pBaseTexture=NULL, IDirect3DTexture9* pNormalTexture=NULL)
+		bool inverted, bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef,
+		IDirect3DTexture9* pBaseTexture, IDirect3DTexture9* pNormalTexture)
 	{
 		TextureKeys keys(stride, numVertices, primCount);
-		TextureItem item(false, pBaseTexture, pNormalTexture, width, height, isMask, normalAlphaRef, transplantAlphaRef, isTransplantByDefault);
+		TextureItem item(false, pBaseTexture, pNormalTexture, width, height, inverted, isMask, normalAlphaRef, transplantAlphaRef);
 		addTexture(keys, item);
 	}
 	void TextureTable::addTexture(TextureKeys &keys, TextureItem &item)
@@ -80,13 +80,13 @@ namespace NP {
 	
 	}
 	void TextureTable::addTextureEntry(DWORD stride, DWORD numVertices, DWORD primCount, UINT width, UINT height,
-		bool isMask=false, UINT normalAlphaRef=DEFAULT_NORMAL_ALPHAREF, UINT transplantAlphaRef=DEFAULT_TRANSPLANT_ALPHAREF, bool isTransplantByDefault=false)
+		bool inverted, bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef)
 	{
 		TextureKeys keys(stride, numVertices, primCount);
-		addTextureEntry(keys, width, height, isMask, normalAlphaRef, transplantAlphaRef, isTransplantByDefault);
+		addTextureEntry(keys, width, height, inverted, isMask, normalAlphaRef, transplantAlphaRef);
 	}
 	void TextureTable::addTextureEntry(TextureKeys &keys, UINT width, UINT height,
-		bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef, bool isTransplantByDefault)
+		bool inverted, bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef)
 	{
 		// TODO: Pass an constructed TextureItem and use addTexture instead
 		try
@@ -96,7 +96,7 @@ namespace NP {
 		}
 		catch (const std::out_of_range)
 		{
-			TextureItem item(false, NULL, NULL, width, height, isMask, normalAlphaRef, transplantAlphaRef, isTransplantByDefault);	// not exists
+			TextureItem item(false, NULL, NULL, width, height, inverted, isMask, normalAlphaRef, transplantAlphaRef);	// not exists
 			m_Table.insert(std::pair<TextureKeys, TextureItem>(keys, item));
 		}
 	}
