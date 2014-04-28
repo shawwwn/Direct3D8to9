@@ -5,6 +5,7 @@
 #include "PostProcess.h"
 
 namespace PP{
+	#define MAX_POST_PROCESS_COUNT 5
 	enum RenderMenthod { RENDER_TO_TEXTURE, RENDER_TO_BACKBUFFER };
 	extern DWORD dwZEnable;
 	extern DWORD dwZWriteEnable;
@@ -27,7 +28,8 @@ namespace PP{
 	extern IDirect3DTexture9* g_pSourceRT_Texture;
 	extern IDirect3DTexture9* g_pTargetRT_Texture;
 
-	extern PostProcess g_PostProcessChain[1];
+	extern PostProcess g_PostProcessChain[MAX_POST_PROCESS_COUNT];
+	extern int post_process_count;
 
 	extern bool g_presented;
 

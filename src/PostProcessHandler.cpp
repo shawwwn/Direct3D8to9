@@ -28,7 +28,8 @@ namespace PP{
 	IDirect3DTexture9* g_pSourceRT_Texture=NULL;
 	IDirect3DTexture9* g_pTargetRT_Texture=NULL;
 
-	PostProcess g_PostProcessChain[1];
+	PostProcess g_PostProcessChain[MAX_POST_PROCESS_COUNT];
+	int post_process_count = 0;
 
 	bool g_presented=false;
 
@@ -92,6 +93,7 @@ namespace PP{
 		// Initialize effects
 		// TODO: Use vector to iterate PostProcessChain
 		g_PostProcessChain[0].Init(pd3dDevice, SHADER_BLOOM_H);
+		post_process_count = 1;
 		return hr;
 	}
 
@@ -132,75 +134,107 @@ namespace PP{
 	}
 
 	/*
+	*
+	* Swap g_pTargetRT_Texture/g_pSourceRT_Texture
+	*
+	*/
+	void Swap()
+	{
+		IDirect3DTexture9* pTempTexture = g_pTargetRT_Texture;
+		g_pTargetRT_Texture = g_pSourceRT_Texture;
+		g_pSourceRT_Texture = pTempTexture;
+		pTempTexture = NULL;
+	}
+
+	/*
 	 * Perform Post Process on a device
 	 */
 	HRESULT PerformPostProcess(IDirect3DDevice9* pd3dDevice, RenderMenthod method)
 	{
 		//
-		// Save original render target so we can restore it later(not required if is rendering to backbuffer)
+		// Preparation
 		//
-		IDirect3DSurface9* pOldRT_Surface = NULL;
-		pd3dDevice->GetRenderTarget(0, &pOldRT_Surface);
 
-		//
-		//	backup render states
-		//
-		backupStates(pd3dDevice);
-		
-		//TODO: Add SwapChain for source/target textures
+		IDirect3DSurface9* pOldRT_Surface = NULL;				// original render target(backbuffer)
+		pd3dDevice->GetRenderTarget(0, &pOldRT_Surface);		// save the original render target
+		IDirect3DSurface9* pRT_Surface = NULL;					// current render target
+		backupStates(pd3dDevice);								// backup render states
 
-		//
-		// Copy back buffer to source texture (g_pScreenRenderSource)
-		//
-		IDirect3DSurface9* t_pSurface = NULL;
-		g_pSourceRT_Texture->GetSurfaceLevel(0, &t_pSurface);
-		pd3dDevice->StretchRect(pOldRT_Surface, NULL, t_pSurface, NULL, D3DTEXF_NONE);
-		t_pSurface->Release();
-
-		//
-		// Set render target
-		//
-		IDirect3DSurface9* pRT_Surface = NULL;
 		if (method == RENDER_TO_TEXTURE)
 		{
-			// Set texture surface as new render target
-			g_pTargetRT_Texture->GetSurfaceLevel(0, &pRT_Surface);
-			pd3dDevice->SetRenderTarget(0, pRT_Surface);
+			// Copy backbuffer to target texture(since we are going to swap the soure and target textures)
+			IDirect3DSurface9* t_pSurface = NULL;
+			g_pTargetRT_Texture->GetSurfaceLevel(0, &t_pSurface);
+			pd3dDevice->StretchRect(pOldRT_Surface, NULL, t_pSurface, NULL, D3DTEXF_NONE);
+			t_pSurface->Release();
 		}
-		else
-		{
-			// We dont need to set render target here because backbuffer is already the default render target.
-			pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pRT_Surface);
-		}
+		
 
 		//
-		// Render the quad
+		// Post Process Loop
 		//
-		if(SUCCEEDED(pd3dDevice->BeginScene()))
+
+		for (int i=0; i<post_process_count; i++)
 		{
-			// TODO: add loop to iterate the effect chain
-			g_PostProcessChain[0].m_pEffect->SetTechnique("PostProcess");
-			pd3dDevice->SetVertexDeclaration(g_pVertDeclPP);	// Set the vertex declaration
-			// Draw the quad
-			UINT cPasses, p;
-			g_PostProcessChain[0].m_pEffect->Begin(&cPasses, 0);
-			g_PostProcessChain[0].m_pEffect->SetTexture(g_PostProcessChain[0].m_hTexScene, g_pSourceRT_Texture); 
-			g_PostProcessChain[0].m_pEffect->SetTexture(g_PostProcessChain[0].m_hTexSource, g_pSourceRT_Texture);
-			g_PostProcessChain[0].m_pEffect->CommitChanges();
-			// clear the previous screen
-			pd3dDevice->Clear(0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L);
-			//
-			// Render
-			//
-			for(p = 0; p < cPasses; ++p)
+			PostProcess &PProcess = g_PostProcessChain[i];
+			// TODO: Add loop for multiple post processes
+			if (method == RENDER_TO_TEXTURE)
 			{
-				g_PostProcessChain[0].m_pEffect->BeginPass(p);
-				pd3dDevice->SetStreamSource(0, g_pVB, 0, sizeof(PPVERT));
-				pd3dDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
-				g_PostProcessChain[0].m_pEffect->EndPass();
+				// Swap the target texture with the source texture
+				Swap();
 			}
-			g_PostProcessChain[0].m_pEffect->End();
-			pd3dDevice->EndScene(); // End the scene
+			else
+			{
+				// Copy back buffer to source texture (g_pScreenRenderSource)
+				IDirect3DSurface9* t_pSurface = NULL;
+				g_pSourceRT_Texture->GetSurfaceLevel(0, &t_pSurface);
+				pd3dDevice->StretchRect(pOldRT_Surface, NULL, t_pSurface, NULL, D3DTEXF_NONE);
+				t_pSurface->Release();
+			}
+		
+
+			//
+			// Set render target
+			//
+			if (method == RENDER_TO_TEXTURE)
+			{
+				// Set texture surface as new render target
+				g_pTargetRT_Texture->GetSurfaceLevel(0, &pRT_Surface);
+				pd3dDevice->SetRenderTarget(0, pRT_Surface);
+			}
+			else
+			{
+				// We dont need to set render target here because backbuffer is already the default render target.
+				pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pRT_Surface);
+			}
+
+			//
+			// Render the quad
+			//
+			if(SUCCEEDED(pd3dDevice->BeginScene()))
+			{
+				// TODO: add loop to iterate the effect chain
+				PProcess.m_pEffect->SetTechnique("PostProcess");
+				pd3dDevice->SetVertexDeclaration(g_pVertDeclPP);	// Set the vertex declaration
+				// Draw the quad
+				UINT cPasses, p;
+				PProcess.m_pEffect->Begin(&cPasses, 0);
+				PProcess.m_pEffect->SetTexture(PProcess.m_hTexScene, g_pSourceRT_Texture); 
+				PProcess.m_pEffect->SetTexture(PProcess.m_hTexSource, g_pSourceRT_Texture);
+				PProcess.m_pEffect->CommitChanges();
+				// clear the previous screen
+				pd3dDevice->Clear(0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L);
+				// Render
+				for(p = 0; p < cPasses; ++p)
+				{
+					PProcess.m_pEffect->BeginPass(p);
+					pd3dDevice->SetStreamSource(0, g_pVB, 0, sizeof(PPVERT));
+					pd3dDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+					PProcess.m_pEffect->EndPass();
+				}
+				PProcess.m_pEffect->End();
+				pd3dDevice->EndScene(); // End the scene
+			}
 		}
 
 		//
