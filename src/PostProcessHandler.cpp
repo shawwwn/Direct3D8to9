@@ -93,13 +93,13 @@ namespace PP{
 	/*
 	 * Perform Post Process on a device
 	 */
-	HRESULT PerformPostProcess(IDirect3DDevice9* pd3dDevice)
+	HRESULT PerformPostProcess(IDirect3DDevice9* pd3dDevice, RenderMenthod method)
 	{
 		HRESULT hr;
 		//
-		// Save original render target so we can restore it later
+		// Save original render target so we can restore it later(not required if is rendering to backbuffer)
 		//
-		IDirect3DSurface9* pOldRT_Surface;
+		IDirect3DSurface9* pOldRT_Surface = NULL;
 		pd3dDevice->GetRenderTarget(0, &pOldRT_Surface);
 
 		//
@@ -141,19 +141,31 @@ namespace PP{
 			pVB->Unlock();
 		}
 
+		//TODO: Add SwapChain for source/target textures
+
 		//
 		// Copy back buffer to source texture (g_pScreenRenderSource)
 		//
-		LPDIRECT3DSURFACE9 t_pSurface;
+		IDirect3DSurface9* t_pSurface = NULL;
 		g_pSourceRT_Texture->GetSurfaceLevel(0, &t_pSurface);
 		pd3dDevice->StretchRect(pOldRT_Surface, NULL, t_pSurface, NULL, D3DTEXF_NONE);
 		t_pSurface->Release();
 
 		//
-		// Set new render target (texture/backbuffer)
+		// Set render target
 		//
-		LPDIRECT3DSURFACE9 pNewRT_Surface = RenderToTexture(pd3dDevice, g_pTargetRT_Texture);
-		//LPDIRECT3DSURFACE9 pNewRT_Surface = RenderToBackBuffer(pd3dDevice);
+		IDirect3DSurface9* pRT_Surface = NULL;
+		if (method == RENDER_TO_TEXTURE)
+		{
+			// Set texture surface as new render target
+			g_pTargetRT_Texture->GetSurfaceLevel(0, &pRT_Surface);
+			pd3dDevice->SetRenderTarget(0, pRT_Surface);
+		}
+		else
+		{
+			// We dont need to set render target here because backbuffer is already the default render target.
+			pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pRT_Surface);
+		}
 
 		//
 		// Render the quad
@@ -191,46 +203,19 @@ namespace PP{
 		//
 		restoreStates(pd3dDevice);
 
-		//
-		// Restore original render target (back buffer)
-		//
-		pd3dDevice->SetRenderTarget(0, pOldRT_Surface);
+		if (method == RENDER_TO_TEXTURE)
+		{
+			// Restore original render target (back buffer)
+			pd3dDevice->SetRenderTarget(0, pOldRT_Surface);
 		
-		//
-		// Draw pNewRT_Surface onto the screen
-		//
-		pd3dDevice->StretchRect(pNewRT_Surface, 0, pOldRT_Surface, 0, D3DTEXF_NONE);
-		pNewRT_Surface->Release();
-		pOldRT_Surface->Release();
-	
+			// Draw pRT_Surface onto the screen
+			pd3dDevice->StretchRect(pRT_Surface, 0, pOldRT_Surface, 0, D3DTEXF_NONE);
+			pRT_Surface->Release();
+			pOldRT_Surface->Release();
+		}
 		return D3D_OK;
 	}
 
-	/*
-	 * Set Render target to texture
-	 * Note: will create a new reference to the surface
-	 * @return - pointer to target texture surface
-	 */
-	IDirect3DSurface9* RenderToTexture(IDirect3DDevice9* pd3dDevice, IDirect3DTexture9* pTexture)
-	{
-		IDirect3DSurface9* pSurface = NULL;
-		pTexture->GetSurfaceLevel(0, &pSurface);
-		pd3dDevice->SetRenderTarget(0, pSurface);
-		return pSurface;
-	}
-
-	/*
-	 * Set Render target to backbuffer (Unsafe)
-	 * Note: will create a new reference to the surface
-	 * @return - pointer to the backbuffer surface
-	 */
-	IDirect3DSurface9* RenderToBackBuffer(IDirect3DDevice9* pd3dDevice)
-	{
-		IDirect3DSurface9* pSurface = NULL;
-		pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pSurface);
-		pd3dDevice->SetRenderTarget(0, pSurface);
-		return pSurface;
-	}
 
 	/*
 	 * Backup render states

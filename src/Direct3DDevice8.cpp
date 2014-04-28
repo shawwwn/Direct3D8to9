@@ -748,9 +748,10 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 	DWORD alphaRef;
 	pDevice9->GetRenderState(D3DRS_ALPHAREF, &alphaRef);
 	
-	if (DB::g_dbDebugOn)
-	//if (GetAsyncKeyState(VK_MENU) && false)
+	//if (DB::g_dbDebugOn)
+	if (GetAsyncKeyState(VK_CONTROL))
 	{
+		return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 		/*
 		DB::saveRenderStatesUsingDrawPrimitiveCount(pDevice9);
 		DB::savePrimitiveStatesUsingDrawPrimitiveCount(Type, minIndex, NumVertices, startIndex, primCount, 
@@ -769,7 +770,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 			PP::g_presented = true;
 			pDevice9->EndScene(); // end the scene first
 
-			PP::PerformPostProcess(pDevice9);
+			PP::PerformPostProcess(pDevice9, PP::RENDER_TO_TEXTURE);
 
 			// restore the original process
 			pDevice9->BeginScene();													// begin the scene

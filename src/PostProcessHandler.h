@@ -5,6 +5,7 @@
 #include "PostProcess.h"
 
 namespace PP{
+	enum RenderMenthod { RENDER_TO_TEXTURE, RENDER_TO_BACKBUFFER };
 	extern DWORD dwZEnable;
 	extern DWORD dwZWriteEnable;
 	extern DWORD dwLocalViewer;
@@ -43,7 +44,7 @@ namespace PP{
 	//
 
 	HRESULT InitGobals(IDirect3DDevice9* pd3dDevice);
-	HRESULT PerformPostProcess(IDirect3DDevice9* pd3dDevice);
+	HRESULT PerformPostProcess(IDirect3DDevice9* pd3dDevice, RenderMenthod method);
 	IDirect3DSurface9* RenderToTexture(IDirect3DDevice9* pd3dDevice, IDirect3DTexture9* pTexture);
 	IDirect3DSurface9* RenderToBackBuffer(IDirect3DDevice9* pd3dDevice);
 
