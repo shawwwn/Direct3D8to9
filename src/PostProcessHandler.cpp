@@ -22,6 +22,8 @@ namespace PP{
 	UINT g_deviceWidth=0;
 	UINT g_deviceHeight=0;
 
+	IDirect3DVertexBuffer9* g_pVB=NULL;
+
 	IDirect3DVertexDeclaration9* g_pVertDeclPP=NULL;
 	IDirect3DTexture9* g_pSourceRT_Texture=NULL;
 	IDirect3DTexture9* g_pTargetRT_Texture=NULL;
@@ -84,6 +86,9 @@ namespace PP{
 		if (FAILED(hr))
 			return hr;
 
+		// Create Vertex Buffer
+		SetupVertexBuffer(pd3dDevice);
+
 		// Initialize effects
 		// TODO: Use vector to iterate PostProcessChain
 		g_PostProcessChain[0].Init(pd3dDevice, SHADER_BLOOM_H);
@@ -91,11 +96,46 @@ namespace PP{
 	}
 
 	/*
+	 * Set up vertex buffer, this must be called each time the device changes its resolution
+	 */
+	HRESULT SetupVertexBuffer(IDirect3DDevice9* pd3dDevice)
+	{
+		// Set up our quad
+		PPVERT Quad[4] =
+		{
+			{ -0.5f,				-0.5f,						1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+			{ g_deviceWidth-0.5f,	-0.5f,						1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f },
+			{ -0.5f,				g_deviceHeight-0.5f,		1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f },
+			{ g_deviceWidth-0.5f,	g_deviceHeight-0.5f,		1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f }
+		};
+
+		// Create a vertex buffer out of the quad
+		HRESULT hr = pd3dDevice->CreateVertexBuffer(sizeof(PPVERT)*4,
+													D3DUSAGE_WRITEONLY | D3DUSAGE_DYNAMIC,
+													0,
+													D3DPOOL_DEFAULT,
+													&g_pVB,
+													NULL );
+		if(FAILED(hr))
+			return hr;
+
+		// Fill the vertex buffer
+		LPVOID pVBData;
+		if(SUCCEEDED(g_pVB->Lock(0, 0, &pVBData, D3DLOCK_DISCARD)))
+		{
+			CopyMemory(pVBData, Quad, sizeof(Quad));
+			g_pVB->Unlock();
+		}
+		else
+			return D3DERR_INVALIDCALL;
+		return D3D_OK;
+	}
+
+	/*
 	 * Perform Post Process on a device
 	 */
 	HRESULT PerformPostProcess(IDirect3DDevice9* pd3dDevice, RenderMenthod method)
 	{
-		HRESULT hr;
 		//
 		// Save original render target so we can restore it later(not required if is rendering to backbuffer)
 		//
@@ -107,40 +147,6 @@ namespace PP{
 		//
 		backupStates(pd3dDevice);
 		
-		//
-		// Set up our quad
-		//
-		PPVERT Quad[4] =
-		{
-			{ -0.5f,				-0.5f,						1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
-			{ g_deviceWidth-0.5f,	-0.5f,						1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f },
-			{ -0.5f,				g_deviceHeight-0.5f,		1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f },
-			{ g_deviceWidth-0.5f,	g_deviceHeight-0.5f,		1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f }
-		};
-
-		//
-		// Create a vertex buffer out of the quad
-		//
-		IDirect3DVertexBuffer9* pVB;
-		hr = pd3dDevice->CreateVertexBuffer(sizeof(PPVERT)*4,
-											D3DUSAGE_WRITEONLY | D3DUSAGE_DYNAMIC,
-											0,
-											D3DPOOL_DEFAULT,
-											&pVB,
-											NULL );
-		if(FAILED(hr))
-			return hr;
-
-		//
-		// Fill the vertex buffer
-		//
-		LPVOID pVBData;
-		if(SUCCEEDED(pVB->Lock(0, 0, &pVBData, D3DLOCK_DISCARD)))
-		{
-			CopyMemory(pVBData, Quad, sizeof(Quad));
-			pVB->Unlock();
-		}
-
 		//TODO: Add SwapChain for source/target textures
 
 		//
@@ -189,14 +195,13 @@ namespace PP{
 			for(p = 0; p < cPasses; ++p)
 			{
 				g_PostProcessChain[0].m_pEffect->BeginPass(p);
-				pd3dDevice->SetStreamSource(0, pVB, 0, sizeof(PPVERT));
+				pd3dDevice->SetStreamSource(0, g_pVB, 0, sizeof(PPVERT));
 				pd3dDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 				g_PostProcessChain[0].m_pEffect->EndPass();
 			}
 			g_PostProcessChain[0].m_pEffect->End();
 			pd3dDevice->EndScene(); // End the scene
 		}
-		pVB->Release(); // Release the vertex buffer
 
 		//
 		// Restore render states
@@ -215,7 +220,6 @@ namespace PP{
 		}
 		return D3D_OK;
 	}
-
 
 	/*
 	 * Backup render states

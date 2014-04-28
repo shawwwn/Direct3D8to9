@@ -167,6 +167,7 @@ STDMETHODIMP CDirect3DDevice8::Reset(THIS_ D3D8PRESENT_PARAMETERS* pPresentation
 	PP::g_pSourceRT_Texture->Release();
 	PP::g_pTargetRT_Texture->Release();
 	PP::g_pVertDeclPP->Release();
+	PP::g_pVB->Release();
 
 	IDirect3D9* pDirect3D9 = NULL;
 	HRESULT hr = pDevice9->GetDirect3D(&pDirect3D9);

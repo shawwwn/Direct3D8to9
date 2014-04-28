@@ -21,6 +21,8 @@ namespace PP{
 	extern UINT g_deviceWidth;
 	extern UINT g_deviceHeight;
 
+	extern IDirect3DVertexBuffer9* g_pVB;
+
 	extern IDirect3DVertexDeclaration9* g_pVertDeclPP;
 	extern IDirect3DTexture9* g_pSourceRT_Texture;
 	extern IDirect3DTexture9* g_pTargetRT_Texture;
@@ -44,6 +46,7 @@ namespace PP{
 	//
 
 	HRESULT InitGobals(IDirect3DDevice9* pd3dDevice);
+	HRESULT SetupVertexBuffer(IDirect3DDevice9* pd3dDevice);
 	HRESULT PerformPostProcess(IDirect3DDevice9* pd3dDevice, RenderMenthod method);
 	IDirect3DSurface9* RenderToTexture(IDirect3DDevice9* pd3dDevice, IDirect3DTexture9* pTexture);
 	IDirect3DSurface9* RenderToBackBuffer(IDirect3DDevice9* pd3dDevice);
