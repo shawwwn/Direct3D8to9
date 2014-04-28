@@ -177,11 +177,17 @@ namespace PP{
 		for (int i=0; i<post_process_count; i++)
 		{
 			PostProcess &PProcess = g_PostProcessChain[i];
-			// TODO: Add loop for multiple post processes
+
+			//
+			//	Initialize soure/target
+			//
 			if (method == RENDER_TO_TEXTURE)
 			{
 				// Swap the target texture with the source texture
 				Swap();
+				// Set texture surface as new render target
+				g_pTargetRT_Texture->GetSurfaceLevel(0, &pRT_Surface);
+				pd3dDevice->SetRenderTarget(0, pRT_Surface);
 			}
 			else
 			{
@@ -190,23 +196,10 @@ namespace PP{
 				g_pSourceRT_Texture->GetSurfaceLevel(0, &t_pSurface);
 				pd3dDevice->StretchRect(pOldRT_Surface, NULL, t_pSurface, NULL, D3DTEXF_NONE);
 				t_pSurface->Release();
-			}
-		
-
-			//
-			// Set render target
-			//
-			if (method == RENDER_TO_TEXTURE)
-			{
-				// Set texture surface as new render target
-				g_pTargetRT_Texture->GetSurfaceLevel(0, &pRT_Surface);
-				pd3dDevice->SetRenderTarget(0, pRT_Surface);
-			}
-			else
-			{
 				// We dont need to set render target here because backbuffer is already the default render target.
 				pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pRT_Surface);
 			}
+
 
 			//
 			// Render the quad
@@ -237,21 +230,24 @@ namespace PP{
 			}
 		}
 
+
 		//
 		// Restore render states
 		//
 		restoreStates(pd3dDevice);
 
+
+		//
+		// Output render result to the screen(not needed in RENDER_TO_BACKBUFFER)
+		//
 		if (method == RENDER_TO_TEXTURE)
 		{
-			// Restore original render target (back buffer)
+			
 			pd3dDevice->SetRenderTarget(0, pOldRT_Surface);
-		
-			// Draw pRT_Surface onto the screen
 			pd3dDevice->StretchRect(pRT_Surface, 0, pOldRT_Surface, 0, D3DTEXF_NONE);
-			pRT_Surface->Release();
-			pOldRT_Surface->Release();
 		}
+		pRT_Surface->Release();
+		pOldRT_Surface->Release();
 		return D3D_OK;
 	}
 

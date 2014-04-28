@@ -771,7 +771,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 			PP::g_presented = true;
 			pDevice9->EndScene(); // end the scene first
 
-			PP::PerformPostProcess(pDevice9, PP::RENDER_TO_TEXTURE);
+			PP::PerformPostProcess(pDevice9, PP::RENDER_TO_BACKBUFFER);
 
 			// restore the original process
 			pDevice9->BeginScene();													// begin the scene
