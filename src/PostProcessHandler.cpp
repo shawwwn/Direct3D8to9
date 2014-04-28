@@ -4,9 +4,7 @@
 #include <stdlib.h>
 
 namespace PP{
-	//
-	// Gobal Variables Definition
-	//
+	#pragma region Variables Definition
 	DWORD dwZEnable=0;
 	DWORD dwZWriteEnable=0;
 	DWORD dwLocalViewer=0;
@@ -41,14 +39,13 @@ namespace PP{
 		{ 0, 24, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD,  1 },
 		D3DDECL_END()
 	};
+	#pragma endregion
 
-	//
-	// Function Defintions
-	//
+	#pragma region Function Defintions
 
-	/*
-	 * Global initialization
-	 */
+	/**
+	*	Global initialization
+	*/
 	HRESULT InitGobals(IDirect3DDevice9* pd3dDevice)
 	{
 		// Create vertex declaration for post-process
@@ -97,9 +94,9 @@ namespace PP{
 		return hr;
 	}
 
-	/*
-	 * Set up vertex buffer, this must be called each time the device changes its resolution
-	 */
+	/**
+	*	Set up vertex buffer, this must be called each time the device changes its resolution
+	*/
 	HRESULT SetupVertexBuffer(IDirect3DDevice9* pd3dDevice)
 	{
 		// Set up our quad
@@ -133,10 +130,8 @@ namespace PP{
 		return D3D_OK;
 	}
 
-	/*
-	*
-	* Swap g_pTargetRT_Texture/g_pSourceRT_Texture
-	*
+	/**
+	*	Swap g_pTargetRT_Texture/g_pSourceRT_Texture
 	*/
 	void Swap()
 	{
@@ -146,15 +141,14 @@ namespace PP{
 		pTempTexture = NULL;
 	}
 
-	/*
-	 * Perform Post Process on a device
-	 */
+	/**
+	*	Perform Post Process on a device
+	*/
 	HRESULT PerformPostProcess(IDirect3DDevice9* pd3dDevice, RenderMenthod method)
 	{
 		//
 		// Preparation
 		//
-
 		IDirect3DSurface9* pOldRT_Surface = NULL;				// original render target(backbuffer)
 		pd3dDevice->GetRenderTarget(0, &pOldRT_Surface);		// save the original render target
 		IDirect3DSurface9* pRT_Surface = NULL;					// current render target
@@ -173,7 +167,6 @@ namespace PP{
 		//
 		// Post Process Loop
 		//
-
 		for (int i=0; i<post_process_count; i++)
 		{
 			PostProcess &PProcess = g_PostProcessChain[i];
@@ -206,7 +199,6 @@ namespace PP{
 			//
 			if(SUCCEEDED(pd3dDevice->BeginScene()))
 			{
-				// TODO: add loop to iterate the effect chain
 				PProcess.m_pEffect->SetTechnique("PostProcess");
 				pd3dDevice->SetVertexDeclaration(g_pVertDeclPP);	// Set the vertex declaration
 				// Draw the quad
@@ -251,9 +243,9 @@ namespace PP{
 		return D3D_OK;
 	}
 
-	/*
-	 * Backup render states
-	 */
+	/**
+	*	Backup render states
+	*/
 	void backupStates(IDirect3DDevice9* pd3dDevice)
 	{
 		pd3dDevice->GetRenderState(D3DRS_ZENABLE, &dwZEnable);
@@ -291,10 +283,9 @@ namespace PP{
 		pd3dDevice->SetRenderState(D3DRS_LIGHTING, 0);
 	}
 
-
-	/*
-	 * Restore render states
-	 */
+	/**
+	*	Restore render states
+	*/
 	void restoreStates(IDirect3DDevice9* pd3dDevice)
 	{
 		pd3dDevice->SetRenderState(D3DRS_ZENABLE, dwZEnable);
@@ -309,5 +300,5 @@ namespace PP{
 		pd3dDevice->SetRenderState(D3DRS_FOGENABLE, dwFogEnable);
 		pd3dDevice->SetRenderState(D3DRS_LIGHTING, dwLighting);
 	}
-
+	#pragma endregion
 }
