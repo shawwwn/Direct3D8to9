@@ -9,7 +9,7 @@ namespace PP {
 		m_hTexScene=NULL;
 	}
 	PostProcess::~PostProcess() {}
-	HRESULT PostProcess::Init(LPDIRECT3DDEVICE9 pDevice, UINT resourceRef)
+	HRESULT PostProcess::Init(IDirect3DDevice9* pDevice, UINT resourceRef)
 	{
 		HRESULT hr;
 		//hr = D3DXCreateEffectFromFile(pDevice, pSrcFile, NULL, NULL,
