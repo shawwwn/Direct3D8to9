@@ -21,123 +21,10 @@ namespace NP {
 	DWORD g_TextureFactor;
 
 
-	void initialize(IDirect3DDevice9* pd3dDevice)
+	HRESULT Init(IDirect3DDevice9* pd3dDevice)
 	{
-		g_texTable.cleanup();
-		/*
-		 * Format: 
-		 * Stride, NumVertices, PrimCount, Width, Height, Inverted, IsMask(optional), NormalAlphaRef(optional), TransplantAlphaRef(optional)
-		 */
-		g_texTable.addTextureEntry(32,  1053, 511,  256, 256, false);								// Human Construction Set
-		//g_texTable.addTextureEntry(32,  20,   10,   256, 256, false, true, 192, 4);					// Human Farm - top
-		g_texTable.addTextureEntry(32,  320,  153,  256, 256, false);								// Human Farm - body
-		g_texTable.addTextureEntry(32,  8,    6,    256, 256, false);								// Human Townhall - base
-		g_texTable.addTextureEntry(32,  18,   10,   512, 512, false, true, 192, 4);					// Human Townhall - top
-		g_texTable.addTextureEntry(32,  454,  209,  512, 512, false);								// Human Townhall - body
-		g_texTable.addTextureEntry(32,  37,   19,   512, 512, false, true, 192, 4);					// Human Keep - top
-		g_texTable.addTextureEntry(32,  405,  200,  512, 512, false);								// Human Keep - body
-		g_texTable.addTextureEntry(32,  177,  83,   512, 512, false, true, 192, 4);					// Human Castle - top
-		g_texTable.addTextureEntry(32,  418,  352,  512, 512, false);								// Human Castle - body
-		g_texTable.addTextureEntry(32,  90,   30,   256, 256, false);								// Human Castle - base
-		//g_texTable.addTextureEntry(32,  52,   42,   256, 256, false, true, 192, 4);					// Human Altar - top (weird color)
-		g_texTable.addTextureEntry(32,  359,  302,  256, 256, false);								// Human Altar - body
-		g_texTable.addTextureEntry(32,  99,   46,   256, 256, false, true, 192, 4);					// Human Barracks - top
-		g_texTable.addTextureEntry(32,  387,  209,  256, 256, false);								// Human Barracks - body
-		g_texTable.addTextureEntry(32,  14,   8,    256, 256, false, true, 192, 4);					// Human Lumber Mill - top
-		g_texTable.addTextureEntry(32,  386,  224,  256, 256, false);								// Human Lumber Mill - body
-		g_texTable.addTextureEntry(32,  20,   28,   256, 256, false);								// Human Lumber Mill - base
-		g_texTable.addTextureEntry(32,  22,   14,   256, 256, false, true, 192, 4);					// Human BlackSmith - top
-		g_texTable.addTextureEntry(32,  605,  343,  256, 256, false);								// Human BlackSmith - body
-		g_texTable.addTextureEntry(32,  39,   24,   256, 256, false, true, 192, 4);					// Human Arcane Vault - top
-		g_texTable.addTextureEntry(32,  85,   40,   256, 256, false);								// Human Arcane Vault - gem
-		g_texTable.addTextureEntry(32,  96,   48,   256, 256, false);								// Human Arcane Vault - pole
-		g_texTable.addTextureEntry(32,  500,  266,  256, 256, false);								// Human Arcane Vault - chain
-		//g_texTable.addTextureEntry(32,  39,   24,   256, 256, false, true, 192, 4);					// Human Arcane Sanctum - top
-		g_texTable.addTextureEntry(32,  923,  578,  256, 256, false);								// Human Arcane Sanctum - body
-		//g_texTable.addTextureEntry(32,  25,   17,   256, 256, false, true, 192, 4);					// Human Gryphon Aviary - top
-		g_texTable.addTextureEntry(32,  414,  309,  256, 256, true);								// Human Gryphon Aviary - body
-		//g_texTable.addTextureEntry(32,  20,   26,   256, 256, false, true, 192, 4);					// Human Workshop - top
-		g_texTable.addTextureEntry(32,  310,  266,  256, 256, false);								// Human Workshop - body
-		//g_texTable.addTextureEntry(32,  27,   15,   256, 128, true, true, 192, 4);					// Human Scout Tower - top
-		g_texTable.addTextureEntry(32,  251,  149,  256, 128, true);								// Human Scout Tower - body
-		//g_texTable.addTextureEntry(32,  216,  123,  256, 128, true, true, 192, 4);					// Human Arcane Tower - top (conflict)
-		//g_texTable.addTextureEntry(32,  88,   56,   256, 128, true);								// Human Arcane Tower - body (conflict)
-		g_texTable.addTextureEntry(32,  97,   48,   256, 128, true);								// Human Arcane Tower - tower
-		//g_texTable.addTextureEntry(32,  51,   27,   256, 128, true, true, 192, 4);					// Human Guard Tower - top
-		g_texTable.addTextureEntry(32,  216,  123,  256, 128, true);								// Human Guard Tower - body
-		//g_texTable.addTextureEntry(32,  32,   20,   256, 128, true, true, 192, 4);					// Human Cannon Tower - top
-		g_texTable.addTextureEntry(32,  300,  189,  256, 128, true);								// Human Cannon Tower - body
-
-		g_texTable.addTextureEntry(32,  300,  252,  256, 256, false);								// Orc Construction Set - large
-		g_texTable.addTextureEntry(32,  264,  228,  256, 256, false);								// Orc Construction Set - medium
-		g_texTable.addTextureEntry(32,  198,  164,  256, 256, false);								// Orc Construction Set - small
-		//g_texTable.addTextureEntry(32,  64,   64,   256, 256, false, true, 192, 4);					// Orc Construction Set - top (conflict)
-		g_texTable.addTextureEntry(32,  160,  104,  256, 256, true);								// Orc Structure - base
-		g_texTable.addTextureEntry(32,  124,  80,   256, 256, false);								// Orc Structure Spike
-		g_texTable.addTextureEntry(32,  192,  144,  128, 128, false);								// Orc Structure Barricade
-
-		g_texTable.addTextureEntry(32,  191,  214,  256, 256, false, true, 192, 4);					// Orc Great Hall - top	
-		g_texTable.addTextureEntry(32,  290,  164,  256, 256, false);								// Orc Great Hall - body
-		g_texTable.addTextureEntry(32,  183,  188,  256, 256, false, true, 192, 4);					// Orc Stronghold - top
-		g_texTable.addTextureEntry(32,  384,  249,  256, 256, false);								// Orc Stronghold - body
-		g_texTable.addTextureEntry(32,  226,  149,  256, 256, false, true, 192, 4);					// Orc Fortress - top
-		g_texTable.addTextureEntry(32,  516,  498,  256, 256, false);								// Orc Fortress - body
-		g_texTable.addTextureEntry(32,  95,   59,   256, 256, false, true, 192, 4);					// Orc Altar - top
-		g_texTable.addTextureEntry(32,  291,  264,  256, 256, false);								// Orc Altar - body
-		g_texTable.addTextureEntry(32,  265,  206,  128, 128, false);								// Orc Burrow - body
-		//g_texTable.addTextureEntry(32,  36,   28,   128, 128, false, true, 192, 4);					// Orc Burrow - top
-		g_texTable.addTextureEntry(32,  309,  317,  256, 256, false);								// Orc War Mill - body
-		g_texTable.addTextureEntry(32,  125,  81,   256, 256, false);								// Orc War Mill - saw
-		g_texTable.addTextureEntry(32,  42,   48,   256, 256, false, true, 192, 4);					// Orc War Mill - top
-		g_texTable.addTextureEntry(32,  466,  295,  256, 256, false);								// Orc Watch Tower - body
-		g_texTable.addTextureEntry(32,  17,   12,   256, 256, false, true, 192, 4);					// Orc Watch Tower - top
-		g_texTable.addTextureEntry(32,  255,  195,  256, 256, false);								// Orc Barracks - body
-		g_texTable.addTextureEntry(32,  73,   56,   256, 256, false, true, 192, 4);					// Orc Barracks - top
-		//g_texTable.addTextureEntry(32,  19,   20,   256, 256, false);								// Orc Voodoo Lounge - funnel
-		g_texTable.addTextureEntry(32,  66,   54,   256, 256, false);								// Orc Voodoo Lounge - tusk
-		g_texTable.addTextureEntry(32,  145,  78,   256, 256, false);								// Orc Voodoo Lounge - body
-		g_texTable.addTextureEntry(32,  211,  207,  256, 256, false, true, 192, 4);					// Orc Voodoo Lounge - top
-		g_texTable.addTextureEntry(32,  327,  260,  256, 256, true);								// Orc Beastiary - body
-		g_texTable.addTextureEntry(32,  69,   92,   256, 256, false, true, 192, 4);					// Orc Beastiary - top
-		g_texTable.addTextureEntry(32,  414,  295,  256, 256, true);								// Orc Spirit Lounge - body
-		g_texTable.addTextureEntry(32,  52,   26,   256, 256, true,  true, 192, 4);					// Orc Spirit Lounge - top
-		g_texTable.addTextureEntry(32,  323,  221,  256, 256, false);								// Orc Tauren Totem - body
-		g_texTable.addTextureEntry(32,  57,   67,   256, 256, false, true, 192, 4);					// Orc Tauren Totem - top
-
-		g_texTable.addTextureEntry(32,  271,  239,  256, 256, false);								// Gold Mine - mine
-		g_texTable.addTextureEntry(32,  84,   51,   64,  64,  false);								// Gold Mine - gold
-		g_texTable.addTextureEntry(32,  123,  60,   256, 256, false);								// Gold Mine - base
-		g_texTable.addTextureEntry(32,  132,  68,   256, 64,  false, true, 192, 4);					// Goblin Merchant - top
-		g_texTable.addTextureEntry(32,  474,  274,  256, 256, false);								// Goblin Merchant - body
-		g_texTable.addTextureEntry(32,  547,  442,  256, 256, false);								// Tarven
-		g_texTable.addTextureEntry(32,  331,  346,  512, 256, false);								// Fountain of Health
-		g_texTable.addTextureEntry(32,  491,  348,  256, 256, false);								// Goblin Laboratory
-		g_texTable.addTextureEntry(32,  571,  394,  256, 256, false);								// Mercenary Camp
-		g_texTable.addTextureEntry(32,  407,  347,  256, 256, false);								// Marketplace - body
-		g_texTable.addTextureEntry(32,  94,   46,   256, 256, false, true, 192, 4);					// Marketplace - top
-
-		//g_texTable.addTextureEntry(32,  36,   28,  256, 256, false);								// Tree
-		//g_texTable.addTextureEntry(32,  247,  336, 256, 256, false);								// Test Subject
-
-		//g_texTable.addTextureEntry(32,  1065, 1143,256, 256, false);								// Main Screen
-		// TODO: add more...
-	}
-
-	void onCreateDevice(IDirect3DDevice9* pd3dDevice)
-	{
-		initialize(pd3dDevice);
-	}
-
-	void onLostDevice()
-	{
-	}
-
-	void onResetDevice(IDirect3DDevice9* pd3dDevice)
-	{
-	}
-
-	void onDestroy(IDirect3DDevice9* pd3dDevice)
-	{
+		Input(g_texTable);
+		return D3D_OK;
 	}
 
 	HRESULT PerformNormalMappping(IDirect3DDevice9* pd3dDevice, IDirect3DBaseTexture9* pBaseTexture,
@@ -359,4 +246,23 @@ namespace NP {
 		pd3dDevice->SetRenderState(D3DRS_DESTBLEND, g_DestBlend);
 		pd3dDevice->SetRenderState(D3DRS_TEXTUREFACTOR, g_TextureFactor);
 	}
+
+	#pragma region Standard Procedure Functions
+	void onCreateDevice(IDirect3DDevice9* pd3dDevice)
+	{
+		Init(pd3dDevice);
+	}
+
+	void onLostDevice()
+	{
+	}
+
+	void onResetDevice(IDirect3DDevice9* pd3dDevice)
+	{
+	}
+
+	void onDestroy(IDirect3DDevice9* pd3dDevice)
+	{
+	}
+	#pragma endregion
 }

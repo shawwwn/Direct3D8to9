@@ -101,6 +101,9 @@
     <ClCompile Include="..\src\TextureException.cpp">
       <Filter>effect\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\NormalMapData.cpp">
+      <Filter>effect\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Direct3D8.h">
@@ -182,6 +185,12 @@
       <Filter>effect\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\src\TextureException.h">
+      <Filter>effect\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\NormalMapData.h">
+      <Filter>effect\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ShaderResource.h">
       <Filter>effect\inc</Filter>
     </ClInclude>
   </ItemGroup>

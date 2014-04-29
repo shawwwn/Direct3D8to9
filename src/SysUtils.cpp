@@ -1,12 +1,5 @@
 #include "SysUtils.h"
 
-#if _MSC_VER >= 1300    // for VC 7.0
-  // from ATL 7.0 sources
-  #ifndef _delayimp_h
-  extern "C" IMAGE_DOS_HEADER __ImageBase;
-  #endif
-#endif
-
 //
 // Functions
 //
