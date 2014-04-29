@@ -26,8 +26,8 @@ namespace PP{
 	IDirect3DTexture9* g_pSourceRT_Texture=NULL;
 	IDirect3DTexture9* g_pTargetRT_Texture=NULL;
 
-	PostProcess g_PostProcessChain[MAX_POST_PROCESS_COUNT];
-	int post_process_count = 0;
+	PostProcess* g_pPostProcessChain[MAX_POST_PROCESS_COUNT];
+	int g_post_process_count = 0;
 
 	bool g_presented=false;
 
@@ -173,9 +173,9 @@ namespace PP{
 		//
 		// Post Process Loop
 		//
-		for (int i=0; i<post_process_count; i++)
+		for (int i=0; i<g_post_process_count; i++)
 		{
-			PostProcess &PProcess = g_PostProcessChain[i];
+			PostProcess* pPProcess = g_pPostProcessChain[i];
 
 			//
 			//	Initialize soure/target
@@ -205,25 +205,25 @@ namespace PP{
 			//
 			if(SUCCEEDED(pd3dDevice->BeginScene()))
 			{
-				PProcess.m_pEffect->SetTechnique("PostProcess");
+				pPProcess->m_pEffect->SetTechnique("PostProcess");
 				pd3dDevice->SetVertexDeclaration(g_pVertDeclPP);	// Set the vertex declaration
 				// Draw the quad
 				UINT cPasses, p;
-				PProcess.m_pEffect->Begin(&cPasses, 0);
-				PProcess.m_pEffect->SetTexture(PProcess.m_hTexScene, g_pSourceRT_Texture); 
-				PProcess.m_pEffect->SetTexture(PProcess.m_hTexSource, g_pSourceRT_Texture);
-				PProcess.m_pEffect->CommitChanges();
+				pPProcess->m_pEffect->Begin(&cPasses, 0);
+				pPProcess->m_pEffect->SetTexture(pPProcess->m_hTexScene, g_pSourceRT_Texture); 
+				pPProcess->m_pEffect->SetTexture(pPProcess->m_hTexSource, g_pSourceRT_Texture);
+				pPProcess->m_pEffect->CommitChanges();
 				// clear the previous screen
 				pd3dDevice->Clear(0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L);
 				// Render
 				for(p = 0; p < cPasses; ++p)
 				{
-					PProcess.m_pEffect->BeginPass(p);
+					pPProcess->m_pEffect->BeginPass(p);
 					pd3dDevice->SetStreamSource(0, g_pVB, 0, sizeof(PPVERT));
 					pd3dDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
-					PProcess.m_pEffect->EndPass();
+					pPProcess->m_pEffect->EndPass();
 				}
-				PProcess.m_pEffect->End();
+				pPProcess->m_pEffect->End();
 				pd3dDevice->EndScene(); // End the scene
 			}
 		}
@@ -313,26 +313,31 @@ namespace PP{
 	{
 		Init(pd3dDevice);
 		//init effects
-		post_process_count = 1;
-		g_PostProcessChain[0].onCreateDevice(pd3dDevice);
+		g_post_process_count = 1;
+		g_pPostProcessChain[0] = new PostProcessBloom();
+		g_pPostProcessChain[0]->onCreateDevice(pd3dDevice);
 	}
 
 	void onLostDevice()
 	{
-		g_PostProcessChain[0].onLostDevice();
+		g_pPostProcessChain[0]->onLostDevice();
 		Cleanup();
 	}
 
 	void onResetDevice(IDirect3DDevice9* pd3dDevice)
 	{
-		g_PostProcessChain[0].onResetDevice(pd3dDevice);
+		g_pPostProcessChain[0]->onResetDevice(pd3dDevice);
 		Init(pd3dDevice);
 	}
 
 	void onDestroy(IDirect3DDevice9* pd3dDevice)
 	{
 		Cleanup();
-		g_PostProcessChain[0].onDestroy(pd3dDevice);
+		for (int i=0; i<g_post_process_count; i++)
+		{
+			g_pPostProcessChain[i]->onDestroy(pd3dDevice);
+			delete g_pPostProcessChain[i];
+		}
 	}
 	#pragma endregion
 }

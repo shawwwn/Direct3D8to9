@@ -1,3 +1,9 @@
+//========================================
+//
+//	Base class of post process
+//	
+//========================================
+
 #pragma once
 
 #include <d3d9.h>
@@ -14,8 +20,8 @@ namespace PP{
 		D3DXHANDLE   m_hTexScene;				// Handle to the saved scene texture
 
 		protected:
-			HRESULT Init(IDirect3DDevice9* pDevice, UINT resourceRef);
-			HRESULT Cleanup();
+			virtual HRESULT Init(IDirect3DDevice9* pDevice, UINT resourceRef);
+			virtual HRESULT Cleanup();
 
 		public:
 			PostProcess();
@@ -24,10 +30,10 @@ namespace PP{
 			//
 			// Standard Procedure Functions
 			//
-			void onCreateDevice(IDirect3DDevice9* pd3dDevice);
-			void onLostDevice();
-			void onResetDevice(IDirect3DDevice9* pd3dDevice);
-			void onDestroy(IDirect3DDevice9* pd3dDevice);
+			virtual void onCreateDevice(IDirect3DDevice9* pd3dDevice);
+			virtual void onLostDevice();
+			virtual void onResetDevice(IDirect3DDevice9* pd3dDevice);
+			virtual void onDestroy(IDirect3DDevice9* pd3dDevice);
 	};
 
 

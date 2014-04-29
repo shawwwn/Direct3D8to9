@@ -2,7 +2,8 @@
 
 #include <d3d9.h>
 #include <d3dx9.h>
-#include "PostProcess.h"
+#include "PostPRocess.h"
+#include "PostProcessBloom.h"
 
 namespace PP{
 	#define MAX_POST_PROCESS_COUNT 5
@@ -28,8 +29,8 @@ namespace PP{
 	extern IDirect3DTexture9* g_pSourceRT_Texture;
 	extern IDirect3DTexture9* g_pTargetRT_Texture;
 
-	extern PostProcess g_PostProcessChain[MAX_POST_PROCESS_COUNT];
-	extern int post_process_count;
+	extern PostProcess* g_pPostProcessChain[MAX_POST_PROCESS_COUNT];
+	extern int g_post_process_count;
 
 	extern bool g_presented;
 

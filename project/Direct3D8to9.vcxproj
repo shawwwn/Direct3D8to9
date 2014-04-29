@@ -29,6 +29,7 @@
     <ClCompile Include="..\src\NormalMapExceptionHandler.cpp" />
     <ClCompile Include="..\src\NormalMapHandler.cpp" />
     <ClCompile Include="..\src\PostProcess.cpp" />
+    <ClCompile Include="..\src\PostProcessBloom.cpp" />
     <ClCompile Include="..\src\PostProcessHandler.cpp" />
     <ClCompile Include="..\src\SpinLock.cpp" />
     <ClCompile Include="..\src\SysUtils.cpp" />
@@ -58,6 +59,7 @@
     <ClInclude Include="..\src\NormalMapHandler.h" />
     <ClInclude Include="..\src\ObjectPool.h" />
     <ClInclude Include="..\src\PostProcess.h" />
+    <ClInclude Include="..\src\PostProcessBloom.h" />
     <ClInclude Include="..\src\PostProcessHandler.h" />
     <ClInclude Include="..\src\ShaderResource.h" />
     <ClInclude Include="..\src\SpinLock.h" />

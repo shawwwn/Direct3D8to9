@@ -27,11 +27,20 @@
     <Filter Include="effect">
       <UniqueIdentifier>{7f6f9a89-b258-40b3-b58f-dac3acffdd00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="effect\inc">
-      <UniqueIdentifier>{3a879d85-6561-4e4f-aa8d-84432b1247f2}</UniqueIdentifier>
+    <Filter Include="effect\utils">
+      <UniqueIdentifier>{e472cf0c-4fa4-4213-a495-ad58f1afa77d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="effect\src">
+    <Filter Include="effect\NormalMap">
+      <UniqueIdentifier>{2a2d99a0-57b9-4cbc-b22a-fc877c95ee88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="effect\NormalMap\data">
+      <UniqueIdentifier>{f8afdb06-94a5-4027-837b-8d52840833b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="effect\PostProcess">
       <UniqueIdentifier>{960a8f7b-1190-451b-b987-7249a9d95677}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="effect\PostProcess\effect">
+      <UniqueIdentifier>{e17b0796-6891-4544-b256-82ab9ecbfda4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -77,32 +86,35 @@
     <ClCompile Include="..\src\Direct3D8Guid.cpp">
       <Filter>misc\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\DebugUtils.cpp">
-      <Filter>effect\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\PostProcessHandler.cpp">
-      <Filter>effect\src</Filter>
+      <Filter>effect\PostProcess</Filter>
     </ClCompile>
     <ClCompile Include="..\src\PostProcess.cpp">
-      <Filter>effect\src</Filter>
+      <Filter>effect\PostProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DebugUtils.cpp">
+      <Filter>effect\utils</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SysUtils.cpp">
-      <Filter>effect\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\NormalMapHandler.cpp">
-      <Filter>effect\inc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\TextureTable.cpp">
-      <Filter>effect\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\NormalMapExceptionHandler.cpp">
-      <Filter>effect\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\TextureException.cpp">
-      <Filter>effect\src</Filter>
+      <Filter>effect\utils</Filter>
     </ClCompile>
     <ClCompile Include="..\src\NormalMapData.cpp">
-      <Filter>effect\src</Filter>
+      <Filter>effect\NormalMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NormalMapExceptionHandler.cpp">
+      <Filter>effect\NormalMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\TextureTable.cpp">
+      <Filter>effect\NormalMap\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\TextureException.cpp">
+      <Filter>effect\NormalMap\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NormalMapHandler.cpp">
+      <Filter>effect\NormalMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PostProcessBloom.cpp">
+      <Filter>effect\PostProcess\effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -157,41 +169,44 @@
     <ClInclude Include="..\src\Direct3D8to9Guid.h">
       <Filter>misc\inc</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DebugUtils.h">
-      <Filter>effect\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\PostProcessHandler.h">
-      <Filter>effect\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\PostProcess.h">
-      <Filter>effect\inc</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>main\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SysUtils.h">
-      <Filter>effect\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\NormalMapHandler.h">
-      <Filter>effect\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\TextureTable.h">
-      <Filter>effect\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Direct3DCubeTexture8.h">
       <Filter>main\inc</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\NormalMapExceptionHandler.h">
-      <Filter>effect\inc</Filter>
+    <ClInclude Include="..\src\DebugUtils.h">
+      <Filter>effect\utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\TextureException.h">
-      <Filter>effect\inc</Filter>
+    <ClInclude Include="..\src\SysUtils.h">
+      <Filter>effect\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\NormalMapHandler.h">
+      <Filter>effect\NormalMap</Filter>
     </ClInclude>
     <ClInclude Include="..\src\NormalMapData.h">
-      <Filter>effect\inc</Filter>
+      <Filter>effect\NormalMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\NormalMapExceptionHandler.h">
+      <Filter>effect\NormalMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\TextureException.h">
+      <Filter>effect\NormalMap\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\TextureTable.h">
+      <Filter>effect\NormalMap\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PostProcess.h">
+      <Filter>effect\PostProcess</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ShaderResource.h">
-      <Filter>effect\inc</Filter>
+      <Filter>effect\PostProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PostProcessHandler.h">
+      <Filter>effect\PostProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PostProcessBloom.h">
+      <Filter>effect\PostProcess\effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
