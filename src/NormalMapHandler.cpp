@@ -21,7 +21,7 @@ namespace NP {
 	DWORD g_TextureFactor;
 
 
-	void InitGlobals(IDirect3DDevice9* pd3dDevice)
+	void initialize(IDirect3DDevice9* pd3dDevice)
 	{
 		g_texTable.cleanup();
 		/*
@@ -121,6 +121,23 @@ namespace NP {
 
 		//g_texTable.addTextureEntry(32,  1065, 1143,256, 256, false);								// Main Screen
 		// TODO: add more...
+	}
+
+	void onCreateDevice(IDirect3DDevice9* pd3dDevice)
+	{
+		initialize(pd3dDevice);
+	}
+
+	void onLostDevice()
+	{
+	}
+
+	void onResetDevice(IDirect3DDevice9* pd3dDevice)
+	{
+	}
+
+	void onDestroy(IDirect3DDevice9* pd3dDevice)
+	{
 	}
 
 	HRESULT PerformNormalMappping(IDirect3DDevice9* pd3dDevice, IDirect3DBaseTexture9* pBaseTexture,

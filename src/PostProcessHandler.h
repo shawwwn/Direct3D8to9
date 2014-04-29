@@ -46,15 +46,21 @@ namespace PP{
 	//
 	// Function Declaration
 	//
-
-	HRESULT InitGobals(IDirect3DDevice9* pd3dDevice);
+	HRESULT Init(IDirect3DDevice9* pd3dDevice);
 	HRESULT SetupVertexBuffer(IDirect3DDevice9* pd3dDevice);
 	HRESULT PerformPostProcess(IDirect3DDevice9* pd3dDevice, RenderMenthod method);
 	IDirect3DSurface9* RenderToTexture(IDirect3DDevice9* pd3dDevice, IDirect3DTexture9* pTexture);
 	IDirect3DSurface9* RenderToBackBuffer(IDirect3DDevice9* pd3dDevice);
-
 	// backup & set necessary render states for post process
 	void backupStates(IDirect3DDevice9* pd3dDevice);
 	// restore previous render states
 	void restoreStates(IDirect3DDevice9* pd3dDevice);
+
+	//
+	// Standard Procedure Functions
+	//
+	void onCreateDevice(IDirect3DDevice9* pd3dDevice);
+	void onLostDevice();
+	void onResetDevice(IDirect3DDevice9* pd3dDevice);
+	void onDestroy(IDirect3DDevice9* pd3dDevice);
 }

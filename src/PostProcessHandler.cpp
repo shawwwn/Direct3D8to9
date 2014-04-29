@@ -44,9 +44,9 @@ namespace PP{
 	#pragma region Function Defintions
 
 	/**
-	*	Global initialization
+	*	Initialization
 	*/
-	HRESULT InitGobals(IDirect3DDevice9* pd3dDevice)
+	HRESULT Init(IDirect3DDevice9* pd3dDevice)
 	{
 		// Create vertex declaration for post-process
 		HRESULT hr;
@@ -86,12 +86,18 @@ namespace PP{
 
 		// Create Vertex Buffer
 		SetupVertexBuffer(pd3dDevice);
-
-		// Initialize effects
-		// TODO: Use vector to iterate PostProcessChain
-		g_PostProcessChain[0].Init(pd3dDevice, SHADER_BLOOM_H);
-		post_process_count = 1;
 		return hr;
+	}
+
+	/**
+	*	Destroy all the global variable within this file
+	*/
+	void Cleanup()
+	{
+		g_pSourceRT_Texture->Release();
+		g_pTargetRT_Texture->Release();
+		g_pVertDeclPP->Release();
+		g_pVB->Release();
 	}
 
 	/**
@@ -299,6 +305,34 @@ namespace PP{
 		pd3dDevice->SetRenderState(D3DRS_SRCBLEND, dwSrcBlend);
 		pd3dDevice->SetRenderState(D3DRS_FOGENABLE, dwFogEnable);
 		pd3dDevice->SetRenderState(D3DRS_LIGHTING, dwLighting);
+	}
+	#pragma endregion
+
+	#pragma region Standard Procedure Functions
+	void onCreateDevice(IDirect3DDevice9* pd3dDevice)
+	{
+		Init(pd3dDevice);
+		//init effects
+		post_process_count = 1;
+		g_PostProcessChain[0].onCreateDevice(pd3dDevice);
+	}
+
+	void onLostDevice()
+	{
+		g_PostProcessChain[0].onLostDevice();
+		Cleanup();
+	}
+
+	void onResetDevice(IDirect3DDevice9* pd3dDevice)
+	{
+		g_PostProcessChain[0].onResetDevice(pd3dDevice);
+		Init(pd3dDevice);
+	}
+
+	void onDestroy(IDirect3DDevice9* pd3dDevice)
+	{
+		Cleanup();
+		g_PostProcessChain[0].onDestroy(pd3dDevice);
 	}
 	#pragma endregion
 }

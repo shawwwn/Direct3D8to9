@@ -5,7 +5,6 @@ namespace PP {
 	PostProcess::PostProcess()
 	{
 		m_pEffect=NULL;
-		m_pEffect=NULL;
 		m_hTexSource=NULL;
 		m_hTexScene=NULL;
 	}
@@ -36,4 +35,24 @@ namespace PP {
 		m_pEffect->Release();
 		return D3D_OK;
 	}
+
+
+	#pragma region Standard Procedure Functions
+	void PostProcess::onCreateDevice(IDirect3DDevice9* pd3dDevice)
+	{
+		Init(pd3dDevice, SHADER_BLOOM_H);
+	}
+	void PostProcess::onLostDevice()
+	{
+		m_pEffect->OnLostDevice();
+	}
+	void PostProcess::onResetDevice(IDirect3DDevice9* pd3dDevice)
+	{
+		m_pEffect->OnResetDevice();
+	}
+	void PostProcess::onDestroy(IDirect3DDevice9* pd3dDevice)
+	{
+		Cleanup();
+	}
+	#pragma endregion
 }

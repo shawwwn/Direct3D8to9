@@ -23,11 +23,21 @@ namespace PP{
 		D3DXHANDLE  m_hTexSource;				// Handle to the post-process source textures
 		D3DXHANDLE  m_hTexScene;				// Handle to the saved scene texture
 
+		protected:
+			HRESULT Init(LPDIRECT3DDEVICE9 pDevice, UINT resourceRef);
+			HRESULT Cleanup();
+
 		public:
 			PostProcess();
 			~PostProcess();
-			HRESULT Init(LPDIRECT3DDEVICE9 pDevice, UINT resourceRef);
-			HRESULT Cleanup();
+
+			//
+			// Standard Procedure Functions
+			//
+			void onCreateDevice(IDirect3DDevice9* pd3dDevice);
+			void onLostDevice();
+			void onResetDevice(IDirect3DDevice9* pd3dDevice);
+			void onDestroy(IDirect3DDevice9* pd3dDevice);
 	};
 
 

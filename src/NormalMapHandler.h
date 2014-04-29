@@ -27,7 +27,11 @@ namespace NP {
 
 
 	// Init global settings
-	void InitGlobals(IDirect3DDevice9* pd3dDevice);
+	void initialize(IDirect3DDevice9* pd3dDevice);
+	void onCreateDevice(IDirect3DDevice9* pd3dDevice);
+	void onLostDevice();
+	void onResetDevice(IDirect3DDevice9* pd3dDevice);
+	void onDestroy(IDirect3DDevice9* pd3dDevice);
 	// Query texture and perform normal mapping
 	HRESULT PerformNormalMappping(IDirect3DDevice9* pd3dDevice, IDirect3DBaseTexture9* pBaseTexture,
                                   D3DPRIMITIVETYPE Type, UINT baseVertexIndex, UINT minIndex, UINT startIndex,

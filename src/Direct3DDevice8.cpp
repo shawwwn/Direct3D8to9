@@ -20,12 +20,17 @@ CDirect3DDevice8::CDirect3DDevice8(IDirect3DDevice9* device, CDirect3D8* d3d)
 {
 	pDevice9->GetCreationParameters(&deviceCreationParameters);
 
-	PP::InitGobals(pDevice9);	// initialize globla setting for post process
-	NP::InitGlobals(pDevice9);
+	// initialize effect handler
+	PP::onCreateDevice(pDevice9);
+	NP::onCreateDevice(pDevice9);
 }
 
 CDirect3DDevice8::~CDirect3DDevice8()
 {
+	// destroy effect handler
+	NP::onDestroy(pDevice9);
+	PP::onDestroy(pDevice9);
+
 	pDirect3D8->DevicePool.Destory(pDevice9);
 	pDevice9 = NULL;
 }
@@ -161,13 +166,9 @@ STDMETHODIMP CDirect3DDevice8::CreateAdditionalSwapChain(THIS_ D3D8PRESENT_PARAM
 
 STDMETHODIMP CDirect3DDevice8::Reset(THIS_ D3D8PRESENT_PARAMETERS* pPresentationParameters)
 {
-	// OnLostDevice - Cleanup
-	// TODO: Add loop to iterate the chain
-	PP::g_PostProcessChain[0].m_pEffect->OnLostDevice();
-	PP::g_pSourceRT_Texture->Release();
-	PP::g_pTargetRT_Texture->Release();
-	PP::g_pVertDeclPP->Release();
-	PP::g_pVB->Release();
+	// Lost device handling
+	PP::onLostDevice();
+	NP::onLostDevice();
 
 	IDirect3D9* pDirect3D9 = NULL;
 	HRESULT hr = pDevice9->GetDirect3D(&pDirect3D9);
@@ -192,10 +193,9 @@ STDMETHODIMP CDirect3DDevice8::Reset(THIS_ D3D8PRESENT_PARAMETERS* pPresentation
 		hr = pDevice9->Reset(&D3DPresentationParameters9);
 		pDirect3D9->Release();
 
-		// OnResetDevice - Allocate new
-		// TODO: Add loop to iterate the chain
-		PP::g_PostProcessChain[0].m_pEffect->OnResetDevice();
-		PP::InitGobals(pDevice9);
+		// Reset device handling
+		PP::onResetDevice(pDevice9);
+		NP::onResetDevice(pDevice9);
 	}
 
 	return hr;
