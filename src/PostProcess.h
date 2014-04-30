@@ -14,6 +14,7 @@
 namespace PP{
 	struct PostProcess
 	{
+		IDirect3DDevice9* m_pDevice;			// Device pointer
 		ID3DXEffect* m_pEffect;					// Effect object for this technique
 		D3DXHANDLE   m_hTPostProcess;			// PostProcess technique handle
 		D3DXHANDLE   m_hTexSource;				// Handle to the post-process source textures
@@ -30,6 +31,7 @@ namespace PP{
 			//
 			// Standard Procedure Functions
 			//
+			virtual HRESULT Render(IDirect3DTexture9* pSrcColorTexture);
 			virtual void onCreateDevice(IDirect3DDevice9* pd3dDevice);
 			virtual void onLostDevice();
 			virtual void onResetDevice(IDirect3DDevice9* pd3dDevice);

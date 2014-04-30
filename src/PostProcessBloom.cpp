@@ -6,8 +6,9 @@ namespace PP {
 	PostProcessBloom::~PostProcessBloom() {}
 	HRESULT PostProcessBloom::Init(IDirect3DDevice9* pDevice, UINT resourceRef)
 	{
+		m_pDevice = pDevice;
 		HRESULT hr;
-		hr = D3DXCreateEffectFromResource(pDevice, GetCurrentModule(), MAKEINTRESOURCE(resourceRef), 
+		hr = D3DXCreateEffectFromResource(m_pDevice, GetCurrentModule(), MAKEINTRESOURCE(resourceRef), 
 											NULL, NULL, 0, NULL, &m_pEffect, NULL);
 		if(FAILED(hr))
 			return hr;

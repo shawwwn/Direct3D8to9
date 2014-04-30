@@ -169,6 +169,11 @@ namespace PP{
 			t_pSurface->Release();
 		}
 		
+		//
+		//	Set Vertex Decl & Set Stream Source
+		//
+		pd3dDevice->SetVertexDeclaration(g_pVertDeclPP);	// Set the vertex declaration
+		pd3dDevice->SetStreamSource(0, g_pVB, 0, sizeof(PPVERT));
 
 		//
 		// Post Process Loop
@@ -203,29 +208,7 @@ namespace PP{
 			//
 			// Render the quad
 			//
-			if(SUCCEEDED(pd3dDevice->BeginScene()))
-			{
-				pPProcess->m_pEffect->SetTechnique("PostProcess");
-				pd3dDevice->SetVertexDeclaration(g_pVertDeclPP);	// Set the vertex declaration
-				// Draw the quad
-				UINT cPasses, p;
-				pPProcess->m_pEffect->Begin(&cPasses, 0);
-				pPProcess->m_pEffect->SetTexture(pPProcess->m_hTexScene, g_pSourceRT_Texture); 
-				pPProcess->m_pEffect->SetTexture(pPProcess->m_hTexSource, g_pSourceRT_Texture);
-				pPProcess->m_pEffect->CommitChanges();
-				// clear the previous screen
-				pd3dDevice->Clear(0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L);
-				// Render
-				for(p = 0; p < cPasses; ++p)
-				{
-					pPProcess->m_pEffect->BeginPass(p);
-					pd3dDevice->SetStreamSource(0, g_pVB, 0, sizeof(PPVERT));
-					pd3dDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
-					pPProcess->m_pEffect->EndPass();
-				}
-				pPProcess->m_pEffect->End();
-				pd3dDevice->EndScene(); // End the scene
-			}
+			pPProcess->Render(g_pSourceRT_Texture);
 		}
 
 
