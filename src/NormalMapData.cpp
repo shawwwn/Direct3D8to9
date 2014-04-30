@@ -3,7 +3,7 @@
 namespace NP {
 	void Input(TextureTable &texTable)
 	{
-		texTable.cleanup();
+		texTable.Cleanup();
 		/*
 		 * Format: 
 		 * Stride, NumVertices, PrimCount, Width, Height, Inverted, IsMask(optional), NormalAlphaRef(optional), TransplantAlphaRef(optional)

@@ -131,9 +131,14 @@ namespace NP {
 	{
 		// TODO: Loop through the map and compute all base textures into normal texture
 	}
-	void TextureTable::cleanup()
+	void TextureTable::Cleanup()
 	{
-		// TODO: Iterate through the map and release all textures
+		for (std::map<TextureKeys, TextureItem>::iterator it=m_Table.begin(); it!=m_Table.end(); ++it)
+		{
+			TextureItem &item = it->second;
+			item.m_pBaseTexture = NULL;
+			SAFE_RELEASE(item.m_pNormalTexture);
+		}
 		m_Table.clear();
 	}
 }

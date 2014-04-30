@@ -1,9 +1,11 @@
 #pragma once
 
 #include <map>
-#include <stdexcept>      // std::out_of_range
+#include <stdexcept>		// std::out_of_range
 #include <d3d9.h>
 #include <d3dx9.h>
+#include "SysUtils.h"		// SAFE_RELEASE
+
 namespace NP {
 	#define DEFAULT_NORMAL_ALPHAREF 192
 	#define DEFAULT_TRANSPLANT_ALPHAREF 4
@@ -58,7 +60,7 @@ namespace NP {
 			IDirect3DTexture9* queryNormalTexture(DWORD stride, DWORD numVertices, DWORD primCount);
 			IDirect3DTexture9* queryNormalTexture(TextureKeys &keys);
 			void computeNormalTextures();
-			void cleanup();
+			void Cleanup();
 			// member variables
 			std::map<TextureKeys, TextureItem> m_Table;
 	};

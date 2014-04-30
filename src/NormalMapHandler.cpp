@@ -263,6 +263,7 @@ namespace NP {
 
 	void onDestroy(IDirect3DDevice9* pd3dDevice)
 	{
+		g_texTable.Cleanup();
 	}
 	#pragma endregion
 }
