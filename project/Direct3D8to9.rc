@@ -75,9 +75,9 @@ END
 // RCDATA
 //
 
-SHADER_BLOOM_H          RCDATA                  "E:\\Direct3D8to9\\res\\PP_ColorBloomH.fx"
-IDR_RCDATA1             RCDATA                  "E:\\Direct3D8to9\\SMAA.fx"
-#endif    // 中文(简体，中国) resources
+SHADER_BLOOM_H          RCDATA                  "..\\res\\PP_ColorBloomH.fx"
+SHADER_SMAA_H           RCDATA                  "..\\res\\SMAA.fx"
+#endif
 /////////////////////////////////////////////////////////////////////////////
 
 

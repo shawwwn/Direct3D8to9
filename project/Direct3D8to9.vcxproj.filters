@@ -42,6 +42,9 @@
     <Filter Include="effect\PostProcess\effect">
       <UniqueIdentifier>{e17b0796-6891-4544-b256-82ab9ecbfda4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="effect\shaders">
+      <UniqueIdentifier>{5c50d4dc-8e82-4aab-b9fc-98676ecfbaee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Direct3D8.cpp">
@@ -224,7 +227,11 @@
     <None Include="Direct3D8to9.def">
       <Filter>misc\other</Filter>
     </None>
-    <None Include="..\res\PP_ColorBloomH.fx" />
-    <None Include="..\SMAA.fx" />
+    <None Include="..\res\PP_ColorBloomH.fx">
+      <Filter>effect\shaders</Filter>
+    </None>
+    <None Include="..\SMAA.fx">
+      <Filter>effect\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

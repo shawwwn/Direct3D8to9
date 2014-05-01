@@ -40,7 +40,6 @@ namespace PP {
 	}
 	HRESULT PostProcessSMAA::Init(IDirect3DDevice9* pDevice, UINT resourceRef, UINT width, UINT height)
 	{
-		HRESULT hr;
 		m_pDevice = pDevice;
 
 		// Setup the defines for compiling the effect.

@@ -764,7 +764,7 @@
 #define LANG_DIVEHI                     0x65
 #define SHADER_BLOOM_H                  101
 #define VK_NUMPAD6                      0x66
-#define IDR_RCDATA1                     102
+#define SHADER_SMAA_H                   102
 #define VK_NUMPAD7                      0x67
 #define VK_NUMPAD8                      0x68
 #define LANG_HAUSA                      0x68
