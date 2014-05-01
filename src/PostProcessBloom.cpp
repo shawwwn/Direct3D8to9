@@ -1,15 +1,14 @@
 #include "PostProcessBloom.h"
 
 namespace PP {
-	// struct definition
 	PostProcessBloom::PostProcessBloom() {}
 	PostProcessBloom::~PostProcessBloom() {}
-	HRESULT PostProcessBloom::Init(IDirect3DDevice9* pDevice, UINT resourceRef)
+	HRESULT PostProcessBloom::initPermanentResources(IDirect3DDevice9* pDevice, UINT resourceRef, UINT width, UINT height)
 	{
 		m_pDevice = pDevice;
+
 		HRESULT hr;
-		hr = D3DXCreateEffectFromResource(m_pDevice, GetCurrentModule(), MAKEINTRESOURCE(resourceRef), 
-											NULL, NULL, 0, NULL, &m_pEffect, NULL);
+		hr = D3DXCreateEffectFromResource(pDevice, GetCurrentModule(), MAKEINTRESOURCE(resourceRef), NULL, NULL, 0, NULL, &m_pEffect, NULL);
 		if(FAILED(hr))
 			return hr;
 		m_hTPostProcess = m_pEffect->GetTechniqueByName("PostProcess");
@@ -19,11 +18,11 @@ namespace PP {
 		return D3D_OK;
 	}
 
-
 	#pragma region Standard Procedure Functions
-	void PostProcessBloom::onCreateDevice(IDirect3DDevice9* pd3dDevice)
+	void PostProcessBloom::onCreateDevice(IDirect3DDevice9* pd3dDevice, UINT width, UINT height)
 	{
-		Init(pd3dDevice, SHADER_BLOOM_H);
+		initPermanentResources(pd3dDevice, SHADER_BLOOM_H, width, height);
+		initTemporaryResources(pd3dDevice, width, height);
 	}
 	#pragma endregion
 }

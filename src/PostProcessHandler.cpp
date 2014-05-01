@@ -17,12 +17,10 @@ namespace PP{
 	DWORD dwFogEnable=0;
 	DWORD dwLighting=0;
 	
+	IDirect3DDevice9* m_pDevice=NULL;
 	UINT g_deviceWidth=0;
 	UINT g_deviceHeight=0;
 
-	IDirect3DVertexBuffer9* g_pVB=NULL;
-
-	IDirect3DVertexDeclaration9* g_pVertDeclPP=NULL;
 	IDirect3DTexture9* g_pSourceRT_Texture=NULL;
 	IDirect3DTexture9* g_pTargetRT_Texture=NULL;
 
@@ -31,39 +29,17 @@ namespace PP{
 
 	bool g_presented=false;
 
-	// Vertex declaration for post-processing
-	const D3DVERTEXELEMENT9 PPVERT::Decl[4] =
-	{
-		{ 0, 0,  D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITIONT, 0 },
-		{ 0, 16, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD,  0 },
-		{ 0, 24, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD,  1 },
-		D3DDECL_END()
-	};
 	#pragma endregion
 
 	#pragma region Function Defintions
 
 	/**
-	*	Initialization
+	*	Initialize temporary D3D resources
+	*	(Resources that need to be re-created after device has been lost)
 	*/
-	HRESULT Init(IDirect3DDevice9* pd3dDevice)
+	HRESULT initTemporaryResources(IDirect3DDevice9* pd3dDevice)
 	{
-		// Create vertex declaration for post-process
 		HRESULT hr;
-		if(FAILED(hr = pd3dDevice->CreateVertexDeclaration(PPVERT::Decl, &g_pVertDeclPP)))
-		{
-			MessageBox(NULL, "Create Vertex Declaration Fail!", "Error", MB_OK);
-			return hr;
-		}
-
-		// Get screen dimensions
-		IDirect3DSurface9* t_pSurface = NULL;
-		D3DSURFACE_DESC t_Desc;
-		pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &t_pSurface);
-		t_pSurface->GetDesc(&t_Desc);
-		g_deviceWidth = t_Desc.Width;
-		g_deviceHeight = t_Desc.Height;
-		t_pSurface->Release();
 
 		// Create textures for rendering
 		hr = pd3dDevice->CreateTexture(g_deviceWidth, g_deviceHeight, 1,
@@ -84,62 +60,69 @@ namespace PP{
 		if (FAILED(hr))
 			return hr;
 
-		// Create Vertex Buffer
-		SetupVertexBuffer(pd3dDevice);
 		return hr;
 	}
 
 	/**
-	*	Destroy all the global variable within this file
+	*	Initialize permanent D3D resources
+	*	(Resources that persist even after device has been lost)
 	*/
-	void Cleanup()
+	HRESULT initPermanentResources(IDirect3DDevice9* pd3dDevice)
 	{
-		g_pSourceRT_Texture->Release();
-		g_pTargetRT_Texture->Release();
-		g_pVertDeclPP->Release();
-		g_pVB->Release();
+		//init effect chain
+		// TODO: Use vector on effect chain
+		g_post_process_count = 1;
+		g_pPostProcessChain[0] = new PostProcessBloom();
+		g_pPostProcessChain[0]->onCreateDevice(pd3dDevice, g_deviceWidth, g_deviceHeight);
+		//g_pPostProcessChain[0] = new PostProcessSMAA();
+		//g_pPostProcessChain[0]->onCreateDevice(pd3dDevice);
+		return D3D_OK;
 	}
 
 	/**
-	*	Set up vertex buffer, this must be called each time the device changes its resolution
+	*	Release/Destroy all global temporary D3D resources
 	*/
-	HRESULT SetupVertexBuffer(IDirect3DDevice9* pd3dDevice)
+	HRESULT releaseTemporaryResources()
 	{
-		// Set up our quad
-		PPVERT Quad[4] =
-		{
-			{ -0.5f,				-0.5f,						1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
-			{ g_deviceWidth-0.5f,	-0.5f,						1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f },
-			{ -0.5f,				g_deviceHeight-0.5f,		1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f },
-			{ g_deviceWidth-0.5f,	g_deviceHeight-0.5f,		1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f }
-		};
-
-		// Create a vertex buffer out of the quad
-		HRESULT hr = pd3dDevice->CreateVertexBuffer(sizeof(PPVERT)*4,
-													D3DUSAGE_WRITEONLY | D3DUSAGE_DYNAMIC,
-													0,
-													D3DPOOL_DEFAULT,
-													&g_pVB,
-													NULL );
-		if(FAILED(hr))
-			return hr;
-
-		// Fill the vertex buffer
-		LPVOID pVBData;
-		if(SUCCEEDED(g_pVB->Lock(0, 0, &pVBData, D3DLOCK_DISCARD)))
-		{
-			CopyMemory(pVBData, Quad, sizeof(Quad));
-			g_pVB->Unlock();
-		}
-		else
-			return D3DERR_INVALIDCALL;
+		SAFE_RELEASE(g_pSourceRT_Texture);
+		SAFE_RELEASE(g_pTargetRT_Texture);
 		return D3D_OK;
+	}
+
+	/**
+	*	Release/Destroy all global permanent D3D resources
+	*/
+	HRESULT releasePermanentResources()
+	{
+		for (int i=0; i<g_post_process_count; i++)
+		{
+			g_pPostProcessChain[i]->onDestroy(m_pDevice);
+			delete g_pPostProcessChain[i];
+		}
+		// For releasing pre-loaded textures
+		return D3D_OK;
+	}
+
+	/**
+	*	Retrieve and save screen dimensions,
+	*	must be called each time screen resolution changes.
+	*/
+	void setupScreenDimensions(IDirect3DDevice9* pd3dDevice)
+	{
+		// Get screen dimensions
+		IDirect3DSurface9* t_pSurface = NULL;
+		D3DSURFACE_DESC t_Desc;
+		pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &t_pSurface);
+		t_pSurface->GetDesc(&t_Desc);
+		g_deviceWidth = t_Desc.Width;
+		g_deviceHeight = t_Desc.Height;
+		t_pSurface->Release();
 	}
 
 	/**
 	*	Swap g_pTargetRT_Texture/g_pSourceRT_Texture
 	*/
-	void Swap()
+	void swapTextures()
 	{
 		IDirect3DTexture9* pTempTexture = g_pTargetRT_Texture;
 		g_pTargetRT_Texture = g_pSourceRT_Texture;
@@ -168,12 +151,6 @@ namespace PP{
 			pd3dDevice->StretchRect(pOldRT_Surface, NULL, t_pSurface, NULL, D3DTEXF_NONE);
 			t_pSurface->Release();
 		}
-		
-		//
-		//	Set Vertex Decl & Set Stream Source
-		//
-		pd3dDevice->SetVertexDeclaration(g_pVertDeclPP);	// Set the vertex declaration
-		pd3dDevice->SetStreamSource(0, g_pVB, 0, sizeof(PPVERT));
 
 		//
 		// Post Process Loop
@@ -188,7 +165,7 @@ namespace PP{
 			if (method == RENDER_TO_TEXTURE)
 			{
 				// Swap the target texture with the source texture
-				Swap();
+				swapTextures();
 				// Set texture surface as new render target
 				g_pTargetRT_Texture->GetSurfaceLevel(0, &pRT_Surface);
 				pd3dDevice->SetRenderTarget(0, pRT_Surface);
@@ -208,7 +185,7 @@ namespace PP{
 			//
 			// Render the quad
 			//
-			pPProcess->Render(g_pSourceRT_Texture);
+			pPProcess->Render(g_pSourceRT_Texture, pRT_Surface);
 		}
 
 
@@ -294,33 +271,36 @@ namespace PP{
 	#pragma region Standard Procedure Functions
 	void onCreateDevice(IDirect3DDevice9* pd3dDevice)
 	{
-		Init(pd3dDevice);
-		//init effects
-		g_post_process_count = 1;
-		g_pPostProcessChain[0] = new PostProcessBloom();
-		g_pPostProcessChain[0]->onCreateDevice(pd3dDevice);
+		m_pDevice = pd3dDevice;
+		setupScreenDimensions(pd3dDevice);
+		initTemporaryResources(pd3dDevice);
+		initPermanentResources(pd3dDevice);
 	}
 
 	void onLostDevice()
 	{
-		g_pPostProcessChain[0]->onLostDevice();
-		Cleanup();
+		releaseTemporaryResources();
+		for (int i=0; i<g_post_process_count; i++)
+		{
+			g_pPostProcessChain[i]->onLostDevice();
+		}
 	}
 
 	void onResetDevice(IDirect3DDevice9* pd3dDevice)
 	{
-		g_pPostProcessChain[0]->onResetDevice(pd3dDevice);
-		Init(pd3dDevice);
+		setupScreenDimensions(pd3dDevice);
+		initTemporaryResources(pd3dDevice);
+		for (int i=0; i<g_post_process_count; i++)
+		{
+			g_pPostProcessChain[i]->onResetDevice(pd3dDevice, g_deviceWidth, g_deviceHeight);
+		}
+		
 	}
 
 	void onDestroy(IDirect3DDevice9* pd3dDevice)
 	{
-		Cleanup();
-		for (int i=0; i<g_post_process_count; i++)
-		{
-			g_pPostProcessChain[i]->onDestroy(pd3dDevice);
-			delete g_pPostProcessChain[i];
-		}
+		releaseTemporaryResources();
+		releasePermanentResources();
 	}
 	#pragma endregion
 }

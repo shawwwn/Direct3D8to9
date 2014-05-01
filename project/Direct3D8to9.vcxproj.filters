@@ -116,6 +116,9 @@
     <ClCompile Include="..\src\PostProcessBloom.cpp">
       <Filter>effect\PostProcess\effect</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\PostProcessSMAA.cpp">
+      <Filter>effect\PostProcess\effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Direct3D8.h">
@@ -208,6 +211,9 @@
     <ClInclude Include="..\src\PostProcessBloom.h">
       <Filter>effect\PostProcess\effect</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\PostProcessSMAA.h">
+      <Filter>effect\PostProcess\effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Direct3D8to9.rc">
@@ -219,5 +225,6 @@
       <Filter>misc\other</Filter>
     </None>
     <None Include="..\res\PP_ColorBloomH.fx" />
+    <None Include="..\SMAA.fx" />
   </ItemGroup>
 </Project>

@@ -762,8 +762,9 @@
 #define VS_USER_DEFINED                 100
 #define VK_NUMPAD5                      0x65
 #define LANG_DIVEHI                     0x65
-#define SHADER_BLOOM_H                  101      // shader file for bloom effect
+#define SHADER_BLOOM_H                  101
 #define VK_NUMPAD6                      0x66
+#define IDR_RCDATA1                     102
 #define VK_NUMPAD7                      0x67
 #define VK_NUMPAD8                      0x68
 #define LANG_HAUSA                      0x68
@@ -1510,7 +1511,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        102
+#define _APS_NEXT_RESOURCE_VALUE        103
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           101
