@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include "DebugUtils.h"
 
 namespace PP {
 	#define SMAA_USE_DDS_PRECOMPUTED_TEXTURES 1
@@ -30,20 +31,23 @@ namespace PP {
         int m_MaxSearchStepsDiag;
         float m_CornerRounding;
         float m_Threshold;
-        int m_Width, m_Height;
+		float m_Quad[4][5];
 
 		D3DXHANDLE   m_hTPostProcess;			// PostProcess technique handle
 		D3DXHANDLE   m_hTexSource;				// Handle to the post-process source textures
 		D3DXHANDLE   m_hTexScene;				// Handle to the saved scene texture
 
 		protected:
-			HRESULT Init(IDirect3DDevice9* pDevice, UINT resourceRef, UINT width, UINT height);
-			HRESULT Cleanup();
+			HRESULT initPermanentResources(IDirect3DDevice9* pDevice, UINT resourceRef, UINT width, UINT height);
+			HRESULT initTemporaryResources(IDirect3DDevice9* pDevice, UINT width, UINT height);
+			HRESULT releaseTemporaryResources();
 
 		private:
 			void loadAreaTex();
 			void loadSearchTex();
-			void PostProcessSMAA::edgesDetectionPass(IDirect3DTexture9 *edges, Input input);
+			void edgesDetectionPass(IDirect3DTexture9 *edges, Input input);
+			void blendingWeightsCalculationPass();
+			void neighborhoodBlendingPass(IDirect3DTexture9 *src, IDirect3DSurface9 *dst);
 
 		public:
 			PostProcessSMAA();
@@ -54,7 +58,7 @@ namespace PP {
 			//
 			
 			HRESULT Render(IDirect3DTexture9* pSrcColorTexture, IDirect3DSurface9* pDstSurface);
-			void onCreateDevice(IDirect3DDevice9* pd3dDevice);
+			void onCreateDevice(IDirect3DDevice9* pd3dDevice, UINT width, UINT height);
 			//void onLostDevice();
 			//void onResetDevice(IDirect3DDevice9* pd3dDevice);
 			//void onDestroy(IDirect3DDevice9* pd3dDevice);

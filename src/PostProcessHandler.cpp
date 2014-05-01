@@ -5,6 +5,7 @@
 
 namespace PP{
 	#pragma region Variables Definition
+
 	DWORD dwZEnable=0;
 	DWORD dwZWriteEnable=0;
 	DWORD dwLocalViewer=0;
@@ -72,10 +73,10 @@ namespace PP{
 		//init effect chain
 		// TODO: Use vector on effect chain
 		g_post_process_count = 1;
-		g_pPostProcessChain[0] = new PostProcessBloom();
+		//g_pPostProcessChain[0] = new PostProcessBloom();
+		//g_pPostProcessChain[0]->onCreateDevice(pd3dDevice, g_deviceWidth, g_deviceHeight);
+		g_pPostProcessChain[0] = new PostProcessSMAA();
 		g_pPostProcessChain[0]->onCreateDevice(pd3dDevice, g_deviceWidth, g_deviceHeight);
-		//g_pPostProcessChain[0] = new PostProcessSMAA();
-		//g_pPostProcessChain[0]->onCreateDevice(pd3dDevice);
 		return D3D_OK;
 	}
 
@@ -186,6 +187,7 @@ namespace PP{
 			// Render the quad
 			//
 			pPProcess->Render(g_pSourceRT_Texture, pRT_Surface);
+
 		}
 
 
@@ -230,7 +232,7 @@ namespace PP{
 		pd3dDevice->SetRenderState(D3DRS_CULLMODE, 3); //1
 
 		pd3dDevice->GetRenderState(D3DRS_ALPHABLENDENABLE, &dwAlphaBlendEnable);
-		pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, 1);
+		pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, 0);	//1
 
 		pd3dDevice->GetRenderState(D3DRS_ZFUNC, &dwZFunc);
 		pd3dDevice->SetRenderState(D3DRS_ZFUNC, 4);

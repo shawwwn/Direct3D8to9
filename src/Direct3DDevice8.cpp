@@ -205,7 +205,7 @@ STDMETHODIMP CDirect3DDevice8::Present(THIS_ CONST RECT* pSourceRect, CONST RECT
 {
 	//if (GetAsyncKeyState(VK_MENU))
 	//	MessageBox(NULL, "finish", "over", MB_OK);
-	if (GetAsyncKeyState(VK_MENU))
+	if (GetAsyncKeyState(VK_CONTROL))
 		DB::g_dbDebugOn = true;
 	else
 		DB::g_dbDebugOn = false;
@@ -750,7 +750,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 	pDevice9->GetRenderState(D3DRS_ALPHAREF, &alphaRef);
 	
 	//if (DB::g_dbDebugOn)
-	if (GetAsyncKeyState(VK_CONTROL))
+	if (GetAsyncKeyState(VK_MENU))
 	{
 		return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 		/*
@@ -771,8 +771,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 			PP::g_presented = true;
 			pDevice9->EndScene(); // end the scene first
 
-			PP::PerformPostProcess(pDevice9, PP::RENDER_TO_BACKBUFFER);
-
+			PP::PerformPostProcess(pDevice9, PP::RENDER_TO_TEXTURE);
 			// restore the original process
 			pDevice9->BeginScene();													// begin the scene
 			pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture

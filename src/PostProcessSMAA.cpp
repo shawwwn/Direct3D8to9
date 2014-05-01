@@ -32,13 +32,14 @@ namespace PP {
 
 		m_Threshold=0.1f;
 		m_CornerRounding=0.25f;
-		m_MaxSearchSteps=16;
+		m_MaxSearchSteps=8;
 		m_MaxSearchStepsDiag=8;
 	}
 	PostProcessSMAA::~PostProcessSMAA()
 	{
 	}
-	HRESULT PostProcessSMAA::Init(IDirect3DDevice9* pDevice, UINT resourceRef, UINT width, UINT height)
+
+	HRESULT PostProcessSMAA::initPermanentResources(IDirect3DDevice9* pDevice, UINT resourceRef, UINT width, UINT height)
 	{
 		m_pDevice = pDevice;
 
@@ -46,17 +47,33 @@ namespace PP {
 		std::vector<D3DXMACRO> defines;
 		std::stringstream s;
 		// Setup pixel size macro
+		/* For newer version
 		s << "float4(1.0 / " << width << ", 1.0 / " << height << ", " << width << ", " << height << ")";
 		std::string pixelSizeText = s.str();
 		D3DXMACRO renderTargetMetricsMacro = { "SMAA_RT_METRICS", pixelSizeText.c_str() };
 		defines.push_back(renderTargetMetricsMacro);
+		*/
+		s << "float2(1.0 / " << width << ", 1.0 / " << height << ")";
+		std::string pixelSizeText = s.str();
+		D3DXMACRO pixelSizeMacro = { "SMAA_PIXEL_SIZE", pixelSizeText.c_str() };
+		defines.push_back(pixelSizeMacro);
+
 		// Setup preset macro
+		/* For newer version
 		D3DXMACRO presetMacros[] = {
 			{ "SMAA_PRESET_LOW", nullptr },
 			{ "SMAA_PRESET_MEDIUM", nullptr },
 			{ "SMAA_PRESET_HIGH", nullptr },
 			{ "SMAA_PRESET_ULTRA", nullptr },
 			{ "SMAA_PRESET_CUSTOM", nullptr }
+		};
+		*/
+		D3DXMACRO presetMacros[] = {
+			{ "SMAA_PRESET_LOW", "1" },
+			{ "SMAA_PRESET_MEDIUM", "1" },
+			{ "SMAA_PRESET_HIGH", "1" },
+			{ "SMAA_PRESET_ULTRA", "1" },
+			{ "SMAA_PRESET_CUSTOM", "1" }
 		};
 		defines.push_back(presetMacros[int(3)]);	// choose quaility - SMAA_PRESET_ULTRA
 		// End macro
@@ -74,21 +91,11 @@ namespace PP {
 		//D3DXCreateEffectFromResource(device, NULL, L"SMAA.fx", &defines.front(), &includeResource, flags, NULL, &effect, NULL)
 		D3DXCreateEffectFromFile(m_pDevice, "SMAA.fx", &defines.front(), NULL, flags, NULL, &m_pEffect, NULL);
 
-		// Create Textures
-		m_pDevice->CreateTexture(width, height, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A16B16G16R16F, D3DPOOL_DEFAULT, &m_pEdgeTexture, NULL);
-        m_pEdgeTexture->GetSurfaceLevel(0, &m_pEdgeSurface);
-		m_pDevice->CreateTexture(width, height, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A16B16G16R16F, D3DPOOL_DEFAULT, &m_pBlendTexture, NULL);
-        m_pBlendTexture->GetSurfaceLevel(0, &m_pBlendSurface);
-
-		// Load the precomputed textures.
-		loadAreaTex();
-		loadSearchTex();
-
 		// Create some handles for techniques and variables.
 		m_hThresholdHandle = m_pEffect->GetParameterByName(NULL, "threshld");
 		m_hMaxSearchStepsHandle = m_pEffect->GetParameterByName(NULL, "maxSearchSteps");
-		m_hMaxSearchStepsDiagHandle = m_pEffect->GetParameterByName(NULL, "maxSearchStepsDiag");
-		m_hCornerRoundingHandle = m_pEffect->GetParameterByName(NULL, "cornerRounding");
+		//m_hMaxSearchStepsDiagHandle = m_pEffect->GetParameterByName(NULL, "maxSearchStepsDiag");
+		//m_hCornerRoundingHandle = m_pEffect->GetParameterByName(NULL, "cornerRounding");
 		m_hAreaTexHandle = m_pEffect->GetParameterByName(NULL, "areaTex2D");
 		m_hSearchTexHandle = m_pEffect->GetParameterByName(NULL, "searchTex2D");
 		m_hColorTexHandle = m_pEffect->GetParameterByName(NULL, "colorTex2D");
@@ -102,9 +109,54 @@ namespace PP {
 		m_hNeighborhoodBlendingHandle = m_pEffect->GetTechniqueByName("NeighborhoodBlending");
 		return D3D_OK;
 	}
-	HRESULT PostProcessSMAA::Cleanup()
+
+	HRESULT PostProcessSMAA::initTemporaryResources(IDirect3DDevice9* pDevice, UINT width, UINT height)
 	{
-		// TODO; Release temportary textures
+		m_deviceWidth = width;
+		m_deviceHeight = height;
+
+		// Vertex declaration for rendering the typical fullscreen quad later on
+		const D3DVERTEXELEMENT9 vertexElements[3] = {
+			{ 0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
+			{ 0, 12, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD,  0 },
+			D3DDECL_END()
+		};
+		pDevice->CreateVertexDeclaration(vertexElements, &m_pVertDeclPP);
+
+		// Set up our typical aligned fullscreen quad
+		D3DXVECTOR2 pixelSize = D3DXVECTOR2(1.0f / float(width), 1.0f / float(height));
+		float temp_quad[4][5] = {
+			{ -1.0f - pixelSize.x,  1.0f + pixelSize.y, 0.5f, 0.0f, 0.0f },
+			{  1.0f - pixelSize.x,  1.0f + pixelSize.y, 0.5f, 1.0f, 0.0f },
+			{ -1.0f - pixelSize.x, -1.0f + pixelSize.y, 0.5f, 0.0f, 1.0f },
+			{  1.0f - pixelSize.x, -1.0f + pixelSize.y, 0.5f, 1.0f, 1.0f }
+		};
+		memcpy(m_Quad, temp_quad, sizeof(temp_quad));
+
+		// Create Textures
+		m_pDevice->CreateTexture(width, height, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &m_pEdgeTexture, NULL);
+        m_pEdgeTexture->GetSurfaceLevel(0, &m_pEdgeSurface);
+		m_pDevice->CreateTexture(width, height, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &m_pBlendTexture, NULL);
+        m_pBlendTexture->GetSurfaceLevel(0, &m_pBlendSurface);
+
+		// Load the precomputed textures.
+		loadAreaTex();
+		loadSearchTex();
+
+		return D3D_OK;
+	}
+
+	HRESULT PostProcessSMAA::releaseTemporaryResources()
+	{
+		SAFE_RELEASE(m_pVertDeclPP);
+
+		SAFE_RELEASE(m_pEdgeSurface);
+		SAFE_RELEASE(m_pEdgeTexture);
+		SAFE_RELEASE(m_pBlendTexture);
+		SAFE_RELEASE(m_pBlendSurface);
+
+		SAFE_RELEASE(m_pAreaTexture);
+		SAFE_RELEASE(m_pSearchTexture);
 		return D3D_OK;
 	}
 
@@ -145,16 +197,17 @@ namespace PP {
 	void PostProcessSMAA::edgesDetectionPass(IDirect3DTexture9 *edges, Input input)
 	{
 		D3DPERF_BeginEvent(D3DCOLOR_XRGB(0, 0, 0), L"SMAA: 1st pass");
+		HRESULT hr;
 
 		// Set the render target and clear both the color and the stencil buffers.
-		//m_pDevice->SetRenderTarget(0, m_pEdgeSurface);
+		m_pDevice->SetRenderTarget(0, m_pEdgeSurface);
 		m_pDevice->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_ARGB(0, 0, 0, 0), 1.0f, 0);
 
 		// Setup variables.
 		m_pEffect->SetFloat(m_hThresholdHandle, m_Threshold);
 		m_pEffect->SetFloat(m_hMaxSearchStepsHandle, float(m_MaxSearchSteps));
-		m_pEffect->SetFloat(m_hMaxSearchStepsDiagHandle, float(m_MaxSearchStepsDiag));
-		m_pEffect->SetFloat(m_hCornerRoundingHandle, m_CornerRounding);
+		//m_pEffect->SetFloat(m_hMaxSearchStepsDiagHandle, float(m_MaxSearchStepsDiag));
+		//m_pEffect->SetFloat(m_hCornerRoundingHandle, m_CornerRounding);
 
 		// Select the technique accordingly.
 		switch (input) {
@@ -178,24 +231,73 @@ namespace PP {
 		UINT passes;
 		m_pEffect->Begin(&passes, 0);
 		m_pEffect->BeginPass(0);
-		m_pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+		m_pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, m_Quad, sizeof(m_Quad[0]));
+		m_pEffect->EndPass();
+		m_pEffect->End();
+
+		D3DPERF_EndEvent();
+	}
+	void PostProcessSMAA::blendingWeightsCalculationPass() 
+	{
+		D3DPERF_BeginEvent(D3DCOLOR_XRGB(0, 0, 0), L"SMAA: 2nd pass");
+		HRESULT hr;
+
+		// Set the render target and clear it.
+		m_pDevice->SetRenderTarget(0, m_pBlendSurface);
+		m_pDevice->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_ARGB(0, 0, 0, 0), 1.0f, 0);
+
+		// Setup the variables and the technique (yet again).
+		m_pEffect->SetTexture(m_hEdgesTexHandle, m_pEdgeTexture);
+		m_pEffect->SetTexture(m_hAreaTexHandle, m_pAreaTexture);
+		m_pEffect->SetTexture(m_hSearchTexHandle, m_pSearchTexture);
+		m_pEffect->SetTechnique(m_hBlendWeightCalculationHandle);
+
+		// And here we go!
+		UINT passes;
+		m_pEffect->Begin(&passes, 0);
+		m_pEffect->BeginPass(0);
+		m_pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, m_Quad, sizeof(m_Quad[0]));
+		m_pEffect->EndPass();
+		m_pEffect->End();
+
+		D3DPERF_EndEvent();
+	}
+	void PostProcessSMAA::neighborhoodBlendingPass(IDirect3DTexture9 *src, IDirect3DSurface9 *dst)
+	{
+		D3DPERF_BeginEvent(D3DCOLOR_XRGB(0, 0, 0), L"SMAA: 3rd pass");
+		HRESULT hr;
+
+		// Blah blah blah
+		m_pDevice->SetRenderTarget(0, dst);
+		m_pEffect->SetTexture(m_hColorTexHandle, src);
+		m_pEffect->SetTexture(m_hBlendTexHandle, m_pBlendTexture);
+		m_pEffect->SetTechnique(m_hNeighborhoodBlendingHandle);
+
+		// Yeah! We will finally have the antialiased image :D
+		UINT passes;
+		m_pEffect->Begin(&passes, 0);
+		m_pEffect->BeginPass(0);
+		m_pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, m_Quad, sizeof(m_Quad[0]));
 		m_pEffect->EndPass();
 		m_pEffect->End();
 
 		D3DPERF_EndEvent();
 	}
 
+
 	HRESULT PostProcessSMAA::Render(IDirect3DTexture9* pSrcColorTexture, IDirect3DSurface9* pDstSurface)
 	{
-		// Setup the layout for our fullscreen quad. (not necessary)
+		// Setup the layout for our fullscreen quad.
+		m_pDevice->SetVertexDeclaration(m_pVertDeclPP);
 
 		edgesDetectionPass(pSrcColorTexture, INPUT_COLOR);
-		//blendingWeightsCalculationPass();
-		//neighborhoodBlendingPass(pSrcColorTexture);
-		return D3DERR_INVALIDCALL;
+		blendingWeightsCalculationPass();
+		neighborhoodBlendingPass(pSrcColorTexture, pDstSurface);
+		return D3D_OK;
 	}
-	void PostProcessSMAA::onCreateDevice(IDirect3DDevice9* pd3dDevice)
+	void PostProcessSMAA::onCreateDevice(IDirect3DDevice9* pd3dDevice, UINT width, UINT height)
 	{
-		Init(pd3dDevice, SHADER_SAMPLE_H, 800, 600);
+		initPermanentResources(pd3dDevice, SHADER_SMAA_H, width, height);
+		initTemporaryResources(pd3dDevice, width, height);
 	}
 }
