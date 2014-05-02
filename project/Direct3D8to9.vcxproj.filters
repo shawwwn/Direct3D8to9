@@ -175,9 +175,6 @@
     <ClInclude Include="..\src\Direct3D8to9Guid.h">
       <Filter>misc\inc</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>main\inc</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Direct3DCubeTexture8.h">
       <Filter>main\inc</Filter>
     </ClInclude>
@@ -217,6 +214,18 @@
     <ClInclude Include="..\src\PostProcessSMAA.h">
       <Filter>effect\PostProcess\effect</Filter>
     </ClInclude>
+    <ClInclude Include="..\res\SMAA.h">
+      <Filter>effect\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>misc\other</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\AreaTex.h">
+      <Filter>effect\PostProcess\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SearchTex.h">
+      <Filter>effect\PostProcess\effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Direct3D8to9.rc">
@@ -230,7 +239,13 @@
     <None Include="..\res\PP_ColorBloomH.fx">
       <Filter>effect\shaders</Filter>
     </None>
-    <None Include="..\SMAA.fx">
+    <None Include="..\res\SMAA.fx">
+      <Filter>effect\shaders</Filter>
+    </None>
+    <None Include="..\res\AreaTexDX9.dds">
+      <Filter>effect\shaders</Filter>
+    </None>
+    <None Include="..\res\SearchTex.dds">
       <Filter>effect\shaders</Filter>
     </None>
   </ItemGroup>

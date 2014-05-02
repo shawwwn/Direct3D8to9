@@ -75,9 +75,12 @@ END
 // RCDATA
 //
 
-SHADER_BLOOM_H          RCDATA                  "..\\res\\PP_ColorBloomH.fx"
-SHADER_SMAA_H           RCDATA                  "..\\res\\SMAA.fx"
-#endif
+PP_COLORBLOOMH.FX       RCDATA                  "..\\res\\PP_ColorBloomH.fx"
+SMAA.FX                 RCDATA                  "..\\res\\SMAA.fx"
+SMAA.H                  RCDATA                  "..\\res\\SMAA.h"
+AREATEXDX9.DDS          RCDATA                  "..\\res\\AreaTexDX9.dds"
+SearchTex.dds           RCDATA                  "..\\res\\SearchTex.dds"
+#endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

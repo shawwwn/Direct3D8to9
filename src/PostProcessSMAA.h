@@ -6,9 +6,12 @@
 #include <sstream>
 #include <string>
 #include "DebugUtils.h"
+#include "SearchTex.h"
+#include "AreaTex.h"
 
 namespace PP {
-	#define SMAA_USE_DDS_PRECOMPUTED_TEXTURES 1
+	//#define SMAA_USE_DDS_PRECOMPUTED_TEXTURES
+	//#define SMAA_ALLOW_LOCAL_FILES
 
 	struct PostProcessSMAA : public PostProcess
 	{

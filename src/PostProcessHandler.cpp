@@ -73,10 +73,10 @@ namespace PP{
 		//init effect chain
 		// TODO: Use vector on effect chain
 		g_post_process_count = 1;
-		//g_pPostProcessChain[0] = new PostProcessBloom();
-		//g_pPostProcessChain[0]->onCreateDevice(pd3dDevice, g_deviceWidth, g_deviceHeight);
 		g_pPostProcessChain[0] = new PostProcessSMAA();
 		g_pPostProcessChain[0]->onCreateDevice(pd3dDevice, g_deviceWidth, g_deviceHeight);
+		//g_pPostProcessChain[1] = new PostProcessBloom();
+		//g_pPostProcessChain[1]->onCreateDevice(pd3dDevice, g_deviceWidth, g_deviceHeight);
 		return D3D_OK;
 	}
 
@@ -173,7 +173,7 @@ namespace PP{
 			}
 			else
 			{
-				// Copy back buffer to source texture (g_pScreenRenderSource)
+				// Copy back buffer to source texture (g_pSourceRT_Texture)
 				IDirect3DSurface9* t_pSurface = NULL;
 				g_pSourceRT_Texture->GetSurfaceLevel(0, &t_pSurface);
 				pd3dDevice->StretchRect(pOldRT_Surface, NULL, t_pSurface, NULL, D3DTEXF_NONE);
@@ -181,7 +181,6 @@ namespace PP{
 				// We dont need to set render target here because backbuffer is already the default render target.
 				pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pRT_Surface);
 			}
-
 
 			//
 			// Render the quad
@@ -202,7 +201,6 @@ namespace PP{
 		//
 		if (method == RENDER_TO_TEXTURE)
 		{
-			
 			pd3dDevice->SetRenderTarget(0, pOldRT_Surface);
 			pd3dDevice->StretchRect(pRT_Surface, 0, pOldRT_Surface, 0, D3DTEXF_NONE);
 		}
