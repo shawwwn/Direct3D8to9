@@ -25,7 +25,7 @@ namespace PP{
 	struct PostProcess
 	{
 		protected:
-			virtual HRESULT initPermanentResources(IDirect3DDevice9* pDevice, UINT resourceRef, UINT width, UINT height);
+			virtual HRESULT initPermanentResources(IDirect3DDevice9* pDevice, UINT width, UINT height);
 			virtual HRESULT initTemporaryResources(IDirect3DDevice9* pDevice, UINT width, UINT height);
 			virtual HRESULT releaseTemporaryResources();
 			virtual HRESULT releasePermanentResources();

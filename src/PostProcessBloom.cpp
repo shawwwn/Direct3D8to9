@@ -3,12 +3,12 @@
 namespace PP {
 	PostProcessBloom::PostProcessBloom() {}
 	PostProcessBloom::~PostProcessBloom() {}
-	HRESULT PostProcessBloom::initPermanentResources(IDirect3DDevice9* pDevice, UINT resourceRef, UINT width, UINT height)
+	HRESULT PostProcessBloom::initPermanentResources(IDirect3DDevice9* pDevice, UINT width, UINT height)
 	{
 		m_pDevice = pDevice;
 
 		HRESULT hr;
-		hr = D3DXCreateEffectFromResource(pDevice, GetCurrentModule(), MAKEINTRESOURCE(resourceRef), NULL, NULL, 0, NULL, &m_pEffect, NULL);
+		hr = D3DXCreateEffectFromResource(pDevice, GetCurrentModule(), MAKEINTRESOURCE(SHADER_BLOOM_H), NULL, NULL, 0, NULL, &m_pEffect, NULL);
 		if(FAILED(hr))
 			return hr;
 		m_hTPostProcess = m_pEffect->GetTechniqueByName("PostProcess");
@@ -21,7 +21,7 @@ namespace PP {
 	#pragma region Standard Procedure Functions
 	void PostProcessBloom::onCreateDevice(IDirect3DDevice9* pd3dDevice, UINT width, UINT height)
 	{
-		initPermanentResources(pd3dDevice, SHADER_BLOOM_H, width, height);
+		initPermanentResources(pd3dDevice, width, height);
 		initTemporaryResources(pd3dDevice, width, height);
 	}
 	#pragma endregion

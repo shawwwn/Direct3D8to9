@@ -6,7 +6,7 @@ namespace PP {
 	struct PostProcessBloom: public PostProcess
 	{
 		protected:
-			HRESULT initPermanentResources(IDirect3DDevice9* pDevice, UINT resourceRef, UINT width, UINT height);
+			HRESULT initPermanentResources(IDirect3DDevice9* pDevice, UINT width, UINT height);
 		public:
 			PostProcessBloom();
 			~PostProcessBloom();

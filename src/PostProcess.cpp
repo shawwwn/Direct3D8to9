@@ -31,12 +31,12 @@ namespace PP {
 	*	Initialize permanent D3D resources
 	*	(Resources that persist even after device has been lost)
 	*/
-	HRESULT PostProcess::initPermanentResources(IDirect3DDevice9* pDevice, UINT resourceRef, UINT width, UINT height)
+	HRESULT PostProcess::initPermanentResources(IDirect3DDevice9* pDevice, UINT width, UINT height)
 	{
 		m_pDevice = pDevice;
 
 		HRESULT hr;
-		hr = D3DXCreateEffectFromResource(pDevice, GetCurrentModule(), MAKEINTRESOURCE(resourceRef), NULL, NULL, 0, NULL, &m_pEffect, NULL);
+		hr = D3DXCreateEffectFromResource(pDevice, GetCurrentModule(), MAKEINTRESOURCE(SHADER_SAMPLE_H), NULL, NULL, 0, NULL, &m_pEffect, NULL);
 		if(FAILED(hr))
 			return hr;
 		
@@ -145,7 +145,7 @@ namespace PP {
 	}
 	void PostProcess::onCreateDevice(IDirect3DDevice9* pd3dDevice, UINT width, UINT height)
 	{
-		initPermanentResources(pd3dDevice, SHADER_SAMPLE_H, width, height);
+		initPermanentResources(pd3dDevice, width, height);
 		initTemporaryResources(pd3dDevice, width, height);
 	}
 	void PostProcess::onLostDevice()

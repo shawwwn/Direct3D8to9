@@ -38,7 +38,7 @@ namespace PP {
 		D3DXHANDLE   m_hTexScene;				// Handle to the saved scene texture
 
 		protected:
-			HRESULT initPermanentResources(IDirect3DDevice9* pDevice, UINT resourceRef, UINT width, UINT height);
+			HRESULT initPermanentResources(IDirect3DDevice9* pDevice, UINT width, UINT height);
 			HRESULT initTemporaryResources(IDirect3DDevice9* pDevice, UINT width, UINT height);
 			HRESULT releaseTemporaryResources();
 
@@ -59,8 +59,8 @@ namespace PP {
 			
 			HRESULT Render(IDirect3DTexture9* pSrcColorTexture, IDirect3DSurface9* pDstSurface);
 			void onCreateDevice(IDirect3DDevice9* pd3dDevice, UINT width, UINT height);
-			//void onLostDevice();
-			//void onResetDevice(IDirect3DDevice9* pd3dDevice);
+			void onLostDevice();
+			void onResetDevice(IDirect3DDevice9* pd3dDevice, UINT width, UINT height);
 			//void onDestroy(IDirect3DDevice9* pd3dDevice);
 	};
 }

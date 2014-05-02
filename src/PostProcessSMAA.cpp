@@ -39,10 +39,18 @@ namespace PP {
 	{
 	}
 
-	HRESULT PostProcessSMAA::initPermanentResources(IDirect3DDevice9* pDevice, UINT resourceRef, UINT width, UINT height)
+	HRESULT PostProcessSMAA::initPermanentResources(IDirect3DDevice9* pDevice, UINT width, UINT height)
 	{
 		m_pDevice = pDevice;
 
+		return D3D_OK;
+	}
+	HRESULT PostProcessSMAA::initTemporaryResources(IDirect3DDevice9* pDevice, UINT width, UINT height)
+	{
+		m_deviceWidth = width;
+		m_deviceHeight = height;
+
+		#pragma region Load shader
 		// Setup the defines for compiling the effect.
 		std::vector<D3DXMACRO> defines;
 		std::stringstream s;
@@ -107,14 +115,9 @@ namespace PP {
 		m_hDepthEdgeDetectionHandle = m_pEffect->GetTechniqueByName("DepthEdgeDetection");
 		m_hBlendWeightCalculationHandle = m_pEffect->GetTechniqueByName("BlendWeightCalculation");
 		m_hNeighborhoodBlendingHandle = m_pEffect->GetTechniqueByName("NeighborhoodBlending");
-		return D3D_OK;
-	}
+		#pragma endregion
 
-	HRESULT PostProcessSMAA::initTemporaryResources(IDirect3DDevice9* pDevice, UINT width, UINT height)
-	{
-		m_deviceWidth = width;
-		m_deviceHeight = height;
-
+		#pragma region Initialize vertices
 		// Vertex declaration for rendering the typical fullscreen quad later on
 		const D3DVERTEXELEMENT9 vertexElements[3] = {
 			{ 0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
@@ -132,7 +135,9 @@ namespace PP {
 			{  1.0f - pixelSize.x, -1.0f + pixelSize.y, 0.5f, 1.0f, 1.0f }
 		};
 		memcpy(m_Quad, temp_quad, sizeof(temp_quad));
+		#pragma endregion
 
+		#pragma region Create textures
 		// Create Textures
 		m_pDevice->CreateTexture(width, height, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &m_pEdgeTexture, NULL);
         m_pEdgeTexture->GetSurfaceLevel(0, &m_pEdgeSurface);
@@ -142,24 +147,21 @@ namespace PP {
 		// Load the precomputed textures.
 		loadAreaTex();
 		loadSearchTex();
-
+		#pragma endregion
 		return D3D_OK;
 	}
-
 	HRESULT PostProcessSMAA::releaseTemporaryResources()
 	{
+		SAFE_RELEASE(m_pEffect);
 		SAFE_RELEASE(m_pVertDeclPP);
-
 		SAFE_RELEASE(m_pEdgeSurface);
 		SAFE_RELEASE(m_pEdgeTexture);
 		SAFE_RELEASE(m_pBlendTexture);
 		SAFE_RELEASE(m_pBlendSurface);
-
 		SAFE_RELEASE(m_pAreaTexture);
 		SAFE_RELEASE(m_pSearchTexture);
 		return D3D_OK;
 	}
-
 	void PostProcessSMAA::loadAreaTex()
 	{
 		#if SMAA_USE_DDS_PRECOMPUTED_TEXTURES
@@ -283,8 +285,6 @@ namespace PP {
 
 		D3DPERF_EndEvent();
 	}
-
-
 	HRESULT PostProcessSMAA::Render(IDirect3DTexture9* pSrcColorTexture, IDirect3DSurface9* pDstSurface)
 	{
 		// Setup the layout for our fullscreen quad.
@@ -297,7 +297,15 @@ namespace PP {
 	}
 	void PostProcessSMAA::onCreateDevice(IDirect3DDevice9* pd3dDevice, UINT width, UINT height)
 	{
-		initPermanentResources(pd3dDevice, SHADER_SMAA_H, width, height);
+		initPermanentResources(pd3dDevice, width, height);
+		initTemporaryResources(pd3dDevice, width, height);
+	}
+	void PostProcessSMAA::onLostDevice()
+	{
+		releaseTemporaryResources();
+	}
+	void PostProcessSMAA::onResetDevice(IDirect3DDevice9* pd3dDevice, UINT width, UINT height)
+	{
 		initTemporaryResources(pd3dDevice, width, height);
 	}
 }
