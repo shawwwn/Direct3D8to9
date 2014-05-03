@@ -79,7 +79,18 @@
   <ItemGroup>
     <None Include="..\res\AreaTexDX9.dds" />
     <None Include="..\res\PP_ColorBloomH.fx" />
+    <None Include="..\res\PP_ColorBloomV.fx" />
+    <None Include="..\res\PP_ColorBrightPass.fx" />
+    <None Include="..\res\PP_ColorCombine.fx" />
+    <None Include="..\res\PP_ColorCombine2.fx" />
+    <None Include="..\res\PP_ColorCombine4.fx" />
+    <None Include="..\res\PP_ColorDownFilter2.fx" />
+    <None Include="..\res\PP_ColorDownFilter4.fx" />
     <None Include="..\res\PP_ColorGBlurH.fx" />
+    <None Include="..\res\PP_ColorGBlurV.fx" />
+    <None Include="..\res\PP_ColorToneMap.fx" />
+    <None Include="..\res\PP_ColorUpFilter2.fx" />
+    <None Include="..\res\PP_ColorUpFilter4.fx" />
     <None Include="..\res\SearchTex.dds" />
     <None Include="..\res\SMAA.fx" />
     <None Include="Direct3D8to9.def" />

@@ -764,7 +764,7 @@
 #define LANG_DIVEHI                     0x65
 #define SHADER_BLOOM_H                  101
 #define VK_NUMPAD6                      0x66
-#define SHADER_SMAA						102
+#define SHADER_SMAA                     102
 #define VK_NUMPAD7                      0x67
 #define VK_NUMPAD8                      0x68
 #define LANG_HAUSA                      0x68
@@ -781,20 +781,31 @@
 #define LANG_SOTHO                      0x6c
 #define VK_SUBTRACT                     0x6D
 #define LANG_BASHKIR                    0x6d
+#define SHADER_BLOOM_V                  109
 #define VK_DECIMAL                      0x6E
 #define LANG_LUXEMBOURGISH              0x6e
+#define SHADER_GBLUR_V                  110
 #define VK_DIVIDE                       0x6F
 #define LANG_GREENLANDIC                0x6f
+#define SHADER_BRIGHTPASS               111
 #define VK_F1                           0x70
 #define LANG_IGBO                       0x70
+#define SHADER_COMBINE                  112
 #define VK_F2                           0x71
+#define SHADER_COMBINE2                 113
 #define VK_F3                           0x72
+#define SHADER_COMBINE4                 114
 #define VK_F4                           0x73
 #define LANG_TIGRIGNA                   0x73
+#define SHADER_UPFILTER2                115
 #define VK_F5                           0x74
+#define SHADER_UPFILTER4                116
 #define VK_F6                           0x75
+#define SHADER_DOWNFILTER2              117
 #define VK_F7                           0x76
+#define SHADER_DOWNFILTER4              118
 #define VK_F8                           0x77
+#define SHADER_TONEMAP                  119
 #define VK_F9                           0x78
 #define WHEEL_DELTA                     120
 #define LANG_YI                         0x78
@@ -1515,7 +1526,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        108
+#define _APS_NEXT_RESOURCE_VALUE        120
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           101

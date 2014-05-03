@@ -8,7 +8,7 @@ namespace PP {
 		m_pDevice = pDevice;
 
 		HRESULT hr;
-		hr = D3DXCreateEffectFromResource(pDevice, GetCurrentModule(), "PP_ColorGBlurH.fx", NULL, NULL, 0, NULL, &m_pEffect, NULL);
+		hr = D3DXCreateEffectFromResource(pDevice, GetCurrentModule(), "PP_ColorBloomH.fx", NULL, NULL, 0, NULL, &m_pEffect, NULL);
 		if(FAILED(hr))
 			return hr;
 		m_hTPostProcess = m_pEffect->GetTechniqueByName("PostProcess");

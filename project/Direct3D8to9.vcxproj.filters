@@ -251,5 +251,38 @@
     <None Include="..\res\PP_ColorGBlurH.fx">
       <Filter>effect\shaders</Filter>
     </None>
+    <None Include="..\res\PP_ColorBloomV.fx">
+      <Filter>effect\shaders</Filter>
+    </None>
+    <None Include="..\res\PP_ColorUpFilter4.fx">
+      <Filter>effect\shaders</Filter>
+    </None>
+    <None Include="..\res\PP_ColorBrightPass.fx">
+      <Filter>effect\shaders</Filter>
+    </None>
+    <None Include="..\res\PP_ColorCombine.fx">
+      <Filter>effect\shaders</Filter>
+    </None>
+    <None Include="..\res\PP_ColorCombine2.fx">
+      <Filter>effect\shaders</Filter>
+    </None>
+    <None Include="..\res\PP_ColorCombine4.fx">
+      <Filter>effect\shaders</Filter>
+    </None>
+    <None Include="..\res\PP_ColorDownFilter2.fx">
+      <Filter>effect\shaders</Filter>
+    </None>
+    <None Include="..\res\PP_ColorDownFilter4.fx">
+      <Filter>effect\shaders</Filter>
+    </None>
+    <None Include="..\res\PP_ColorGBlurV.fx">
+      <Filter>effect\shaders</Filter>
+    </None>
+    <None Include="..\res\PP_ColorToneMap.fx">
+      <Filter>effect\shaders</Filter>
+    </None>
+    <None Include="..\res\PP_ColorUpFilter2.fx">
+      <Filter>effect\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
