@@ -6,9 +6,10 @@
 #include "PostProcessBloom.h"
 #include "PostProcessSMAA.h"
 
+//#define RENDER_TO_BACK_BUFFER	// kinda buggy..
+
 namespace PP{
 	#define MAX_POST_PROCESS_COUNT 5
-	enum RenderMenthod { RENDER_TO_TEXTURE, RENDER_TO_BACKBUFFER };
 	extern DWORD dwZEnable;
 	extern DWORD dwZWriteEnable;
 	extern DWORD dwLocalViewer;
@@ -26,7 +27,9 @@ namespace PP{
 	extern UINT g_deviceHeight;
 
 	extern IDirect3DTexture9* g_pSourceRT_Texture;
+	extern IDirect3DSurface9* g_pSourceRT_Surface;
 	extern IDirect3DTexture9* g_pTargetRT_Texture;
+	extern IDirect3DSurface9* g_pTargetRT_Surface;
 
 	extern PostProcess* g_pPostProcessChain[MAX_POST_PROCESS_COUNT];
 	extern int g_post_process_count;
@@ -42,7 +45,7 @@ namespace PP{
 	HRESULT releasePermanentResources();
 	void setupScreenDimensions(IDirect3DDevice9* pd3dDevice);
 	void swapTextures();
-	HRESULT PerformPostProcess(IDirect3DDevice9* pd3dDevice, RenderMenthod method);
+	HRESULT PerformPostProcess(IDirect3DDevice9* pd3dDevice);
 	void backupStates(IDirect3DDevice9* pd3dDevice);
 	void restoreStates(IDirect3DDevice9* pd3dDevice);
 

@@ -36,16 +36,16 @@ namespace PP {
 		m_pDevice = pDevice;
 
 		HRESULT hr;
-		hr = D3DXCreateEffectFromResource(pDevice, GetCurrentModule(), MAKEINTRESOURCE(SHADER_SAMPLE_H), NULL, NULL, 0, NULL, &m_pEffect, NULL);
+		hr = D3DXCreateEffectFromResource(pDevice, GetCurrentModule(), "PP_ColorGBlurH.fx", NULL, NULL, 0, NULL, &m_pEffect, NULL);
 		if(FAILED(hr))
 			return hr;
 		
 		// Get the PostProcess technique handle
-		m_hTPostProcess = m_pEffect->GetTechniqueByName("TechniqueName");
+		m_hTPostProcess = m_pEffect->GetTechniqueByName("PostProcess");
 
 		// Obtain the handles to all texture objects in the effect
-		m_hTexScene = m_pEffect->GetParameterByName(NULL, "ParameterName1");
-		m_hTexSource = m_pEffect->GetParameterByName(NULL, "ParameterName2");
+		m_hTexScene = m_pEffect->GetParameterByName(NULL, "g_txSceneColor");
+		m_hTexSource = m_pEffect->GetParameterByName(NULL, "g_txSrcColor");
 
 		return D3D_OK;
 	}

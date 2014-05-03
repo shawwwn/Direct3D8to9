@@ -23,7 +23,9 @@ namespace PP{
 	UINT g_deviceHeight=0;
 
 	IDirect3DTexture9* g_pSourceRT_Texture=NULL;
+	IDirect3DSurface9* g_pSourceRT_Surface=NULL;
 	IDirect3DTexture9* g_pTargetRT_Texture=NULL;
+	IDirect3DSurface9* g_pTargetRT_Surface=NULL;
 
 	PostProcess* g_pPostProcessChain[MAX_POST_PROCESS_COUNT];
 	int g_post_process_count = 0;
@@ -43,24 +45,15 @@ namespace PP{
 		HRESULT hr;
 
 		// Create textures for rendering
-		hr = pd3dDevice->CreateTexture(g_deviceWidth, g_deviceHeight, 1,
-									   D3DUSAGE_RENDERTARGET,
-									   D3DFMT_A16B16G16R16F,
-									   D3DPOOL_DEFAULT,
-									   &g_pSourceRT_Texture, NULL);
+		hr = pd3dDevice->CreateTexture(g_deviceWidth, g_deviceHeight, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A16B16G16R16F, D3DPOOL_DEFAULT, &g_pSourceRT_Texture, NULL);
 		if (FAILED(hr))
 		{
 			MessageBox(NULL, "Fail to create texture!", "Error", MB_OK);
 			return hr;
 		}
-		hr = pd3dDevice->CreateTexture(g_deviceWidth, g_deviceHeight, 1,
-			                           D3DUSAGE_RENDERTARGET,
-									   D3DFMT_A16B16G16R16F,
-									   D3DPOOL_DEFAULT,
-									   &g_pTargetRT_Texture, NULL);
-		if (FAILED(hr))
-			return hr;
-
+		g_pSourceRT_Texture->GetSurfaceLevel(0, &g_pSourceRT_Surface);
+		pd3dDevice->CreateTexture(g_deviceWidth, g_deviceHeight, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A16B16G16R16F, D3DPOOL_DEFAULT, &g_pTargetRT_Texture, NULL);
+		g_pTargetRT_Texture->GetSurfaceLevel(0, &g_pTargetRT_Surface);
 		return hr;
 	}
 
@@ -86,7 +79,9 @@ namespace PP{
 	HRESULT releaseTemporaryResources()
 	{
 		SAFE_RELEASE(g_pSourceRT_Texture);
+		SAFE_RELEASE(g_pSourceRT_Surface);
 		SAFE_RELEASE(g_pTargetRT_Texture);
+		SAFE_RELEASE(g_pTargetRT_Surface);
 		return D3D_OK;
 	}
 
@@ -129,12 +124,17 @@ namespace PP{
 		g_pTargetRT_Texture = g_pSourceRT_Texture;
 		g_pSourceRT_Texture = pTempTexture;
 		pTempTexture = NULL;
+
+		IDirect3DSurface9* pTempSurface = g_pTargetRT_Surface;
+		g_pTargetRT_Surface = g_pSourceRT_Surface;
+		g_pSourceRT_Surface = pTempSurface;
+		pTempSurface = NULL;
 	}
 
 	/**
 	*	Perform Post Process on a device
 	*/
-	HRESULT PerformPostProcess(IDirect3DDevice9* pd3dDevice, RenderMenthod method)
+	HRESULT PerformPostProcess(IDirect3DDevice9* pd3dDevice)
 	{
 		//
 		// Preparation
@@ -144,14 +144,10 @@ namespace PP{
 		IDirect3DSurface9* pRT_Surface = NULL;					// current render target
 		backupStates(pd3dDevice);								// backup render states
 
-		if (method == RENDER_TO_TEXTURE)
-		{
-			// Copy backbuffer to target texture(since we are going to swap the soure and target textures)
-			IDirect3DSurface9* t_pSurface = NULL;
-			g_pTargetRT_Texture->GetSurfaceLevel(0, &t_pSurface);
-			pd3dDevice->StretchRect(pOldRT_Surface, NULL, t_pSurface, NULL, D3DTEXF_NONE);
-			t_pSurface->Release();
-		}
+		#ifndef RENDER_TO_BACK_BUFFER
+		// Copy backbuffer to target texture since we are going to swap the source and target textures
+		pd3dDevice->StretchRect(pOldRT_Surface, NULL, g_pTargetRT_Surface, NULL, D3DTEXF_NONE);
+		#endif
 
 		//
 		// Post Process Loop
@@ -163,24 +159,20 @@ namespace PP{
 			//
 			//	Initialize soure/target
 			//
-			if (method == RENDER_TO_TEXTURE)
-			{
-				// Swap the target texture with the source texture
-				swapTextures();
-				// Set texture surface as new render target
-				g_pTargetRT_Texture->GetSurfaceLevel(0, &pRT_Surface);
-				pd3dDevice->SetRenderTarget(0, pRT_Surface);
-			}
-			else
-			{
-				// Copy back buffer to source texture (g_pSourceRT_Texture)
-				IDirect3DSurface9* t_pSurface = NULL;
-				g_pSourceRT_Texture->GetSurfaceLevel(0, &t_pSurface);
-				pd3dDevice->StretchRect(pOldRT_Surface, NULL, t_pSurface, NULL, D3DTEXF_NONE);
-				t_pSurface->Release();
-				// We dont need to set render target here because backbuffer is already the default render target.
-				pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pRT_Surface);
-			}
+			#ifndef RENDER_TO_BACK_BUFFER
+			// Swap the target texture with the source texture
+			swapTextures();
+			// Set texture surface as new render target
+			pRT_Surface = g_pTargetRT_Surface;
+			pd3dDevice->SetRenderTarget(0, pRT_Surface);
+			#else
+			// Release the backbuffer surface from last render
+			SAFE_RELEASE(pRT_Surface);
+			// We dont need to set render target here because backbuffer is already the default render target.
+			pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pRT_Surface);
+			// Copy back buffer to source texture (g_pSourceRT_Texture)
+			pd3dDevice->StretchRect(pRT_Surface, NULL, g_pSourceRT_Surface, NULL, D3DTEXF_NONE);
+			#endif
 
 			//
 			// Render the quad
@@ -199,13 +191,13 @@ namespace PP{
 		//
 		// Output render result to the screen(not needed in RENDER_TO_BACKBUFFER)
 		//
-		if (method == RENDER_TO_TEXTURE)
-		{
-			pd3dDevice->SetRenderTarget(0, pOldRT_Surface);
-			pd3dDevice->StretchRect(pRT_Surface, 0, pOldRT_Surface, 0, D3DTEXF_NONE);
-		}
-		pRT_Surface->Release();
-		pOldRT_Surface->Release();
+		#ifndef RENDER_TO_BACK_BUFFER
+		pd3dDevice->SetRenderTarget(0, pOldRT_Surface);
+		pd3dDevice->StretchRect(pRT_Surface, 0, pOldRT_Surface, 0, D3DTEXF_NONE);
+		#else
+		SAFE_RELEASE(pRT_Surface);
+		#endif
+		SAFE_RELEASE(pOldRT_Surface);
 		return D3D_OK;
 	}
 

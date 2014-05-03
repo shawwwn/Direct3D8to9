@@ -299,12 +299,14 @@ namespace PP {
 	}
 	HRESULT PostProcessSMAA::Render(IDirect3DTexture9* pSrcColorTexture, IDirect3DSurface9* pDstSurface)
 	{
+		m_pDevice->BeginScene();
 		// Setup the layout for our fullscreen quad.
 		m_pDevice->SetVertexDeclaration(m_pVertDeclPP);
 
 		edgesDetectionPass(pSrcColorTexture, INPUT_COLOR);
 		blendingWeightsCalculationPass();
 		neighborhoodBlendingPass(pSrcColorTexture, pDstSurface);
+		m_pDevice->EndScene();
 		return D3D_OK;
 	}
 	void PostProcessSMAA::onCreateDevice(IDirect3DDevice9* pd3dDevice, UINT width, UINT height)

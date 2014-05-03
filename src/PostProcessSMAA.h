@@ -36,10 +36,6 @@ namespace PP {
         float m_Threshold;
 		float m_Quad[4][5];
 
-		D3DXHANDLE   m_hTPostProcess;			// PostProcess technique handle
-		D3DXHANDLE   m_hTexSource;				// Handle to the post-process source textures
-		D3DXHANDLE   m_hTexScene;				// Handle to the saved scene texture
-
 		protected:
 			HRESULT initPermanentResources(IDirect3DDevice9* pDevice, UINT width, UINT height);
 			HRESULT initTemporaryResources(IDirect3DDevice9* pDevice, UINT width, UINT height);
