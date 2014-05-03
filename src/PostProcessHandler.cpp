@@ -72,11 +72,11 @@ namespace PP{
 	{
 		//init effect chain
 		// TODO: Use vector on effect chain
-		g_post_process_count = 1;
-		//g_pPostProcessChain[0] = new PostProcessSMAA();
-		//g_pPostProcessChain[0]->onCreateDevice(pd3dDevice, g_deviceWidth, g_deviceHeight);
-		g_pPostProcessChain[0] = new PostProcessBloom();
+		g_post_process_count = 2;
+		g_pPostProcessChain[0] = new PostProcessSMAA();
 		g_pPostProcessChain[0]->onCreateDevice(pd3dDevice, g_deviceWidth, g_deviceHeight);
+		g_pPostProcessChain[1] = new PostProcessBloom();
+		g_pPostProcessChain[1]->onCreateDevice(pd3dDevice, g_deviceWidth, g_deviceHeight);
 		return D3D_OK;
 	}
 

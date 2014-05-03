@@ -150,7 +150,7 @@ static const float BlurWeights[g_cKernelSize] =
 
 
 
-float BloomScale = 1.5f;
+float BloomScale = 1.25f;	// 1.5f
 
 
 

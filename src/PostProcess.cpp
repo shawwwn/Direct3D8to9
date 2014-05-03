@@ -90,8 +90,8 @@ namespace PP {
 		else
 			return D3DERR_INVALIDCALL;
 
-		// Setup  shaders' internal values
-		setupShader(m_pEffect);
+		setupShader(m_pEffect);		// Setup  shaders' internal values
+		setupTexture(pDevice, width, height);
 		return D3D_OK;
 	}
 
@@ -144,6 +144,14 @@ namespace PP {
                 }
             }
         }
+		return D3D_OK;
+	}
+
+	/**
+	*	Setup textures that used in this shader
+	*/
+	HRESULT PostProcess::setupTexture(IDirect3DDevice9* pDevice, UINT width, UINT height)
+	{
 		return D3D_OK;
 	}
 

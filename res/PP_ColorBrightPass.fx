@@ -102,7 +102,7 @@ sampler2D g_samSceneVelocity = sampler_state
 
 
 
-float Luminance = 0.08f;
+float Luminance = 0.065f;	// 0.08f
 static const float fMiddleGray = 0.18f;
 static const float fWhiteCutoff = 0.8f;
 
