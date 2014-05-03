@@ -764,11 +764,11 @@
 #define LANG_DIVEHI                     0x65
 #define SHADER_BLOOM_H                  101
 #define VK_NUMPAD6                      0x66
-#define SHADER_SMAA_H                   102
+#define SHADER_SMAA						102
 #define VK_NUMPAD7                      0x67
 #define VK_NUMPAD8                      0x68
 #define LANG_HAUSA                      0x68
-#define SHADER_HEADER_SMAA_H            104
+#define SHADER_HEADER_SMAA              104
 #define VK_NUMPAD9                      0x69
 #define SHADER_SMAA_TEX1                105
 #define VK_MULTIPLY                     0x6A
@@ -776,6 +776,7 @@
 #define SHADER_SMAA_TEX2                106
 #define VK_ADD                          0x6B
 #define LANG_QUECHUA                    0x6b
+#define SHADER_GBLUR_H                  107
 #define VK_SEPARATOR                    0x6C
 #define LANG_SOTHO                      0x6c
 #define VK_SUBTRACT                     0x6D
@@ -1514,7 +1515,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        107
+#define _APS_NEXT_RESOURCE_VALUE        108
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           101

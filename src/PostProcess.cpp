@@ -89,6 +89,61 @@ namespace PP {
 		}
 		else
 			return D3DERR_INVALIDCALL;
+
+		// Setup  shaders' internal values
+		setupShader(m_pEffect);
+		return D3D_OK;
+	}
+
+	/**
+	*	Setup a shader's internal values.
+	*	Used for passing variables(dimensions, preferences...) into shader
+	*/
+	HRESULT PostProcess::setupShader(ID3DXEffect* pEffect)
+	{
+		// If one or more kernel exists, convert kernel from
+        // pixel space to texel space.
+
+        // First check for kernels.  Kernels are identified by
+        // having a string annotation of name "ConvertPixelsToTexels"
+        D3DXHANDLE hParamToConvert;
+        D3DXHANDLE hAnnotation;
+        UINT uParamIndex = 0;
+        // If a top-level parameter has the "ConvertPixelsToTexels" annotation,
+        // do the conversion.
+        while( NULL != ( hParamToConvert = pEffect->GetParameter( NULL, uParamIndex++ ) ) )
+        {
+            if( NULL != ( hAnnotation = pEffect->GetAnnotationByName( hParamToConvert, "ConvertPixelsToTexels" ) ) )
+            {
+                LPCSTR szSource;
+                pEffect->GetString( hAnnotation, &szSource );
+                D3DXHANDLE hConvertSource = pEffect->GetParameterByName( NULL, szSource );
+
+                if( hConvertSource )
+                {
+                    // Kernel source exists. Proceed.
+                    // Retrieve the kernel size
+                    D3DXPARAMETER_DESC desc;
+                    pEffect->GetParameterDesc( hConvertSource, &desc );
+                    // Each element has 2 floats
+                    DWORD cKernel = desc.Bytes / ( 2 * sizeof( float ) );
+                    D3DXVECTOR4* pvKernel = new D3DXVECTOR4[cKernel];
+                    if( !pvKernel )
+                        return E_OUTOFMEMORY;
+                    pEffect->GetVectorArray( hConvertSource, pvKernel, cKernel );
+                    // Convert
+                    for( DWORD i = 0; i < cKernel; ++i )
+                    {
+                        pvKernel[i].x = pvKernel[i].x / m_deviceWidth;
+                        pvKernel[i].y = pvKernel[i].y / m_deviceHeight;
+                    }
+                    // Copy back
+                    pEffect->SetVectorArray( hParamToConvert, pvKernel, cKernel );
+
+                    delete[] pvKernel;
+                }
+            }
+        }
 		return D3D_OK;
 	}
 
@@ -150,13 +205,13 @@ namespace PP {
 	}
 	void PostProcess::onLostDevice()
 	{
-		releaseTemporaryResources();
 		m_pEffect->OnLostDevice();
+		releaseTemporaryResources();
 	}
 	void PostProcess::onResetDevice(IDirect3DDevice9* pd3dDevice, UINT width, UINT height)
 	{
-		initTemporaryResources(pd3dDevice, width, height);
 		m_pEffect->OnResetDevice();
+		initTemporaryResources(pd3dDevice, width, height);
 	}
 	void PostProcess::onDestroy(IDirect3DDevice9* pd3dDevice)
 	{

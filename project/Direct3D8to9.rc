@@ -79,7 +79,8 @@ PP_COLORBLOOMH.FX       RCDATA                  "..\\res\\PP_ColorBloomH.fx"
 SMAA.FX                 RCDATA                  "..\\res\\SMAA.fx"
 SMAA.H                  RCDATA                  "..\\res\\SMAA.h"
 AREATEXDX9.DDS          RCDATA                  "..\\res\\AreaTexDX9.dds"
-SearchTex.dds           RCDATA                  "..\\res\\SearchTex.dds"
+SEARCHTEX.DDS           RCDATA                  "..\\res\\SearchTex.dds"
+PP_ColorGBlurH.fx       RCDATA                  "..\\res\\PP_ColorGBlurH.fx"
 #endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////
 

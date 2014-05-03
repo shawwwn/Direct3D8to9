@@ -248,5 +248,8 @@
     <None Include="..\res\SearchTex.dds">
       <Filter>effect\shaders</Filter>
     </None>
+    <None Include="..\res\PP_ColorGBlurH.fx">
+      <Filter>effect\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
