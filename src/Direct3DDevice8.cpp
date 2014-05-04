@@ -776,7 +776,11 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 
 	if (g_Stride==36 && NumVertices==4 && primCount==2 && alphaRef==192)
 	{
+		#ifdef _DEBUG
 		if (!PP::g_presented && GetAsyncKeyState(VK_MENU))
+		#else
+		if (!PP::g_presented)
+		#endif
 		{
 			PP::g_presented = true;
 			pDevice9->EndScene(); // end the scene first

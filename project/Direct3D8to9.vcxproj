@@ -80,6 +80,7 @@
     <ResourceCompile Include="Direct3D8to9.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\README.md" />
     <None Include="..\res\AreaTexDX9.dds" />
     <None Include="..\res\PP_ColorBloomH.fx" />
     <None Include="..\res\PP_ColorBloomV.fx" />
