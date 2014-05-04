@@ -67,13 +67,14 @@ namespace PP {
 		}
 
 		// Set up our quad
-		PPVERT Quad[4] =
+		PPVERT tQuad[4] =
 		{
 			{ -0.5f,				-0.5f,				1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
 			{ m_deviceWidth-0.5f,	-0.5f,				1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f },
 			{ -0.5f,				m_deviceHeight-0.5f,1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f },
 			{ m_deviceWidth-0.5f,	m_deviceHeight-0.5f,1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f }
 		};
+		memcpy(m_Quad, tQuad, sizeof(PPVERT)*4);
 
 		// Create a vertex buffer out of the quad
 		hr = pDevice->CreateVertexBuffer(sizeof(PPVERT)*4, D3DUSAGE_WRITEONLY | D3DUSAGE_DYNAMIC, 0, D3DPOOL_DEFAULT, &m_pVB, NULL);
@@ -84,7 +85,7 @@ namespace PP {
 		LPVOID pVBData;
 		if(SUCCEEDED(m_pVB->Lock(0, 0, &pVBData, D3DLOCK_DISCARD)))
 		{
-			CopyMemory(pVBData, Quad, sizeof(Quad));
+			CopyMemory(pVBData, m_Quad, sizeof(m_Quad));
 			m_pVB->Unlock();
 		}
 		else

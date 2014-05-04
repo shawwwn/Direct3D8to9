@@ -224,7 +224,7 @@ namespace PP{
 		pd3dDevice->SetRenderState(D3DRS_CULLMODE, 3); //1
 
 		pd3dDevice->GetRenderState(D3DRS_ALPHABLENDENABLE, &dwAlphaBlendEnable);
-		pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, 0);	//1
+		pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, 1);	//1
 
 		pd3dDevice->GetRenderState(D3DRS_ZFUNC, &dwZFunc);
 		pd3dDevice->SetRenderState(D3DRS_ZFUNC, 4);

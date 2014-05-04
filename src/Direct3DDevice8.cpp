@@ -774,7 +774,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 		*/
 	}
 
-	if (g_Stride==36 && NumVertices==4 && primCount==2 && alphaRef==192)
+	if (g_Stride==36 && NumVertices==4 && primCount==2 && alphaRef==192 && Type==5)
 	{
 		#ifdef _DEBUG
 		if (!PP::g_presented && GetAsyncKeyState(VK_MENU))

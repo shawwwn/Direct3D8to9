@@ -46,6 +46,7 @@ namespace PP{
 			D3DXHANDLE   m_hTexScene;				// Handle to the saved scene texture
 			IDirect3DVertexBuffer9* m_pVB;
 			IDirect3DVertexDeclaration9* m_pVertDeclPP;
+			PPVERT m_Quad[4];
 
 			//
 			// Standard Procedure Functions
