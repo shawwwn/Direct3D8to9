@@ -235,6 +235,9 @@
     <ClInclude Include="..\src\HDRScene.h">
       <Filter>effect\HDR</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\complier.h">
+      <Filter>effect\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Direct3D8to9.rc">
