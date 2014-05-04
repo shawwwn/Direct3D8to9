@@ -10,6 +10,7 @@
 
 #include "PostProcessHandler.h"		// external...
 #include "NormalMapHandler.h"		// external...
+#include "HDRScene.h"				// external...
 #include "DebugUtils.h"				// external...
 
 CDirect3DDevice8::CDirect3DDevice8(IDirect3DDevice9* device, CDirect3D8* d3d)
@@ -21,6 +22,7 @@ CDirect3DDevice8::CDirect3DDevice8(IDirect3DDevice9* device, CDirect3D8* d3d)
 	pDevice9->GetCreationParameters(&deviceCreationParameters);
 
 	// initialize effect handler
+	HDR::onCreateDevice(pDevice9);
 	PP::onCreateDevice(pDevice9);
 	NP::onCreateDevice(pDevice9);
 }
@@ -167,6 +169,7 @@ STDMETHODIMP CDirect3DDevice8::CreateAdditionalSwapChain(THIS_ D3D8PRESENT_PARAM
 STDMETHODIMP CDirect3DDevice8::Reset(THIS_ D3D8PRESENT_PARAMETERS* pPresentationParameters)
 {
 	// Lost device handling
+	HDR::onLostDevice();
 	PP::onLostDevice();
 	NP::onLostDevice();
 
@@ -194,6 +197,7 @@ STDMETHODIMP CDirect3DDevice8::Reset(THIS_ D3D8PRESENT_PARAMETERS* pPresentation
 		pDirect3D9->Release();
 
 		// Reset device handling
+		HDR::onResetDevice(pDevice9);
 		PP::onResetDevice(pDevice9);
 		NP::onResetDevice(pDevice9);
 	}
@@ -460,11 +464,17 @@ STDMETHODIMP CDirect3DDevice8::GetDepthStencilSurface(THIS_ IDirect3DSurface8** 
 
 STDMETHODIMP CDirect3DDevice8::BeginScene(THIS)
 {
-	return pDevice9->BeginScene();
+	HRESULT hr = pDevice9->BeginScene();
+
+	HDR::onBeginScene();
+
+	return hr;
 }
 
 STDMETHODIMP CDirect3DDevice8::EndScene(THIS)
 {
+	HDR::onEndScene();
+
 	return pDevice9->EndScene();
 }
 
