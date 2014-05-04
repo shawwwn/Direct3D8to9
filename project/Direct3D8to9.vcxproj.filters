@@ -128,6 +128,9 @@
     <ClCompile Include="..\src\HDRScene.cpp">
       <Filter>effect\HDR</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\PostProcessHDR.cpp">
+      <Filter>effect\PostProcess\effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Direct3D8.h">
@@ -237,6 +240,9 @@
     </ClInclude>
     <ClInclude Include="..\src\compiler.h">
       <Filter>effect\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PostProcessHDR.h">
+      <Filter>effect\PostProcess\effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

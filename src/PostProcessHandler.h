@@ -5,6 +5,7 @@
 #include "PostPRocess.h"
 #include "PostProcessBloom.h"
 #include "PostProcessSMAA.h"
+#include "PostProcessHDR.h"
 
 //#define RENDER_TO_BACK_BUFFER	// kinda buggy..
 

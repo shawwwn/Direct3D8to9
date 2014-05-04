@@ -32,6 +32,7 @@
     <ClCompile Include="..\src\PostProcess.cpp" />
     <ClCompile Include="..\src\PostProcessBloom.cpp" />
     <ClCompile Include="..\src\PostProcessHandler.cpp" />
+    <ClCompile Include="..\src\PostProcessHDR.cpp" />
     <ClCompile Include="..\src\PostProcessSMAA.cpp" />
     <ClCompile Include="..\src\SpinLock.cpp" />
     <ClCompile Include="..\src\SysUtils.cpp" />
@@ -67,6 +68,7 @@
     <ClInclude Include="..\src\PostProcess.h" />
     <ClInclude Include="..\src\PostProcessBloom.h" />
     <ClInclude Include="..\src\PostProcessHandler.h" />
+    <ClInclude Include="..\src\PostProcessHDR.h" />
     <ClInclude Include="..\src\PostProcessSMAA.h" />
     <ClInclude Include="..\src\SearchTex.h" />
     <ClInclude Include="..\src\ShaderResource.h" />
