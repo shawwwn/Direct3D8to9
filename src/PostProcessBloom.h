@@ -39,7 +39,12 @@ namespace PP {
 			ID3DXEffect* m_pEffectBloomV;					// bloom effect - vertical
 			D3DXHANDLE   m_hTPostProcessBV;
 			D3DXHANDLE   m_hTexSourceBV;
-
+			ID3DXEffect* m_pEffectGBlurH;					// gaussian blur - honrizontal
+			D3DXHANDLE   m_hTPostProcessGBH;
+			D3DXHANDLE   m_hTexSourceGBH;
+			ID3DXEffect* m_pEffectGBlurV;					// gaussian blur - vertical
+			D3DXHANDLE   m_hTPostProcessGBV;
+			D3DXHANDLE   m_hTexSourceGBV;
 			//
 			// Standard Procedure Functions
 			//

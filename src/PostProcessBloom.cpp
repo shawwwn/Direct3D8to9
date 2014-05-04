@@ -42,6 +42,15 @@ namespace PP {
 		m_hTPostProcessBV = m_pEffectBloomV->GetTechniqueByName("PostProcess");
 		m_hTexSourceBV = m_pEffectBloomV->GetParameterByName(NULL, "g_txSrcColor");
 
+		// 6th shader - gaussian blur horizontal
+		hr = D3DXCreateEffectFromResource(pDevice, currentModule, "PP_ColorGBlurH.fx", NULL, NULL, 0, NULL, &m_pEffectGBlurH, NULL);
+		m_hTPostProcessGBH = m_pEffectGBlurH->GetTechniqueByName("PostProcess");
+		m_hTexSourceGBH = m_pEffectGBlurH->GetParameterByName(NULL, "g_txSrcColor");
+
+		// 7th shader - gaussian blur vertical
+		hr = D3DXCreateEffectFromResource(pDevice, currentModule, "PP_ColorGBlurV.fx", NULL, NULL, 0, NULL, &m_pEffectGBlurV, NULL);
+		m_hTPostProcessGBV = m_pEffectGBlurV->GetTechniqueByName("PostProcess");
+		m_hTexSourceGBV = m_pEffectGBlurV->GetParameterByName(NULL, "g_txSrcColor");
 		return D3D_OK;
 	}
 	HRESULT PostProcessBloom::setupTexture(IDirect3DDevice9* pDevice, UINT width, UINT height)
@@ -51,6 +60,8 @@ namespace PP {
 		setupShader(m_pEffectDownSize4x);
 		setupShader(m_pEffectBloomH);
 		setupShader(m_pEffectBloomV);
+		setupShader(m_pEffectGBlurH);
+		setupShader(m_pEffectGBlurV);
 
 		pDevice->CreateTexture(width, height, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &m_pBrightPassTexture, NULL);
 		m_pBrightPassTexture->GetSurfaceLevel(0, &m_pBrightPassSurface);
@@ -165,29 +176,29 @@ namespace PP {
 			m_pEffect->EndPass();
 			m_pEffect->End();
 
-			// horizontal bloom on 4x surface
+			// horizontal blur on 4x surface
 			m_pDevice->SetRenderTarget(NULL, m_pBloomHSurface);
-			m_pEffectBloomH->SetTechnique(m_hTPostProcessBH);
-			m_pEffectBloomH->Begin(&cPasses, 0);
-			m_pEffectBloomH->SetTexture(m_hTexSourceBH, m_pDownsize4xTexture);
-			m_pEffectBloomH->CommitChanges();
+			m_pEffectGBlurH->SetTechnique(m_hTPostProcessGBH);
+			m_pEffectGBlurH->Begin(&cPasses, 0);
+			m_pEffectGBlurH->SetTexture(m_hTexSourceGBH, m_pDownsize4xTexture);
+			m_pEffectGBlurH->CommitChanges();
 			m_pDevice->Clear(0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L);
-			m_pEffectBloomH->BeginPass(0);
+			m_pEffectGBlurH->BeginPass(0);
 			m_pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
-			m_pEffectBloomH->EndPass();
-			m_pEffectBloomH->End();
+			m_pEffectGBlurH->EndPass();
+			m_pEffectGBlurH->End();
 
-			// vertical bloom on 4x surface
+			// vertical blur on 4x surface
 			m_pDevice->SetRenderTarget(NULL, m_pBloomVSurface);
-			m_pEffectBloomV->SetTechnique(m_hTPostProcessBV);
-			m_pEffectBloomV->Begin(&cPasses, 0);
-			m_pEffectBloomV->SetTexture(m_hTexSourceBV, m_pBloomHTexture);
-			m_pEffectBloomV->CommitChanges();
+			m_pEffectGBlurV->SetTechnique(m_hTPostProcessGBV);
+			m_pEffectGBlurV->Begin(&cPasses, 0);
+			m_pEffectGBlurV->SetTexture(m_hTexSourceGBV, m_pBloomHTexture);
+			m_pEffectGBlurV->CommitChanges();
 			m_pDevice->Clear(0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L);
-			m_pEffectBloomV->BeginPass(0);
+			m_pEffectGBlurV->BeginPass(0);
 			m_pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
-			m_pEffectBloomV->EndPass();
-			m_pEffectBloomV->End();
+			m_pEffectGBlurV->EndPass();
+			m_pEffectGBlurV->End();
 
 			// combine 4x
 			m_pDevice->SetRenderTarget(NULL, pDstSurface);
@@ -220,6 +231,8 @@ namespace PP {
 		m_pEffectDownSize4x->OnLostDevice();
 		m_pEffectBloomH->OnLostDevice();
 		m_pEffectBloomV->OnLostDevice();
+		m_pEffectGBlurH->OnLostDevice();
+		m_pEffectGBlurV->OnLostDevice();
 		releaseTemporaryResources();
 	}
 	void PostProcessBloom::onResetDevice(IDirect3DDevice9* pd3dDevice, UINT width, UINT height)
@@ -230,6 +243,8 @@ namespace PP {
 		m_pEffectDownSize4x->OnResetDevice();
 		m_pEffectBloomH->OnResetDevice();
 		m_pEffectBloomV->OnResetDevice();
+		m_pEffectGBlurH->OnResetDevice();
+		m_pEffectGBlurV->OnResetDevice();
 		initTemporaryResources(pd3dDevice, width, height);
 	}
 	void PostProcessBloom::onDestroy(IDirect3DDevice9* pd3dDevice)
