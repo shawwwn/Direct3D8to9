@@ -1,4 +1,3 @@
-#include "complier.h"
 #include "Direct3D8.h"
 
 #ifndef D3D9_USE_DYNAMIC_LIBRARY

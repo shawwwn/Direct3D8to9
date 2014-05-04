@@ -3,6 +3,8 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 
+#include "compiler.h"
+
 #include <d3d9.h>
 #include "Direct3D8to9.h"
 #include "ObjectPool.h"

@@ -10,9 +10,6 @@
 #include "AreaTex.h"
 
 namespace PP {
-	//#define SMAA_USE_DDS_PRECOMPUTED_TEXTURES
-	//#define SMAA_ALLOW_LOCAL_FILES
-
 	struct PostProcessSMAA : public PostProcess
 	{
 		enum Preset { PRESET_LOW, PRESET_MEDIUM, PRESET_HIGH, PRESET_ULTRA, PRESET_CUSTOM };

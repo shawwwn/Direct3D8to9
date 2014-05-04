@@ -235,7 +235,7 @@
     <ClInclude Include="..\src\HDRScene.h">
       <Filter>effect\HDR</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\complier.h">
+    <ClInclude Include="..\src\compiler.h">
       <Filter>effect\utils</Filter>
     </ClInclude>
   </ItemGroup>

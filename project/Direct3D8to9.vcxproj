@@ -41,7 +41,7 @@
   <ItemGroup>
     <ClInclude Include="..\res\SMAA.h" />
     <ClInclude Include="..\src\AreaTex.h" />
-    <ClInclude Include="..\src\complier.h" />
+    <ClInclude Include="..\src\compiler.h" />
     <ClInclude Include="..\src\ComptrGurad.h" />
     <ClInclude Include="..\src\DebugUtils.h" />
     <ClInclude Include="..\src\Direct3D8.h" />
