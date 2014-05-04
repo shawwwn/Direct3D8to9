@@ -760,7 +760,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 	pDevice9->GetRenderState(D3DRS_ALPHAREF, &alphaRef);
 	
 	//if (DB::g_dbDebugOn)
-	if (GetAsyncKeyState(VK_MENU))
+	if (GetAsyncKeyState(VK_SHIFT))
 	{
 		return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 		/*
@@ -776,7 +776,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 
 	if (g_Stride==36 && NumVertices==4 && primCount==2 && alphaRef==192)
 	{
-		if (!PP::g_presented && GetAsyncKeyState(VK_SHIFT))
+		if (!PP::g_presented && GetAsyncKeyState(VK_MENU))
 		{
 			PP::g_presented = true;
 			pDevice9->EndScene(); // end the scene first

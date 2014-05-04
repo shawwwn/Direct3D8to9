@@ -1,10 +1,16 @@
+#include "complier.h"
 #include "Direct3D8.h"
 
+#ifndef D3D9_USE_DYNAMIC_LIBRARY
+#pragma comment(lib, "d3d9.lib")
+#else
 typedef IDirect3D9* (__stdcall* FnDirect3DCreate9)(UINT);
+#endif
 
 extern "C"
 IDirect3D8* __stdcall Direct3DCreate8(UINT /*sdk_version*/)
 {
+	#ifdef D3D9_USE_DYNAMIC_LIBRARY
 	HMODULE lib = GetModuleHandleW(L"d3d9.dll");
 	if (!lib)
 	{
@@ -20,7 +26,7 @@ IDirect3D8* __stdcall Direct3DCreate8(UINT /*sdk_version*/)
 	{
 		return NULL;
 	}
-
+	#endif
 	IDirect3D9* d3d = Direct3DCreate9(D3D_SDK_VERSION);
 	return d3d ? new CDirect3D8(d3d): NULL;
 }

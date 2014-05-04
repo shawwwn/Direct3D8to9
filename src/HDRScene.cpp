@@ -9,13 +9,15 @@ namespace HDR {
 	HRESULT initTemporaryResources()
 	{
 		HRESULT hr;
-		m_pDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &g_pBackBuffer);
 		// Setup screen dimensions
+		IDirect3DSurface9* t_pSurface;
+		m_pDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &t_pSurface);
 		D3DSURFACE_DESC t_Desc;
-		g_pBackBuffer->GetDesc(&t_Desc);	// this would actually increase the reference count on backbuffer by 1
+		t_pSurface->GetDesc(&t_Desc);	// this would actually increase the reference count on backbuffer by 1
 		g_deviceWidth = t_Desc.Width;
 		g_deviceHeight = t_Desc.Height;
-		
+		SAFE_RELEASE(t_pSurface);
+
 		// Create HDR texture
 		hr = m_pDevice->CreateTexture(g_deviceWidth, g_deviceHeight, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A16B16G16R16F, D3DPOOL_DEFAULT, &g_pHDRTexture, NULL);
 		if (FAILED(hr))
@@ -28,7 +30,6 @@ namespace HDR {
 	}
 	HRESULT releaseTemporaryResources()
 	{
-		g_pBackBuffer->Release();	// This is very weird, the ref count on backbuffer got further increased by one. Therefore, we need to release it twice.
 		SAFE_RELEASE(g_pBackBuffer);
 		SAFE_RELEASE(g_pHDRTexture);
 		SAFE_RELEASE(g_pHDRSurface);
@@ -37,15 +38,17 @@ namespace HDR {
 	// Detour the later rendering into a HDR texture
 	void setHDRRenderTarget()
 	{
+		m_pDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &g_pBackBuffer);
 		m_pDevice->SetRenderTarget(NULL, g_pHDRSurface);
-		//m_pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(0, 64, 64, 128), 1.0f, 0); // sky blue
-		m_pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(0, 0, 0, 0), 1.0f, 0);
+		m_pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(0, 64, 64, 128), 1.0f, 0); // sky blue
+		//m_pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(0, 0, 0, 0), 1.0f, 0);
 	}
 	// Restore the original backbuffer as the render target
 	void restoreBackBuffer()
 	{
 		m_pDevice->StretchRect(g_pHDRSurface, NULL, g_pBackBuffer, NULL, D3DTEXF_NONE);
 		m_pDevice->SetRenderTarget(NULL, g_pBackBuffer);
+		g_pBackBuffer->Release();
 	}
 
 
