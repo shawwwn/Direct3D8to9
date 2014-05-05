@@ -66,7 +66,9 @@ namespace NP {
 					{
 						pItem->m_pNormalTexture = NULL;
 						EXCP::AddException(pItem);
-						//MessageBox(NULL, "Create Normal Map Texture Failed!", "Error", MB_OK);
+						#ifdef _DEBUG
+							MessageBox(NULL, "Create Normal Map Texture Failed!", "Error", MB_OK);
+						#endif
 						return D3DERR_INVALIDCALL;	// return to normal rendering
 					}
 				}
@@ -76,16 +78,17 @@ namespace NP {
 				hr = D3DXComputeNormalMap(pItem->m_pNormalTexture, (IDirect3DTexture9*)pBaseTexture, 0, D3DX_NORMALMAP_MIRROR, D3DX_CHANNEL_LUMINANCE, NORMAL_AMPLITUDE*invertSign);
 				if (FAILED(hr))
 				{
+					
 					EXCP::AddException(pItem);
 					pItem->m_pNormalTexture->Release();
 					pItem->m_pNormalTexture = NULL;
-
-					//MessageBox(NULL, "Compute Normal Map Texture Failed!", "Error", MB_OK);
-					//DB::savePrimitiveStatesToFile(Type, minIndex, NumVertices, startIndex, primCount, 
-					//	0, Stride, 0, D3DTS_VIEW, 0,
-					//	baseVertexIndex, 0, pBaseTexture, "failTex.txt");
-					//D3DXSaveTextureToFile("failTex.bmp", D3DXIFF_BMP, pBaseTexture, NULL);
-
+					#ifdef _DEBUG
+						MessageBox(NULL, "Compute Normal Map Texture Failed!", "Error", MB_OK);
+						DB::savePrimitiveStatesToFile(Type, minIndex, NumVertices, startIndex, primCount, 
+							0, Stride, 0, (D3DTRANSFORMSTATETYPE)TransformStateType, 0,
+							baseVertexIndex, 0, pBaseTexture, "failTex.txt");
+						D3DXSaveTextureToFile("failTex.bmp", D3DXIFF_BMP, pBaseTexture, NULL);
+					#endif
 					return D3DERR_INVALIDCALL;	// return to normal rendering
 				}
 				pItem->m_Computed = true;

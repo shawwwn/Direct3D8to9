@@ -759,19 +759,23 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 	DWORD alphaRef;
 	pDevice9->GetRenderState(D3DRS_ALPHAREF, &alphaRef);
 	
-	//if (DB::g_dbDebugOn)
+#ifdef _DEBUG
+	if (DB::g_dbDebugOn)
+#else
 	if (GetAsyncKeyState(VK_SHIFT))
+#endif
 	{
-		return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
-		/*
-		DB::saveRenderStatesUsingDrawPrimitiveCount(pDevice9);
-		DB::savePrimitiveStatesUsingDrawPrimitiveCount(Type, minIndex, NumVertices, startIndex, primCount, 
-													   g_StreamNumber, g_Stride, g_Stage, g_State, g_FVFHandle,
-													   g_baseVertexIndex, zBufferDiscardingEnabled, g_pTexture9);
-		DB::saveBackBufferToImage(pDevice9, false);
-		DB::increaseDrawPrimitiveCount();
-		return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
-		*/
+		#ifdef NDEBUG
+			return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
+		#else
+			DB::saveRenderStatesUsingDrawPrimitiveCount(pDevice9);
+			DB::savePrimitiveStatesUsingDrawPrimitiveCount(Type, minIndex, NumVertices, startIndex, primCount, 
+														   g_StreamNumber, g_Stride, g_Stage, g_State, g_FVFHandle,
+														   g_baseVertexIndex, zBufferDiscardingEnabled, g_pTexture9);
+			DB::saveBackBufferToImage(pDevice9, false);
+			DB::increaseDrawPrimitiveCount();
+			return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
+		#endif
 	}
 
 	if (g_Stride==36 && NumVertices==4 && primCount==2 && alphaRef==192 && Type==5)

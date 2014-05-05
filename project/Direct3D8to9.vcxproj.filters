@@ -104,9 +104,6 @@
     <ClCompile Include="..\src\SysUtils.cpp">
       <Filter>effect\utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\NormalMapData.cpp">
-      <Filter>effect\NormalMap</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\NormalMapExceptionHandler.cpp">
       <Filter>effect\NormalMap</Filter>
     </ClCompile>
@@ -130,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="..\src\PostProcessHDR.cpp">
       <Filter>effect\PostProcess\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NormalMapData.cpp">
+      <Filter>effect\NormalMap\data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -196,9 +196,6 @@
     <ClInclude Include="..\src\NormalMapHandler.h">
       <Filter>effect\NormalMap</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\NormalMapData.h">
-      <Filter>effect\NormalMap</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\NormalMapExceptionHandler.h">
       <Filter>effect\NormalMap</Filter>
     </ClInclude>
@@ -243,6 +240,9 @@
     </ClInclude>
     <ClInclude Include="..\src\PostProcessHDR.h">
       <Filter>effect\PostProcess\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\NormalMapData.h">
+      <Filter>effect\NormalMap\data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
