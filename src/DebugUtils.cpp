@@ -6,6 +6,20 @@ namespace DB {
 	int g_dbDrawPrimitiveCount=0;
 
 	// D3D Debug Functions
+	bool dirExists(const char* dirPath)
+	{
+		DWORD ftyp = GetFileAttributesA(dirPath);
+		if (ftyp == INVALID_FILE_ATTRIBUTES)
+			return false;  //something is wrong with your path!
+		if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
+			return true;   // this is a directory!
+		return false;    // this is not a directory!
+	}
+	void createDir(const char* dirPath)
+	{
+		if (!dirExists(dirPath))
+			mkdir(dirPath);
+	}
 	void savePrimitiveStatesUsingDrawPrimitiveCount(D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount, 
                                 UINT StreamNumber, UINT Stride, DWORD Stage, D3DTRANSFORMSTATETYPE State, DWORD FVFHandle,
 							    UINT baseVertexIndex, BOOL zBufferDiscardingEnabled, IDirect3DBaseTexture9* g_pTexture9)
@@ -13,6 +27,7 @@ namespace DB {
 		char fullPath[64]="pics/";
 		char fileName[16];
 		char fileSuffix[16]="_prim.txt";
+		createDir(fullPath);
 		itoa(g_dbDrawPrimitiveCount, fileName, 10);
 		strcat(fullPath, fileName);
 		strcat(fullPath, fileSuffix);
@@ -50,6 +65,7 @@ namespace DB {
 		char postSuffix[8]="_end";
 		char preSuffix[8]="_begin";
 		char fileSuffix[8]=".jpg";
+		createDir(fullPath);
 		itoa(g_dbDrawPrimitiveCount, fileName, 10);
 		strcat(fullPath, fileName);
 		if (post)
@@ -73,13 +89,14 @@ namespace DB {
 	}
 	void saveRenderStatesUsingDrawPrimitiveCount(IDirect3DDevice9* pd3dDevice)
 	{
-			char fullPath[64]="pics/";
-			char fileName[16];
-			char fileSuffix[8]=".txt";
-			itoa(g_dbDrawPrimitiveCount, fileName, 10);
-			strcat(fullPath, fileName);
-			strcat(fullPath, fileSuffix);
-			saveRenderStatesToFile(pd3dDevice, fullPath);
+		char fullPath[64]="pics/";
+		char fileName[16];
+		char fileSuffix[8]=".txt";
+		createDir(fullPath);
+		itoa(g_dbDrawPrimitiveCount, fileName, 10);
+		strcat(fullPath, fileName);
+		strcat(fullPath, fileSuffix);
+		saveRenderStatesToFile(pd3dDevice, fullPath);
 	}
 	void saveRenderStatesToFile(IDirect3DDevice9* pd3dDevice, char* filename)
 	{

@@ -7,11 +7,14 @@
 #include <d3dx9.h>
 #include <iostream>
 #include <fstream>
+#include <direct.h>
 
 namespace DB {
 	extern bool g_dbDebugOn;
 	extern int g_dbDrawPrimitiveCount;
 
+	bool dirExists(const char* dirPath);
+	void createDir(const char* dirPath);
 	void savePrimitiveStatesUsingDrawPrimitiveCount(D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount, 
                                 UINT StreamNumber, UINT Stride, DWORD Stage, D3DTRANSFORMSTATETYPE State, DWORD FVFHandle,
 							    UINT baseVertexIndex, BOOL zBufferDiscardingEnabled, IDirect3DBaseTexture9* g_pTexture9);
