@@ -99,7 +99,7 @@ namespace NP {
 		texTable.addTextureEntry(32,  198,  191,  256, 256, false);								// Undead Graveyard - poles
 		texTable.addTextureEntry(32,  80,   30,   256, 256, false, true, 192, 4);				// Undead Crypt - top
 		texTable.addTextureEntry(32,  769,  443,  256, 256, false);								// Undead Crypt - body
-		texTable.addTextureEntry(32,  36,   18,   256, 256, false);								// Undead Hall of Dead - water
+		//texTable.addTextureEntry(32,  36,   18,   256, 256, false);							// Undead Hall of Dead - water [conflict]
 		texTable.addTextureEntry(32,  580,  358,  256, 256, false);								// Undead Hall of Dead - body
 		//texTable.addTextureEntry(32,  42,   20,   256, 256, false, true, 192, 4);				// Undead Tomb of Relics - top [trouble display]
 		texTable.addTextureEntry(32,  578,  342,  256, 256, false);								// Undead Tomb of Relics - body

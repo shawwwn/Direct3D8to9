@@ -42,7 +42,8 @@ namespace NP { namespace EXCP {
 	{
 		// Search for existing exception 
 		int index = 0;
-		for (std::vector<TextureException*>::iterator it=g_ExceptionList.begin(); it!=g_ExceptionList.end(); ++it, ++index)
+		std::vector<TextureException*>::iterator it;
+		for (it=g_ExceptionList.begin(); it!=g_ExceptionList.end(); ++it, ++index)
 		{
 			TextureException*& pException = *it;
 			if (pException->m_pTextureItem == pWhichTextureItem)
@@ -59,7 +60,9 @@ namespace NP { namespace EXCP {
 		}
 
 		// Construct an new exception
-		g_ExceptionList.push_back(new TextureException(pWhichTextureItem));
+		TextureException* pTE = new TextureException(pWhichTextureItem);
+		g_ExceptionList.push_back(pTE);
+		pTE=NULL;
 		return true;
 	}
 
@@ -83,7 +86,7 @@ namespace NP { namespace EXCP {
 	inline void DeleteException(std::vector<TextureException*>::iterator &whichIterator)
 	{
 		TextureException* pException = *whichIterator;
-		g_ExceptionList.erase(whichIterator);
+		whichIterator = g_ExceptionList.erase(whichIterator);
 		delete pException;
 	}
 
