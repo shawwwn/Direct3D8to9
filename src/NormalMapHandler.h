@@ -3,30 +3,35 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "TextureTable.h"
+#include "ExceptionalMeshTable.h"
 #include "NormalMapExceptionHandler.h"
-#include "NormalMapData.h"
 
 namespace NP {
 	#define NORMAL_AMPLITUDE -100
+	#define MAX_EXCEPTIONAL_MESH_COUNT 10
 	extern TextureTable g_texTable;
-	extern DWORD g_AlphaValue;
-	extern DWORD g_NormalTextureAlpha;
+	extern const ExceptionalMeshKeys g_exceptionalMeshes[MAX_EXCEPTIONAL_MESH_COUNT];
+	extern DWORD g_dwAlphaValue;
+	extern DWORD g_dwNormalTextureAlpha;
 
-	extern DWORD g_pColorArg1_0;
-	extern DWORD g_pColorOp_0;
-	extern DWORD g_pColorArg2_0;
-	extern DWORD g_pAlphaOp_0;
-	extern DWORD g_pAlphaArg1_0;
-	extern DWORD g_pAlphaArg2_0;
-	extern DWORD g_pTexCoordIndex_0;
+	extern DWORD g_dwColorArg1_0;
+	extern DWORD g_dwColorOp_0;
+	extern DWORD g_dwColorArg2_0;
+	extern DWORD g_dwAlphaOp_0;
+	extern DWORD g_dwAlphaArg1_0;
+	extern DWORD g_dwAlphaArg2_0;
+	extern DWORD g_dwTexCoordIndex_0;
 
-	extern DWORD g_AlphaTestEnable;
-	extern DWORD g_AlphaBlendEnable;
-	extern DWORD g_SrcBlend;
-	extern DWORD g_DestBlend;
-	extern DWORD g_TextureFactor;
+	extern DWORD g_dwAlphaTestEnable;
+	extern DWORD g_dwAlphaBlendEnable;
+	extern DWORD g_dwSrcBlend;
+	extern DWORD g_dwDestBlend;
+	extern DWORD g_dwTextureFactor;
 
-
+	// Is mesh a exceptional mesh
+	bool IsExceptionalMesh(UINT numVertices, UINT primCount, DWORD srcBlend, DWORD destBlend, DWORD alphaRef);
+	// Initialize normal map texture table
+	void InitTextureTable(TextureTable &texTable);
 	// Init global settings
 	HRESULT Init(IDirect3DDevice9* pd3dDevice);
 	// Query texture and perform normal mapping

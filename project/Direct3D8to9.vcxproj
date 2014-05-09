@@ -25,6 +25,7 @@
     <ClCompile Include="..\src\Direct3DVertexBuffer8.cpp" />
     <ClCompile Include="..\src\Direct3DVolume8.cpp" />
     <ClCompile Include="..\src\Direct3DVolumeTexture8.cpp" />
+    <ClCompile Include="..\src\ExceptionalMeshTable.cpp" />
     <ClCompile Include="..\src\HDRScene.cpp" />
     <ClCompile Include="..\src\NormalMapData.cpp" />
     <ClCompile Include="..\src\NormalMapExceptionHandler.cpp" />
@@ -60,8 +61,8 @@
     <ClInclude Include="..\src\Direct3DVertexBuffer8.h" />
     <ClInclude Include="..\src\Direct3DVolume8.h" />
     <ClInclude Include="..\src\Direct3DVolumeTexture8.h" />
+    <ClInclude Include="..\src\ExceptionalMeshTable.h" />
     <ClInclude Include="..\src\HDRScene.h" />
-    <ClInclude Include="..\src\NormalMapData.h" />
     <ClInclude Include="..\src\NormalMapExceptionHandler.h" />
     <ClInclude Include="..\src\NormalMapHandler.h" />
     <ClInclude Include="..\src\ObjectPool.h" />

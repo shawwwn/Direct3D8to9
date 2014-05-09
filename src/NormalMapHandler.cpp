@@ -3,27 +3,45 @@
 
 namespace NP {
 	TextureTable g_texTable;
-	DWORD g_AlphaValue = D3DCOLOR_ARGB(178,0,0,255);	// 70% transparency for transpant models
-	DWORD g_NormalTextureAlpha = D3DCOLOR_ARGB(255,0,0,255);	// 100% opacity for normal models
+	DWORD g_dwAlphaValue = D3DCOLOR_ARGB(178,0,0,255);	// 70% transparency for transpant models
+	DWORD g_dwNormalTextureAlpha = D3DCOLOR_ARGB(255,0,0,255);	// 100% opacity for normal models
 
-	DWORD g_pColorArg1_0;
-	DWORD g_pColorOp_0;
-	DWORD g_pColorArg2_0;
-	DWORD g_pAlphaOp_0;
-	DWORD g_pAlphaArg1_0;
-	DWORD g_pAlphaArg2_0;
-	DWORD g_pTexCoordIndex_0;
+	DWORD g_dwColorArg1_0;
+	DWORD g_dwColorOp_0;
+	DWORD g_dwColorArg2_0;
+	DWORD g_dwAlphaOp_0;
+	DWORD g_dwAlphaArg1_0;
+	DWORD g_dwAlphaArg2_0;
+	DWORD g_dwTexCoordIndex_0;
 
-	DWORD g_AlphaTestEnable;
-	DWORD g_AlphaBlendEnable;
-	DWORD g_SrcBlend;
-	DWORD g_DestBlend;
-	DWORD g_TextureFactor;
+	DWORD g_dwAlphaTestEnable;
+	DWORD g_dwAlphaBlendEnable;
+	DWORD g_dwSrcBlend;
+	DWORD g_dwDestBlend;
+	DWORD g_dwTextureFactor;
 
+	bool IsExceptionalMesh(UINT numVertices, UINT primCount, DWORD srcBlend, DWORD destBlend, DWORD alphaRef)
+	{
+		ExceptionalMeshKeys endKey = EMK_END();
+		for (int i=0; memcmp(&(g_exceptionalMeshes[i]), &endKey, sizeof(ExceptionalMeshKeys))!=0; i++)
+		{
+			if (g_exceptionalMeshes[i].m_NumVertices==numVertices && g_exceptionalMeshes[i].m_PrimCount==primCount)
+			{
+				if (g_exceptionalMeshes[i].m_SrcBlend!=0 && g_exceptionalMeshes[i].m_SrcBlend!=srcBlend)
+					continue;
+				if (g_exceptionalMeshes[i].m_DestBlend!=0 && g_exceptionalMeshes[i].m_DestBlend!=destBlend)
+					continue;
+				if (g_exceptionalMeshes[i].m_AlphaRef!=0 && g_exceptionalMeshes[i].m_AlphaRef!=alphaRef)
+					continue;
+				return true;
+			}
+		}
+		return false;
+	}
 
 	HRESULT Init(IDirect3DDevice9* pd3dDevice)
 	{
-		Input(g_texTable);
+		InitTextureTable(g_texTable);
 		return D3D_OK;
 	}
 
@@ -31,15 +49,15 @@ namespace NP {
                                   D3DPRIMITIVETYPE Type, UINT baseVertexIndex, UINT minIndex, UINT startIndex,
                                   UINT Stride, UINT NumVertices, UINT primCount, DWORD AlphaRef, DWORD TransformStateType)
 	{
-		if (TransformStateType==2) { return D3DERR_INVALIDCALL; }	// filter out terrain texture
+		bool isExceptionalMesh = IsExceptionalMesh(NumVertices, primCount, g_dwSrcBlend, g_dwDestBlend, AlphaRef); // exceptional mesh flag
+
+		if (!isExceptionalMesh && TransformStateType==2) { return D3DERR_INVALIDCALL; }	// filter out terrain texture
 		HRESULT hr = D3D_OK;
 		IDirect3DTexture9* pNormalTexture = NULL;
-		DWORD dwAlphaTestEnable, dwAlphaBlendEnable, dwZWriteEnable;
-		pd3dDevice->GetRenderState(D3DRS_ALPHATESTENABLE, &dwAlphaTestEnable);
-		pd3dDevice->GetRenderState(D3DRS_ALPHABLENDENABLE, &dwAlphaBlendEnable);
+		DWORD dwZWriteEnable;
 		pd3dDevice->GetRenderState(D3DRS_ZWRITEENABLE, &dwZWriteEnable);
 		bool isPureColorMesh;
-		bool isAlphaBenldEnable = (dwAlphaTestEnable==1 && dwAlphaBlendEnable==1);
+		bool isAlphaBenldEnable = (g_dwAlphaTestEnable==1 && g_dwAlphaBlendEnable==1);
 
 
 		//
@@ -126,7 +144,7 @@ namespace NP {
 		pd3dDevice->SetTexture(0, pNormalTexture);
 		pd3dDevice->SetTexture(1, pBaseTexture);
 		// set alpha blending
-		pd3dDevice->SetRenderState(D3DRS_TEXTUREFACTOR, g_AlphaValue);
+		pd3dDevice->SetRenderState(D3DRS_TEXTUREFACTOR, g_dwAlphaValue);
 
 		pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 		pd3dDevice->SetRenderState(D3DRS_SRCBLEND,  D3DBLEND_SRCALPHA);
@@ -166,7 +184,7 @@ namespace NP {
 		{
 			pd3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 			// for normal texture
-			pd3dDevice->SetRenderState(D3DRS_TEXTUREFACTOR, g_NormalTextureAlpha);
+			pd3dDevice->SetRenderState(D3DRS_TEXTUREFACTOR, g_dwNormalTextureAlpha);
 			pd3dDevice->SetTexture(2, pBaseTexture);
 			pd3dDevice->SetTexture(3, pBaseTexture);
 			pd3dDevice->SetTextureStageState(2, D3DTSS_TEXCOORDINDEX, coord);
@@ -215,39 +233,39 @@ namespace NP {
 
 	void backupTextureStageStates(IDirect3DDevice9* pd3dDevice)
 	{
-		pd3dDevice->GetTextureStageState(0, D3DTSS_COLORARG1, &g_pColorArg1_0);
-		pd3dDevice->GetTextureStageState(0, D3DTSS_COLOROP, &g_pColorOp_0);
-		pd3dDevice->GetTextureStageState(0, D3DTSS_COLORARG2, &g_pColorArg2_0);
-		pd3dDevice->GetTextureStageState(0, D3DTSS_ALPHAOP, &g_pAlphaOp_0);
-		pd3dDevice->GetTextureStageState(0, D3DTSS_ALPHAARG1, &g_pAlphaArg1_0);
-		pd3dDevice->GetTextureStageState(0, D3DTSS_ALPHAARG2, &g_pAlphaArg2_0);
-		pd3dDevice->GetTextureStageState(0, D3DTSS_TEXCOORDINDEX, &g_pTexCoordIndex_0);
+		pd3dDevice->GetTextureStageState(0, D3DTSS_COLORARG1, &g_dwColorArg1_0);
+		pd3dDevice->GetTextureStageState(0, D3DTSS_COLOROP, &g_dwColorOp_0);
+		pd3dDevice->GetTextureStageState(0, D3DTSS_COLORARG2, &g_dwColorArg2_0);
+		pd3dDevice->GetTextureStageState(0, D3DTSS_ALPHAOP, &g_dwAlphaOp_0);
+		pd3dDevice->GetTextureStageState(0, D3DTSS_ALPHAARG1, &g_dwAlphaArg1_0);
+		pd3dDevice->GetTextureStageState(0, D3DTSS_ALPHAARG2, &g_dwAlphaArg2_0);
+		pd3dDevice->GetTextureStageState(0, D3DTSS_TEXCOORDINDEX, &g_dwTexCoordIndex_0);
 	}
 	void restoreTextureStageStates(IDirect3DDevice9* pd3dDevice)
 	{
-		pd3dDevice->SetTextureStageState(0,D3DTSS_COLORARG1, g_pColorArg1_0);
-		pd3dDevice->SetTextureStageState(0,D3DTSS_COLOROP, g_pColorOp_0);
-		pd3dDevice->SetTextureStageState(0,D3DTSS_COLORARG2, g_pColorArg2_0);
-		pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, g_pAlphaOp_0);
-		pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, g_pAlphaArg1_0);
-		pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, g_pAlphaArg2_0);
-		pd3dDevice->SetTextureStageState(0, D3DTSS_TEXCOORDINDEX, g_pTexCoordIndex_0);
+		pd3dDevice->SetTextureStageState(0,D3DTSS_COLORARG1, g_dwColorArg1_0);
+		pd3dDevice->SetTextureStageState(0,D3DTSS_COLOROP, g_dwColorOp_0);
+		pd3dDevice->SetTextureStageState(0,D3DTSS_COLORARG2, g_dwColorArg2_0);
+		pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, g_dwAlphaOp_0);
+		pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, g_dwAlphaArg1_0);
+		pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, g_dwAlphaArg2_0);
+		pd3dDevice->SetTextureStageState(0, D3DTSS_TEXCOORDINDEX, g_dwTexCoordIndex_0);
 	}
 	void backupRenderStates(IDirect3DDevice9* pd3dDevice)
 	{
-		pd3dDevice->GetRenderState(D3DRS_ALPHATESTENABLE, &g_AlphaTestEnable);
-		pd3dDevice->GetRenderState(D3DRS_ALPHABLENDENABLE, &g_AlphaBlendEnable);
-		pd3dDevice->GetRenderState(D3DRS_SRCBLEND, &g_SrcBlend);
-		pd3dDevice->GetRenderState(D3DRS_DESTBLEND, &g_DestBlend);
-		pd3dDevice->GetRenderState(D3DRS_TEXTUREFACTOR, &g_TextureFactor);
+		pd3dDevice->GetRenderState(D3DRS_ALPHATESTENABLE, &g_dwAlphaTestEnable);
+		pd3dDevice->GetRenderState(D3DRS_ALPHABLENDENABLE, &g_dwAlphaBlendEnable);
+		pd3dDevice->GetRenderState(D3DRS_SRCBLEND, &g_dwSrcBlend);
+		pd3dDevice->GetRenderState(D3DRS_DESTBLEND, &g_dwDestBlend);
+		pd3dDevice->GetRenderState(D3DRS_TEXTUREFACTOR, &g_dwTextureFactor);
 	}
 	void restoreRenderStates(IDirect3DDevice9* pd3dDevice)
 	{
-		pd3dDevice->SetRenderState(D3DRS_ALPHATESTENABLE, g_AlphaTestEnable);
-		pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, g_AlphaBlendEnable);
-		pd3dDevice->SetRenderState(D3DRS_SRCBLEND, g_SrcBlend);
-		pd3dDevice->SetRenderState(D3DRS_DESTBLEND, g_DestBlend);
-		pd3dDevice->SetRenderState(D3DRS_TEXTUREFACTOR, g_TextureFactor);
+		pd3dDevice->SetRenderState(D3DRS_ALPHATESTENABLE, g_dwAlphaTestEnable);
+		pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, g_dwAlphaBlendEnable);
+		pd3dDevice->SetRenderState(D3DRS_SRCBLEND, g_dwSrcBlend);
+		pd3dDevice->SetRenderState(D3DRS_DESTBLEND, g_dwDestBlend);
+		pd3dDevice->SetRenderState(D3DRS_TEXTUREFACTOR, g_dwTextureFactor);
 	}
 
 	#pragma region Standard Procedure Functions
@@ -266,7 +284,7 @@ namespace NP {
 
 	void onDestroy(IDirect3DDevice9* pd3dDevice)
 	{
-		g_texTable.Cleanup();
+		g_texTable.cleanup();
 	}
 	#pragma endregion
 }

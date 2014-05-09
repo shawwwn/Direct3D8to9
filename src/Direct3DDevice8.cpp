@@ -801,11 +801,18 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 	}
 	else
 	{
+		#ifdef _DEBUG
+		if (GetAsyncKeyState(VK_SHIFT))
+		{
+		#endif
 		HRESULT hr = NP::PerformNormalMappping(pDevice9, g_pTexture9,
                                                Type, g_baseVertexIndex, minIndex, startIndex,
                                                g_Stride, NumVertices, primCount, alphaRef, (DWORD)g_State);
 		if (SUCCEEDED(hr))
 			return hr;	// return while the object has already been rendered
+		#ifdef _DEBUG
+		}
+		#endif
 	}
 	return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 }

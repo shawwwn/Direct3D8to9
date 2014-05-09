@@ -60,7 +60,7 @@ namespace NP {
 			IDirect3DTexture9* queryNormalTexture(DWORD stride, DWORD numVertices, DWORD primCount);
 			IDirect3DTexture9* queryNormalTexture(TextureKeys &keys);
 			void computeNormalTextures();
-			void Cleanup();
+			void cleanup();
 			// member variables
 			std::map<TextureKeys, TextureItem> m_Table;
 	};

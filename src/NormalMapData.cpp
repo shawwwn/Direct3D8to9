@@ -1,9 +1,19 @@
-#include "NormalMapData.h"
+#include "NormalMapHandler.h"
 
 namespace NP {
-	void Input(TextureTable &texTable)
+	const ExceptionalMeshKeys g_exceptionalMeshes[MAX_EXCEPTIONAL_MESH_COUNT] = {
+		/* 
+		 * Format:
+		 * NumVertices, PrimCount, SrcBlend, DestBlend, AlphaRef (0 is the wildcard here)
+		 */
+		{ 466, 295,  5, 0, 0 },			// Orc Watch Tower - body
+		{ 384, 249,  5, 0, 0 },			// Orc Stronghold - body
+		EMK_END(),
+	};
+
+	void InitTextureTable(TextureTable &texTable)
 	{
-		texTable.Cleanup();
+		texTable.cleanup();
 		/*
 		 * Format: 
 		 * Stride, NumVertices, PrimCount, Width, Height, Inverted, IsMask(optional), NormalAlphaRef(optional), TransplantAlphaRef(optional)
@@ -11,7 +21,7 @@ namespace NP {
 		texTable.addTextureEntry(32,  1053, 511,  256, 256, false);								// Human Construction Set
 		//texTable.addTextureEntry(32,  20,   10,   256, 256, false, true, 192, 4);				// Human Farm - top
 		texTable.addTextureEntry(32,  320,  153,  256, 256, false);								// Human Farm - body
-		//texTable.addTextureEntry(32,  8,    6,    256, 256, false);							// Human Townhall - base
+		texTable.addTextureEntry(32,  8,    6,    256, 256, false);								// Human Townhall - base
 		texTable.addTextureEntry(32,  18,   10,   512, 512, false, true, 192, 4);				// Human Townhall - top
 		texTable.addTextureEntry(32,  454,  209,  512, 512, false);								// Human Townhall - body
 		texTable.addTextureEntry(32,  37,   19,   512, 512, false, true, 192, 4);				// Human Keep - top
@@ -156,6 +166,22 @@ namespace NP {
 		texTable.addTextureEntry(32,  136,  92,   256, 256, false);								// NightElf Acient Protector - feets
 		texTable.addTextureEntry(32,  115,  64,   256, 256, false);								// NightElf Acient Protector - leaves
 		texTable.addTextureEntry(32,  92,   87,   256, 256, false, true, 192, 4);				// NightElf Acient Protector - top
+
+		//texTable.addTextureEntry(32,  12,   6,    256, 256, false);							// Nage Temple of Tides - pearls [conflict]
+		//texTable.addTextureEntry(32,  24,   12,   256, 256, false);							// Nage Temple of Tides - pearls2 [conflict]
+		texTable.addTextureEntry(32,  22,   20,   256, 256, false);								// Nage Temple of Tides - body
+		texTable.addTextureEntry(32,  114,  114,  256, 256, false);								// Nage Temple of Tides - dragon
+		texTable.addTextureEntry(32,  194,  252,  256, 256, false);								// Nage Temple of Tides - pole
+		texTable.addTextureEntry(32,  86,   90,   256, 256, false);								// Nage Temple of Tides - moon
+		texTable.addTextureEntry(32,  201,  112,  256, 256, false, true, 192, 4);				// Nage Temple of Tides - top
+		///texTable.addTextureEntry(32,  24,   24,   256, 256, false);							// Nage Coral Bed - coral [conflict]
+		texTable.addTextureEntry(32,  402,  359,  256, 256, false);								// Nage Coral Bed - body
+		texTable.addTextureEntry(32,  34,   27,   256, 256, false, true, 192, 4);				// Nage Coral Bed - top
+		texTable.addTextureEntry(32,  698,  706,  256, 256, true, true, 192, 4);				// Nage Amphibian Bivouac - top
+		texTable.addTextureEntry(32,  13,   12,   32, 32, false);								// Nage Tidal Guardian - water
+		texTable.addTextureEntry(32,  269,  277,  256, 256, false);								// Nage Tidal Guardian - body
+		texTable.addTextureEntry(32,  346,  384,  256, 256, false);								// Nage Tidal Guardian - head
+		texTable.addTextureEntry(32,  72,   72,   256, 256,  false, true, 192, 4);				// Nage Tidal Guardian - top
 
 		texTable.addTextureEntry(32,  271,  239,  256, 256, false);								// Gold Mine - mine
 		texTable.addTextureEntry(32,  84,   51,   64,  64,  false);								// Gold Mine - gold

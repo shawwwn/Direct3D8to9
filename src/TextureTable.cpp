@@ -131,7 +131,7 @@ namespace NP {
 	{
 		// TODO: Loop through the map and compute all base textures into normal texture
 	}
-	void TextureTable::Cleanup()
+	void TextureTable::cleanup()
 	{
 		for (std::map<TextureKeys, TextureItem>::iterator it=m_Table.begin(); it!=m_Table.end(); ++it)
 		{

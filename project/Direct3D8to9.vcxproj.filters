@@ -95,9 +95,6 @@
     <ClCompile Include="..\src\PostProcessHandler.cpp">
       <Filter>effect\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\PostProcess.cpp">
-      <Filter>effect\PostProcess</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\DebugUtils.cpp">
       <Filter>effect\utils</Filter>
     </ClCompile>
@@ -129,6 +126,12 @@
       <Filter>effect\PostProcess\effect</Filter>
     </ClCompile>
     <ClCompile Include="..\src\NormalMapData.cpp">
+      <Filter>effect\NormalMap\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PostProcess.cpp">
+      <Filter>effect\PostProcess\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ExceptionalMeshTable.cpp">
       <Filter>effect\NormalMap\data</Filter>
     </ClCompile>
   </ItemGroup>
@@ -241,7 +244,7 @@
     <ClInclude Include="..\src\PostProcessHDR.h">
       <Filter>effect\PostProcess\effect</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\NormalMapData.h">
+    <ClInclude Include="..\src\ExceptionalMeshTable.h">
       <Filter>effect\NormalMap\data</Filter>
     </ClInclude>
   </ItemGroup>
