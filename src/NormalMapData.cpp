@@ -58,10 +58,14 @@ namespace NP {
 		//texTable.addTextureEntry(32,  32,   20,   256, 128, true, true, 192, 4);				// Human Cannon Tower - top
 		texTable.addTextureEntry(32,  300,  189,  256, 128, true);								// Human Cannon Tower - body
 
-		texTable.addTextureEntry(32,  300,  252,  256, 256, false);								// Orc Construction Set - large
-		texTable.addTextureEntry(32,  264,  228,  256, 256, false);								// Orc Construction Set - medium
-		texTable.addTextureEntry(32,  198,  164,  256, 256, false);								// Orc Construction Set - small
-		//texTable.addTextureEntry(32,  64,   64,   256, 256, false, true, 192, 4);				// Orc Construction Set - top (conflict)
+		texTable.addTextureEntry(32,  300,  252,  256, 256, false);								// Orc Construction Set - large fence
+		texTable.addTextureEntry(32,  264,  228,  256, 256, false);								// Orc Construction Set - medium fence
+		texTable.addTextureEntry(32,  198,  164,  256, 256, false);								// Orc Construction Set - small fence
+		texTable.addTextureEntry(32,  64,   64,   256, 256, false);								// Orc Construction Set - small roof (conflict)
+		texTable.addTextureEntry(32,  96,   96,   256, 256, false);								// Orc Construction Set - medium roof
+		texTable.addTextureEntry(32,  36,   48,   256, 256, false);								// Orc Construction Set - medium pole
+		texTable.addTextureEntry(32,  48,   72,   256, 256, false);								// Orc Construction Set - large stick
+		//texTable.addTextureEntry(32,  48,   24,   256, 256, false);							// Orc Construction Set - large cover (conflict)
 		texTable.addTextureEntry(32,  160,  104,  256, 256, true);								// Orc Structure - base
 		texTable.addTextureEntry(32,  124,  80,   256, 256, false);								// Orc Structure Spike
 		texTable.addTextureEntry(32,  192,  144,  128, 128, false);								// Orc Structure Barricade
@@ -178,10 +182,30 @@ namespace NP {
 		texTable.addTextureEntry(32,  402,  359,  256, 256, false);								// Nage Coral Bed - body
 		texTable.addTextureEntry(32,  34,   27,   256, 256, false, true, 192, 4);				// Nage Coral Bed - top
 		texTable.addTextureEntry(32,  698,  706,  256, 256, true, true, 192, 4);				// Nage Amphibian Bivouac - top
-		texTable.addTextureEntry(32,  13,   12,   32, 32, false);								// Nage Tidal Guardian - water
+		texTable.addTextureEntry(32,  13,   12,   32,  32,  false);								// Nage Tidal Guardian - water
 		texTable.addTextureEntry(32,  269,  277,  256, 256, false);								// Nage Tidal Guardian - body
 		texTable.addTextureEntry(32,  346,  384,  256, 256, false);								// Nage Tidal Guardian - head
-		texTable.addTextureEntry(32,  72,   72,   256, 256,  false, true, 192, 4);				// Nage Tidal Guardian - top
+		texTable.addTextureEntry(32,  72,   72,   256, 256, false, true, 192, 4);				// Nage Tidal Guardian - top
+
+		texTable.addTextureEntry(32,  180,  94,   256, 256, true);								// IceTroll Barracks - body [messy]
+		texTable.addTextureEntry(32,  356,  182,  256, 256, false);								// IceTroll Barracks - roof
+		//texTable.addTextureEntry(32,  80,    32,  256, 256, false, true, 192, 4);				// IceTroll Barracks - tusks [display issue]
+		texTable.addTextureEntry(32,  128,  68,   256, 256, false, true, 192, 4);				// IceTroll Barracks - top
+		texTable.addTextureEntry(32,  20,   23,   256, 256, false);								// IceTroll Altar - skull
+		texTable.addTextureEntry(32,  70,   75,   256, 256, false);								// IceTroll Altar - skull2
+		texTable.addTextureEntry(32,  70,   70,   256, 256, false);								// IceTroll Altar - stair
+		texTable.addTextureEntry(32,  20,   16,   256, 256, false);								// IceTroll Altar - body
+		texTable.addTextureEntry(32,  177,  104,  256, 256, false);								// IceTroll Altar - water
+		texTable.addTextureEntry(32,  231,  231,  256, 256, false);								// IceTroll Altar - thorns
+		texTable.addTextureEntry(32,  176,  52,   256, 256, false);								// IceTroll Altar - torches
+		texTable.addTextureEntry(32,  286,  336,  256, 256, false);								// IceTroll Altar - dragon
+		texTable.addTextureEntry(32,  28,   16,   256, 256, false, true, 192, 4);				// IceTroll Altar - top1
+		texTable.addTextureEntry(32,  94,   68,   256, 256, false, true, 192, 4);				// IceTroll Altar - top2
+		texTable.addTextureEntry(32,  598,  496,  256, 256, false);								// IceTroll Dragon Roost
+		texTable.addTextureEntry(32,  120,  126,  256, 256, false, true, 192, 4);				// IceTroll Igloo - tusks
+		texTable.addTextureEntry(32,  161,  175,  256, 256, false, true, 192, 4);				// IceTroll Igloo - top
+		texTable.addTextureEntry(32,  424,  350,  256, 256, false);								// IceTroll War Mill - body
+		texTable.addTextureEntry(32,  22,   17,   256, 256, true);								// IceTroll War Mill - top
 
 		texTable.addTextureEntry(32,  271,  239,  256, 256, false);								// Gold Mine - mine
 		texTable.addTextureEntry(32,  84,   51,   64,  64,  false);								// Gold Mine - gold

@@ -12,7 +12,7 @@ namespace NP {
 		DWORD m_DestBlend;
 		DWORD m_AlphaRef;
 	};
-	#define EMK_END() {-1,-1,-1,-1,-1}
+	#define EMK_END() {0, 0, 0, 0, 0}
 
 	// TODO: Implement actual table
 }
