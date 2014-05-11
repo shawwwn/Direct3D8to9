@@ -59,7 +59,6 @@ namespace NP {
 		bool isPureColorMesh;
 		bool isAlphaBenldEnable = (g_dwAlphaTestEnable==1 && g_dwAlphaBlendEnable==1);
 
-
 		//
 		// Query For Normal Map Texture
 		//
@@ -128,7 +127,6 @@ namespace NP {
 		{
 			return D3DERR_INVALIDCALL;	// The model is a pre-build placement
 		}
-
 
 		//
 		// Render Normal Map
@@ -225,6 +223,9 @@ namespace NP {
 		pd3dDevice->SetTextureStageState(2, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
 		pd3dDevice->SetTextureStageState(3, D3DTSS_COLOROP, D3DTOP_DISABLE);
 		pd3dDevice->SetTextureStageState(3, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
+		pd3dDevice->SetTexture(1, NULL);
+		pd3dDevice->SetTexture(2, NULL);
+		pd3dDevice->SetTexture(3, NULL);
 		restoreTextureStageStates(pd3dDevice);
 		restoreRenderStates(pd3dDevice);
 		pd3dDevice->SetTexture(0, pBaseTexture);

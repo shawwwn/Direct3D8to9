@@ -209,7 +209,7 @@ STDMETHODIMP CDirect3DDevice8::Present(THIS_ CONST RECT* pSourceRect, CONST RECT
 {
 	//if (GetAsyncKeyState(VK_MENU))
 	//	MessageBox(NULL, "finish", "over", MB_OK);
-	if (GetAsyncKeyState(VK_CONTROL))
+	if (GetAsyncKeyState(VK_F11))
 		DB::g_dbDebugOn = true;
 	else
 		DB::g_dbDebugOn = false;
