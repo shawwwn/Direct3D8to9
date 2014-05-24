@@ -1,7 +1,6 @@
 #include "ShadowVolume.h"
 
 namespace SV {
-
 	const DWORD SHADOWVERTEX::FVF = D3DFVF_XYZRHW | D3DFVF_DIFFUSE;
 
 	void AddEdge( WORD* pEdges, DWORD& dwNumEdges, WORD v0, WORD v1 )
@@ -107,8 +106,7 @@ namespace SV {
 
 	HRESULT ShadowVolume::Render( LPDIRECT3DDEVICE9 pd3dDevice )
 	{
-		pd3dDevice->SetFVF( D3DFVF_XYZ );
-		return pd3dDevice->DrawPrimitiveUP( D3DPT_TRIANGLELIST, m_dwNumVertices/3,
-											m_pVertices, sizeof(D3DXVECTOR3) );
+		pd3dDevice->SetFVF(D3DFVF_XYZ);
+		return pd3dDevice->DrawPrimitiveUP(D3DPT_TRIANGLELIST, m_dwNumVertices/3, m_pVertices, sizeof(D3DXVECTOR3));
 	}
 }

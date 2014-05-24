@@ -32,8 +32,10 @@ CDirect3DDevice8::CDirect3DDevice8(IDirect3DDevice9* device, CDirect3D8* d3d)
 CDirect3DDevice8::~CDirect3DDevice8()
 {
 	// destroy effect handler
+	HDR::onDestroy(pDevice9);
 	NP::onDestroy(pDevice9);
 	PP::onDestroy(pDevice9);
+	SV::onDestroy(pDevice9);
 
 	pDirect3D8->DevicePool.Destory(pDevice9);
 	pDevice9 = NULL;
@@ -174,6 +176,7 @@ STDMETHODIMP CDirect3DDevice8::Reset(THIS_ D3D8PRESENT_PARAMETERS* pPresentation
 	HDR::onLostDevice();
 	PP::onLostDevice();
 	NP::onLostDevice();
+	SV::onLostDevice();
 
 	IDirect3D9* pDirect3D9 = NULL;
 	HRESULT hr = pDevice9->GetDirect3D(&pDirect3D9);
@@ -202,6 +205,7 @@ STDMETHODIMP CDirect3DDevice8::Reset(THIS_ D3D8PRESENT_PARAMETERS* pPresentation
 		HDR::onResetDevice(pDevice9);
 		PP::onResetDevice(pDevice9);
 		NP::onResetDevice(pDevice9);
+		SV::onResetDevice(pDevice9);
 	}
 
 	return hr;
@@ -209,12 +213,16 @@ STDMETHODIMP CDirect3DDevice8::Reset(THIS_ D3D8PRESENT_PARAMETERS* pPresentation
 
 STDMETHODIMP CDirect3DDevice8::Present(THIS_ CONST RECT* pSourceRect, CONST RECT* pDestRect, HWND hDestWindowOverride, CONST RGNDATA* pDirtyRegion)
 {
-	//if (GetAsyncKeyState(VK_MENU))
-	//	MessageBox(NULL, "finish", "over", MB_OK);
+	// Enable debug flag for PostProcess
 	if (GetAsyncKeyState(VK_F11))
 		DB::g_dbDebugOn = true;
 	else
 		DB::g_dbDebugOn = false;
+
+	// Enable/Disable ShadowVolume
+	if (GetAsyncKeyState(VK_F10))
+		SV::g_Enable = !SV::g_Enable;
+
 	DB::restDrawPrimitiveCount();
 	PP::g_presented = false;
 	NP::EXCP::CheckAll();	// check exception list
@@ -762,26 +770,32 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 	DWORD alphaRef;
 	pDevice9->GetRenderState(D3DRS_ALPHAREF, &alphaRef);
 
-	bool found = false;
-	DWORD dwZWriteEnable;
-	pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwZWriteEnable);
-	if (((NumVertices==454 && primCount==209) || (NumVertices==302 && primCount==270)) && alphaRef==192 && Type==4)
-		found = true;
-	if ((NumVertices==46 && primCount==60) && dwZWriteEnable == 0)
-		found = true;
-	if (found)
+#ifdef _DEBUG
+	if (SV::g_Enable)
 	{
-		SV::GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex, g_pMatrix);
-		//SV::RenderShadowVolume(pDevice9);
-		SV::RenderShadow(pDevice9);
-		SV::DrawShadow(pDevice9);
+		bool found = false;
+		DWORD dwZWriteEnable;
+		pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwZWriteEnable);
+		if ((NumVertices==454 && primCount==209) || (NumVertices==302 && primCount==270) || (NumVertices==615 && primCount==486))
+			found = true;
+		if (((NumVertices==46 && primCount==60) || (NumVertices==21 && primCount==26)) && dwZWriteEnable == 0)
+			found = true;
+		if (found)
+		{
+			pDevice9->Clear( 0, NULL, D3DCLEAR_STENCIL, 0xffffffff, 1.0f, 0 );	// Clear stencil buffer
+			SV::GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex, g_pMatrix);
+			//SV::RenderShadowVolume(pDevice9);
+			SV::RenderShadow(pDevice9);
+			SV::DrawShadow(pDevice9);
 
-		pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
-		pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
-		pDevice9->SetIndices(g_pIndexData9);									// restore indices
-		pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
+			pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
+			pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
+			pDevice9->SetIndices(g_pIndexData9);									// restore indices
+			pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
+		}
 	}
-	
+#endif
+
 #ifdef _DEBUG
 	if (DB::g_dbDebugOn)
 #else

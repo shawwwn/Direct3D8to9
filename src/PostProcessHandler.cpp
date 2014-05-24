@@ -30,7 +30,7 @@ namespace PP{
 	PostProcess* g_pPostProcessChain[MAX_POST_PROCESS_COUNT];
 	int g_post_process_count = 0;
 
-	bool g_presented=false;
+	bool g_presented = false;
 
 	#pragma endregion
 

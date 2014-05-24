@@ -112,4 +112,11 @@ namespace HDR {
 			initTemporaryResources();
 		}
 	}
+	void onDestroy(IDirect3DDevice9* pd3dDevice)
+	{
+		if (isUsable())
+		{
+			releaseTemporaryResources();
+		}
+	}
 }

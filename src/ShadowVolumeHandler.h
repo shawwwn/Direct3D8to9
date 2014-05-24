@@ -6,6 +6,7 @@
 #include "ShadowVolume.h"
 
 namespace SV {
+	extern bool g_Enable;
 	extern LPDIRECT3DVERTEXBUFFER9 g_pBigSquareVB;
 	extern ShadowVolume g_HumBaseShadow;
 	extern UINT g_deviceHeight;
@@ -20,4 +21,7 @@ namespace SV {
 	// Standard Procedure Functions
 	//
 	void onCreateDevice(IDirect3DDevice9* pd3dDevice);
+	void onLostDevice();
+	void onResetDevice(IDirect3DDevice9* pd3dDevice);
+	void onDestroy(IDirect3DDevice9* pd3dDevice);
 }

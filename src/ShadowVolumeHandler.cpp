@@ -1,7 +1,7 @@
 #include "ShadowVolumeHandler.h"
 
 namespace SV {
-
+	bool g_Enable = true;
 	LPDIRECT3DVERTEXBUFFER9 g_pBigSquareVB = NULL;
 	ShadowVolume g_HumBaseShadow;
 	UINT g_deviceHeight = 0;
@@ -9,9 +9,6 @@ namespace SV {
 
 	void GenerateShadow(IDirect3DDevice9* pd3dDevice, IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer, DWORD startIndex, DWORD primCount, DWORD baseVertexIndex, D3DMATRIX* pMatrix)
 	{
-		// Clear stencil buffer
-		pd3dDevice->Clear( 0, NULL, D3DCLEAR_STENCIL, 0xffffffff, 1.0f, 0 );
-
 		/*
 		// Transform the light vector to be in object space
 		D3DXVECTOR3 tLight;
@@ -186,24 +183,25 @@ namespace SV {
 		pd3dDevice->SetRenderState( D3DRS_STENCILENABLE,    FALSE );
 		pd3dDevice->SetRenderState( D3DRS_FOGENABLE,        TRUE );
 		pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-		pd3dDevice->SetRenderState(D3DRS_CULLMODE,          dwCullMode);
+		pd3dDevice->SetRenderState( D3DRS_CULLMODE,         dwCullMode );
 		return S_OK;
 	}
 
-	//
-	// Standard Procedure Functions
-	//
-	void onCreateDevice(IDirect3DDevice9* pd3dDevice)
+	void setupScreenDimensions(IDirect3DDevice9* pd3dDevice)
 	{
-		IDirect3DSurface9* t_pSurface;
-		pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &t_pSurface);
+		// Get screen dimensions
+		IDirect3DSurface9* t_pSurface = NULL;
 		D3DSURFACE_DESC t_Desc;
-		t_pSurface->GetDesc(&t_Desc);	// this would actually increase the reference count on backbuffer by 1
+		pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &t_pSurface);
+		t_pSurface->GetDesc(&t_Desc);
 		g_deviceWidth = t_Desc.Width;
 		g_deviceHeight = t_Desc.Height;
 		SAFE_RELEASE(t_pSurface);
+	}
 
-		pd3dDevice->CreateVertexBuffer(4*sizeof(SHADOWVERTEX), D3DUSAGE_WRITEONLY, SHADOWVERTEX::FVF, D3DPOOL_MANAGED, &g_pBigSquareVB, NULL);
+	HRESULT initTemporaryResources(IDirect3DDevice9* pd3dDevice)
+	{
+		pd3dDevice->CreateVertexBuffer(4*sizeof(SHADOWVERTEX), D3DUSAGE_WRITEONLY, SHADOWVERTEX::FVF, D3DPOOL_DEFAULT, &g_pBigSquareVB, NULL);
 
 		SHADOWVERTEX* v;
 		FLOAT sx = (FLOAT)g_deviceWidth;
@@ -218,5 +216,36 @@ namespace SV {
 		v[2].color = 0x7f000000;
 		v[3].color = 0x7f000000;
 		g_pBigSquareVB->Unlock();
+
+		return S_OK;
+	}
+
+	HRESULT releaseTemporaryResources()
+	{
+		SAFE_RELEASE(g_pBigSquareVB);
+		return D3D_OK;
+	}
+
+
+	//
+	// Standard Procedure Functions
+	//
+	void onCreateDevice(IDirect3DDevice9* pd3dDevice)
+	{
+		setupScreenDimensions(pd3dDevice);
+		initTemporaryResources(pd3dDevice);
+	}
+	void onLostDevice()
+	{
+		releaseTemporaryResources();
+	}
+	void onResetDevice(IDirect3DDevice9* pd3dDevice)
+	{
+		setupScreenDimensions(pd3dDevice);
+		initTemporaryResources(pd3dDevice);
+	}
+	void onDestroy(IDirect3DDevice9* pd3dDevice)
+	{
+		releaseTemporaryResources();
 	}
 }

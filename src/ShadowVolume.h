@@ -4,7 +4,6 @@
 #include <d3dx9.h>
 
 namespace SV {
-
 	class ShadowVolume
 	{
 		D3DXVECTOR3 m_pVertices[32000]; // Vertex data for rendering shadow volume
