@@ -12,6 +12,6 @@ namespace CTRL {
 		g_EnableHDR = true;
 		g_EnableNP = true;
 		g_EnablePP = true;
-		g_EnableSV = true;
+		g_EnableSV = false;
 	}
 }

@@ -837,10 +837,10 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 		{
 			SV::g_rendered = true;
 			SV::DrawShadow(pDevice9);
-			pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
-			pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
-			pDevice9->SetIndices(g_pIndexData9);									// restore indices
-			pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
+			//pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
+			//pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
+			//pDevice9->SetIndices(g_pIndexData9);									// restore indices
+			//pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
 		}
 
 		// Post Process
@@ -874,9 +874,11 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 			bool found = false;
 			DWORD dwZWriteEnable;
 			pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwZWriteEnable);
-			if ((NumVertices==454 && primCount==209) || (NumVertices==302 && primCount==270) || (NumVertices==615 && primCount==486))
+			if ((NumVertices==320 && primCount==153) || (NumVertices==454 && primCount==209) || (NumVertices==302 && primCount==270) || 
+				(NumVertices==615 && primCount==486) || (NumVertices==447 && primCount==288))
 				found = true;
-			if (((NumVertices==46 && primCount==60) || (NumVertices==21 && primCount==26)) && dwZWriteEnable == 0)
+			if (((NumVertices==46 && primCount==60) || (NumVertices==21 && primCount==26) || (NumVertices==52 && primCount==35))
+				&& dwZWriteEnable == 0)
 				found = true;
 			if (found)
 			{

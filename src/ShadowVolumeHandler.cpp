@@ -24,7 +24,7 @@ namespace SV {
 		*/
 		//D3DXVec3Normalize(&tLight, &tLight);
 
-		D3DXVECTOR3 tLight(-25, -25, 25);	// hardcoded directional light
+		D3DXVECTOR3 tLight(-25, -25, 30);	// hardcoded directional light
 	
 		g_HumBaseShadow.Reset();
 		g_HumBaseShadow.BuildFromStreamBuffer(pVertexBuffer, pIndexBuffer, startIndex, primCount, baseVertexIndex, tLight);
@@ -155,44 +155,50 @@ namespace SV {
 	HRESULT DrawShadow(IDirect3DDevice9* pd3dDevice)
 	{
 		// backup..
-		DWORD dwCullMode;
-		pd3dDevice->GetRenderState(D3DRS_CULLMODE,              &dwCullMode);
-
+		DWORD dwCullMode, dwStencilRef, dwStencilFunc, dwStencilPass;
+		pd3dDevice->GetRenderState(D3DRS_CULLMODE,          &dwCullMode);
+		pd3dDevice->GetRenderState(D3DRS_STENCILREF,        &dwStencilRef);
+		pd3dDevice->GetRenderState(D3DRS_STENCILFUNC,       &dwStencilFunc);
+		pd3dDevice->GetRenderState(D3DRS_STENCILPASS,       &dwStencilPass);
+		
 		// Set renderstates (disable z-buffering, enable stencil, disable fog, and
 		// turn on alphablending)
-		pd3dDevice->SetRenderState( D3DRS_ZENABLE,          FALSE );
-		pd3dDevice->SetRenderState( D3DRS_STENCILENABLE,    TRUE );
-		pd3dDevice->SetRenderState( D3DRS_FOGENABLE,        FALSE );
-		pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-		pd3dDevice->SetRenderState( D3DRS_SRCBLEND,  D3DBLEND_SRCALPHA );
-		pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
-		pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE, FALSE);
-
+		pd3dDevice->SetRenderState(D3DRS_ZENABLE,           FALSE);
+		pd3dDevice->SetRenderState(D3DRS_STENCILENABLE,     TRUE);
+		pd3dDevice->SetRenderState(D3DRS_FOGENABLE,         FALSE);
+		pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE,  TRUE);
+		pd3dDevice->SetRenderState(D3DRS_SRCBLEND,          D3DBLEND_SRCALPHA);
+		pd3dDevice->SetRenderState(D3DRS_DESTBLEND,         D3DBLEND_INVSRCALPHA);
+		pd3dDevice->SetRenderState(D3DRS_ALPHATESTENABLE,   FALSE);
+		
 		pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
 		pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );
 		pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
 		pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
 		pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE );
 		pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
-
+		
 		// Only write where stencil val >= 1 (count indicates # of shadows that
 		// overlap that pixel)
 		pd3dDevice->SetRenderState( D3DRS_STENCILREF,  0x1 );
 		pd3dDevice->SetRenderState( D3DRS_STENCILFUNC, D3DCMP_LESSEQUAL );
 		pd3dDevice->SetRenderState( D3DRS_STENCILPASS, D3DSTENCILOP_KEEP );
-	
+
 		// Draw a big, gray square
 		pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW); // counter clock-wise render triangles
 		pd3dDevice->SetFVF( SHADOWVERTEX::FVF );
 		pd3dDevice->SetStreamSource( 0, g_pBigSquareVB, 0, sizeof(SHADOWVERTEX) );
 		pd3dDevice->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, 2 );
-	
+
 		// Restore render states
-		pd3dDevice->SetRenderState( D3DRS_ZENABLE,          TRUE );
-		pd3dDevice->SetRenderState( D3DRS_STENCILENABLE,    FALSE );
-		pd3dDevice->SetRenderState( D3DRS_FOGENABLE,        TRUE );
-		pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-		pd3dDevice->SetRenderState( D3DRS_CULLMODE,         dwCullMode );
+		pd3dDevice->SetRenderState(D3DRS_ZENABLE,           TRUE);
+		pd3dDevice->SetRenderState(D3DRS_STENCILENABLE,     FALSE);
+		pd3dDevice->SetRenderState(D3DRS_FOGENABLE,         TRUE);
+		pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE,  TRUE);
+		pd3dDevice->SetRenderState(D3DRS_CULLMODE,          dwCullMode);
+		pd3dDevice->SetRenderState(D3DRS_STENCILREF,        dwStencilRef);
+		pd3dDevice->SetRenderState(D3DRS_STENCILFUNC,       dwStencilFunc);
+		pd3dDevice->SetRenderState(D3DRS_STENCILPASS,       dwStencilPass);
 		return S_OK;
 	}
 

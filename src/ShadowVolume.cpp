@@ -83,8 +83,8 @@ namespace SV {
 		{
 			D3DXVECTOR3 v1 = pVerticesData[baseVertexIndex + pEdges[2*i+0]].p;
 			D3DXVECTOR3 v2 = pVerticesData[baseVertexIndex + pEdges[2*i+1]].p;
-			D3DXVECTOR3 v3 = v1 - vLight*100;
-			D3DXVECTOR3 v4 = v2 - vLight*100;
+			D3DXVECTOR3 v3 = v1 - vLight*200;
+			D3DXVECTOR3 v4 = v2 - vLight*200;
 
 			// Add a quad (two triangles) to the vertex list
 			m_pVertices[m_dwNumVertices++] = v1;
