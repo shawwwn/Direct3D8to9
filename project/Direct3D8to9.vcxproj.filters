@@ -143,6 +143,9 @@
     <ClCompile Include="..\src\ShadowVolumeHandler.cpp">
       <Filter>effect\ShadowVolume</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\RenderController.cpp">
+      <Filter>effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Direct3D8.h">
@@ -261,6 +264,9 @@
     </ClInclude>
     <ClInclude Include="..\src\ShadowVolumeHandler.h">
       <Filter>effect\ShadowVolume</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\RenderController.h">
+      <Filter>effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

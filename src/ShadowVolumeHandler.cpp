@@ -1,7 +1,6 @@
 #include "ShadowVolumeHandler.h"
 
 namespace SV {
-	bool g_Enable = true;
 	LPDIRECT3DVERTEXBUFFER9 g_pBigSquareVB = NULL;
 	ShadowVolume g_HumBaseShadow;
 	UINT g_deviceHeight = 0;
@@ -24,17 +23,23 @@ namespace SV {
 		*/
 		//D3DXVec3Normalize(&tLight, &tLight);
 
-		D3DXVECTOR3 tLight(-25, -25, 25);	// hardcode light vector
+		D3DXVECTOR3 tLight(-25, -25, 25);	// hardcoded directional light
 	
 		g_HumBaseShadow.Reset();
 		g_HumBaseShadow.BuildFromStreamBuffer(pVertexBuffer, pIndexBuffer, startIndex, primCount, baseVertexIndex, tLight);
 	}
 
+	//
+	// For debug
+	//
 	void RenderShadowVolume(IDirect3DDevice9* pd3dDevice)
 	{
 		g_HumBaseShadow.Render(pd3dDevice);
 	}
 
+	//
+	// Render shadow information to stencil buffer
+	//
 	HRESULT RenderShadow(IDirect3DDevice9* pd3dDevice)
 	{
 		// Backup render states
@@ -143,6 +148,9 @@ namespace SV {
 		return S_OK;
 	}
 
+	//
+	//	Use stencil buffer as a mask. draw shadows to the scene
+	//
 	HRESULT DrawShadow(IDirect3DDevice9* pd3dDevice)
 	{
 		// backup..

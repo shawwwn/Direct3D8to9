@@ -3,10 +3,10 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "SysUtils.h"
+#include "RenderController.h"
 #include "ShadowVolume.h"
 
 namespace SV {
-	extern bool g_Enable;
 	extern LPDIRECT3DVERTEXBUFFER9 g_pBigSquareVB;
 	extern ShadowVolume g_HumBaseShadow;
 	extern UINT g_deviceHeight;

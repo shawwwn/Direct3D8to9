@@ -35,6 +35,7 @@
     <ClCompile Include="..\src\PostProcessHandler.cpp" />
     <ClCompile Include="..\src\PostProcessHDR.cpp" />
     <ClCompile Include="..\src\PostProcessSMAA.cpp" />
+    <ClCompile Include="..\src\RenderController.cpp" />
     <ClCompile Include="..\src\ShadowVolume.cpp" />
     <ClCompile Include="..\src\ShadowVolumeHandler.cpp" />
     <ClCompile Include="..\src\SpinLock.cpp" />
@@ -73,6 +74,7 @@
     <ClInclude Include="..\src\PostProcessHandler.h" />
     <ClInclude Include="..\src\PostProcessHDR.h" />
     <ClInclude Include="..\src\PostProcessSMAA.h" />
+    <ClInclude Include="..\src\RenderController.h" />
     <ClInclude Include="..\src\SearchTex.h" />
     <ClInclude Include="..\src\ShaderResource.h" />
     <ClInclude Include="..\src\ShadowVolume.h" />
