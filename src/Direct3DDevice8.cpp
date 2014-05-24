@@ -26,7 +26,7 @@ CDirect3DDevice8::CDirect3DDevice8(IDirect3DDevice9* device, CDirect3D8* d3d)
 	HDR::onCreateDevice(pDevice9);
 	PP::onCreateDevice(pDevice9);
 	NP::onCreateDevice(pDevice9);
-	OnCreateDevice(pDevice9);
+	SV::onCreateDevice(pDevice9);
 }
 
 CDirect3DDevice8::~CDirect3DDevice8()
@@ -771,10 +771,10 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 		found = true;
 	if (found)
 	{
-		GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex, g_pMatrix);
-		//RenderShadowVolume(pDevice9);
-		RenderShadow(pDevice9);
-		DrawShadow(pDevice9);
+		SV::GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex, g_pMatrix);
+		//SV::RenderShadowVolume(pDevice9);
+		SV::RenderShadow(pDevice9);
+		SV::DrawShadow(pDevice9);
 
 		pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
 		pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
