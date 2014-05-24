@@ -216,20 +216,21 @@ STDMETHODIMP CDirect3DDevice8::Reset(THIS_ D3D8PRESENT_PARAMETERS* pPresentation
 
 STDMETHODIMP CDirect3DDevice8::Present(THIS_ CONST RECT* pSourceRect, CONST RECT* pDestRect, HWND hDestWindowOverride, CONST RGNDATA* pDirtyRegion)
 {
+#ifdef _DEBUG
 	// Enable debug flag for PostProcess
 	if (GetAsyncKeyState(VK_F11))
 		DB::g_dbDebugOn = true;
 	else
 		DB::g_dbDebugOn = false;
+	DB::restDrawPrimitiveCount();
 
-#ifdef _DEBUG
 	// Enable/Disable ShadowVolume
 	if (GetAsyncKeyState(VK_F10))
 		CTRL::g_EnableSV = !CTRL::g_EnableSV;
 #endif
 
-	DB::restDrawPrimitiveCount();
 	PP::g_presented = false;
+	SV::g_rendered = false;
 	NP::EXCP::CheckAll();	// check exception list
 	return pDevice9->Present(pSourceRect, pDestRect, hDestWindowOverride, pDirtyRegion);
 }
@@ -777,32 +778,29 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 
 #ifdef _DEBUG
 	if (DB::g_dbDebugOn)
-#else
-	if (GetAsyncKeyState(VK_SHIFT))
-#endif
 	{
-		#ifdef NDEBUG
-			return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
-		#else
-			DB::saveRenderStatesUsingDrawPrimitiveCount(pDevice9);
-			DB::savePrimitiveStatesUsingDrawPrimitiveCount(Type, minIndex, NumVertices, startIndex, primCount, 
-														   g_StreamNumber, g_Stride, g_Stage, g_State, g_FVFHandle,
-														   g_baseVertexIndex, zBufferDiscardingEnabled, g_pTexture9);
-			DB::saveBackBufferToImage(pDevice9, false);
-			DB::increaseDrawPrimitiveCount();
-			return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
-		#endif
+		DB::saveRenderStatesUsingDrawPrimitiveCount(pDevice9);
+		DB::savePrimitiveStatesUsingDrawPrimitiveCount(Type, minIndex, NumVertices, startIndex, primCount, 
+														g_StreamNumber, g_Stride, g_Stage, g_State, g_FVFHandle,
+														g_baseVertexIndex, zBufferDiscardingEnabled, g_pTexture9);
+		DB::saveBackBufferToImage(pDevice9, false);
+		DB::increaseDrawPrimitiveCount();
+		return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 	}
+#endif
 
 	if (g_Stride==36 && NumVertices==4 && primCount==2 && alphaRef==192 && Type==5)
 	{
-		#ifdef _DEBUG
-		if (!PP::g_presented && GetAsyncKeyState(VK_MENU))
-		#else
-		if (!PP::g_presented)
-		#endif
+		// Shadow Volume
+		if (!SV::g_rendered && CTRL::g_EnableSV)
 		{
+			SV::g_rendered = true;
 			SV::DrawShadow(pDevice9);
+		}
+
+		// Post Process
+		if (!PP::g_presented && CTRL::g_EnablePP)
+		{
 			PP::g_presented = true;
 			pDevice9->EndScene(); // end the scene first
 
@@ -810,7 +808,6 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 			// restore the original process
 			pDevice9->BeginScene();													// begin the scene
 			pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
-			//pDevice9->SetTransform(g_State, g_pMatrix);							// dont need...
 			pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
 			pDevice9->SetIndices(g_pIndexData9);									// restore indices
 			pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
@@ -820,19 +817,13 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 	{
 		HRESULT hr = D3DERR_INVALIDCALL;
 		// Normal Map
-	#ifdef _DEBUG
-		if (GetAsyncKeyState(VK_SHIFT))
+		if (CTRL::g_EnableNP)
 		{
-	#endif
-		hr = NP::PerformNormalMappping(pDevice9, g_pTexture9,
-                                               Type, g_baseVertexIndex, minIndex, startIndex,
-                                               g_Stride, NumVertices, primCount, alphaRef, (DWORD)g_State);
-	#ifdef _DEBUG
+			hr = NP::PerformNormalMappping(pDevice9, g_pTexture9, Type, g_baseVertexIndex, minIndex, startIndex,
+											g_Stride, NumVertices, primCount, alphaRef, (DWORD)g_State);
 		}
-	#endif
 
 		// Shadow Volume
-	#ifdef _DEBUG
 		if (CTRL::g_EnableSV)
 		{
 			bool found = false;
@@ -844,13 +835,11 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 				found = true;
 			if (found)
 			{
-				MessageBox(NULL, "aa", "bb", MB_OK);
-				// If NormalMapHandler hasn't rendered an object, render it here.
-				if (FAILED(hr))
+				if (FAILED(hr))	// If NormalMapHandler hasn't rendered an object, render it here.
 					pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 
 				SV::GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex, g_pMatrix);
-				//SV::RenderShadowVolume(pDevice9);
+				//SV::RenderShadowVolume(pDevice9);	// for debug...
 				SV::RenderShadow(pDevice9);
 
 				pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
@@ -860,10 +849,9 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 				return D3D_OK;
 			}
 		}
-	#endif
 
 		if (SUCCEEDED(hr))
-			return hr;	// return while the object has already been rendered
+			return hr;	// return if the object has already been rendered
 	}
 	return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 }

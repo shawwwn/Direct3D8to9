@@ -1,6 +1,7 @@
 #include "ShadowVolumeHandler.h"
 
 namespace SV {
+	bool g_rendered = false;
 	LPDIRECT3DVERTEXBUFFER9 g_pBigSquareVB = NULL;
 	ShadowVolume g_HumBaseShadow;
 	UINT g_deviceHeight = 0;

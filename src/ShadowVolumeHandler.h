@@ -7,6 +7,7 @@
 #include "ShadowVolume.h"
 
 namespace SV {
+	extern bool g_rendered;
 	extern LPDIRECT3DVERTEXBUFFER9 g_pBigSquareVB;
 	extern ShadowVolume g_HumBaseShadow;
 	extern UINT g_deviceHeight;
