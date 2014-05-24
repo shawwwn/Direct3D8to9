@@ -48,6 +48,9 @@
     <Filter Include="effect\HDR">
       <UniqueIdentifier>{5109dc9e-6894-4a1a-b854-0bfc67fd6763}</UniqueIdentifier>
     </Filter>
+    <Filter Include="effect\ShadowVolume">
+      <UniqueIdentifier>{5fe4aa28-1a02-47f4-ad89-a7e87b0848d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Direct3D8.cpp">
@@ -133,6 +136,12 @@
     </ClCompile>
     <ClCompile Include="..\src\ExceptionalMeshTable.cpp">
       <Filter>effect\NormalMap\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ShadowVolume.cpp">
+      <Filter>effect\ShadowVolume</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ShadowVolumeHandler.cpp">
+      <Filter>effect\ShadowVolume</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -246,6 +255,12 @@
     </ClInclude>
     <ClInclude Include="..\src\ExceptionalMeshTable.h">
       <Filter>effect\NormalMap\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ShadowVolume.h">
+      <Filter>effect\ShadowVolume</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ShadowVolumeHandler.h">
+      <Filter>effect\ShadowVolume</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

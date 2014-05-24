@@ -12,6 +12,7 @@
 #include "NormalMapHandler.h"		// external...
 #include "HDRScene.h"				// external...
 #include "DebugUtils.h"				// external...
+#include "ShadowVolumeHandler.h"	// external...
 
 CDirect3DDevice8::CDirect3DDevice8(IDirect3DDevice9* device, CDirect3D8* d3d)
 : pDevice9(device)
@@ -25,6 +26,7 @@ CDirect3DDevice8::CDirect3DDevice8(IDirect3DDevice9* device, CDirect3D8* d3d)
 	HDR::onCreateDevice(pDevice9);
 	PP::onCreateDevice(pDevice9);
 	NP::onCreateDevice(pDevice9);
+	OnCreateDevice(pDevice9);
 }
 
 CDirect3DDevice8::~CDirect3DDevice8()
@@ -139,7 +141,7 @@ STDMETHODIMP CDirect3DDevice8::CreateAdditionalSwapChain(THIS_ D3D8PRESENT_PARAM
 	{
 		D3DPRESENT_PARAMETERS D3DPresentationParameters9;
 		ZeroMemory(&D3DPresentationParameters9, sizeof(D3DPresentationParameters9));
-		D3DPresentationParameters9.AutoDepthStencilFormat = pPresentationParameters->AutoDepthStencilFormat;
+		D3DPresentationParameters9.AutoDepthStencilFormat = D3DFMT_D24S8; //pPresentationParameters->AutoDepthStencilFormat;
 		D3DPresentationParameters9.BackBufferCount = pPresentationParameters->BackBufferCount;
 		D3DPresentationParameters9.BackBufferFormat = pPresentationParameters->BackBufferFormat;
 		D3DPresentationParameters9.BackBufferHeight = pPresentationParameters->BackBufferHeight;
@@ -179,7 +181,7 @@ STDMETHODIMP CDirect3DDevice8::Reset(THIS_ D3D8PRESENT_PARAMETERS* pPresentation
 	{
 		D3DPRESENT_PARAMETERS D3DPresentationParameters9;
 		ZeroMemory(&D3DPresentationParameters9, sizeof(D3DPresentationParameters9));
-		D3DPresentationParameters9.AutoDepthStencilFormat = pPresentationParameters->AutoDepthStencilFormat;
+		D3DPresentationParameters9.AutoDepthStencilFormat = D3DFMT_D24S8; //pPresentationParameters->AutoDepthStencilFormat;
 		D3DPresentationParameters9.BackBufferCount = pPresentationParameters->BackBufferCount;
 		D3DPresentationParameters9.BackBufferFormat = pPresentationParameters->BackBufferFormat;
 		D3DPresentationParameters9.BackBufferHeight = pPresentationParameters->BackBufferHeight;
@@ -474,6 +476,7 @@ STDMETHODIMP CDirect3DDevice8::BeginScene(THIS)
 STDMETHODIMP CDirect3DDevice8::EndScene(THIS)
 {
 	HDR::onEndScene();
+	pDevice9->Clear( 0L, NULL, D3DCLEAR_STENCIL, 0xff00bfff, 1.0f, 0L );
 
 	return pDevice9->EndScene();
 }
@@ -758,6 +761,26 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 {
 	DWORD alphaRef;
 	pDevice9->GetRenderState(D3DRS_ALPHAREF, &alphaRef);
+
+	bool found = false;
+	DWORD dwZWriteEnable;
+	pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwZWriteEnable);
+	if (((NumVertices==454 && primCount==209) || (NumVertices==302 && primCount==270)) && alphaRef==192 && Type==4)
+		found = true;
+	if ((NumVertices==46 && primCount==60) && dwZWriteEnable == 0)
+		found = true;
+	if (found)
+	{
+		GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex, g_pMatrix);
+		//RenderShadowVolume(pDevice9);
+		RenderShadow(pDevice9);
+		DrawShadow(pDevice9);
+
+		pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
+		pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
+		pDevice9->SetIndices(g_pIndexData9);									// restore indices
+		pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
+	}
 	
 #ifdef _DEBUG
 	if (DB::g_dbDebugOn)

@@ -167,12 +167,12 @@ STDMETHODIMP   CDirect3D8::CreateDevice(THIS_ UINT Adapter, D3DDEVTYPE DeviceTyp
 {
 	D3DPRESENT_PARAMETERS D3DPresentationParameters9;
 	ZeroMemory(&D3DPresentationParameters9, sizeof(D3DPresentationParameters9));
-	D3DPresentationParameters9.AutoDepthStencilFormat = pPresentationParameters->AutoDepthStencilFormat;
+	D3DPresentationParameters9.AutoDepthStencilFormat = D3DFMT_D24S8; //pPresentationParameters->AutoDepthStencilFormat;
 	D3DPresentationParameters9.BackBufferCount = pPresentationParameters->BackBufferCount;
 	D3DPresentationParameters9.BackBufferFormat = pPresentationParameters->BackBufferFormat;
 	D3DPresentationParameters9.BackBufferHeight = pPresentationParameters->BackBufferHeight;
 	D3DPresentationParameters9.BackBufferWidth = pPresentationParameters->BackBufferWidth;
-	D3DPresentationParameters9.EnableAutoDepthStencil = pPresentationParameters->EnableAutoDepthStencil;
+	D3DPresentationParameters9.EnableAutoDepthStencil = true; //pPresentationParameters->EnableAutoDepthStencil;
 	D3DPresentationParameters9.Flags = pPresentationParameters->Flags;
 	D3DPresentationParameters9.FullScreen_RefreshRateInHz = pPresentationParameters->FullScreen_RefreshRateInHz;
 	D3DPresentationParameters9.hDeviceWindow = pPresentationParameters->hDeviceWindow;
