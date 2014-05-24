@@ -38,24 +38,34 @@ namespace PP {
 
 		if(SUCCEEDED(m_pDevice->BeginScene()))
 		{
-			// Set Technique
-			m_pEffect->SetTechnique(m_hTPostProcess);
-			// Draw the quad
-			UINT cPasses, p;
-			m_pEffect->Begin(&cPasses, 0);
-			m_pEffect->SetTexture(m_hTexScene, pSrcColorTexture); 
-			m_pEffect->SetTexture(m_hTexSource, pSrcColorTexture);
-			m_pEffect->CommitChanges();
-			// Clear the previous screen
-			m_pDevice->Clear(0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L);
-			// Render
-			for(p = 0; p < cPasses; ++p)
+			if (CTRL::g_EnableHDR)
 			{
-				m_pEffect->BeginPass(p);
-				m_pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
-				m_pEffect->EndPass();
+				// Set Technique
+				m_pEffect->SetTechnique(m_hTPostProcess);
+				// Draw the quad
+				UINT cPasses, p;
+				m_pEffect->Begin(&cPasses, 0);
+				m_pEffect->SetTexture(m_hTexScene, pSrcColorTexture); 
+				m_pEffect->SetTexture(m_hTexSource, pSrcColorTexture);
+				m_pEffect->CommitChanges();
+				// Clear the previous screen
+				m_pDevice->Clear(0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L);
+				// Render
+				for(p = 0; p < cPasses; ++p)
+				{
+					m_pEffect->BeginPass(p);
+					m_pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+					m_pEffect->EndPass();
+				}
+				m_pEffect->End();
 			}
-			m_pEffect->End();
+			else
+			{
+				IDirect3DSurface9* tSrcSurface = NULL;
+				pSrcColorTexture->GetSurfaceLevel(0, &tSrcSurface);
+				m_pDevice->StretchRect(tSrcSurface, NULL, pDstSurface, NULL, D3DTEXF_NONE);
+				SAFE_RELEASE(tSrcSurface);
+			}
 			m_pDevice->EndScene(); // End the scene
 			return D3D_OK;
 		}

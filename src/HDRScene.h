@@ -3,16 +3,16 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "SysUtils.h"
+#include "RenderController.h"
 
 namespace HDR {
+	extern bool g_IsAdaptorSupported;
 	extern IDirect3DDevice9* m_pDevice;
 	extern IDirect3DTexture9* g_pHDRTexture;
 	extern IDirect3DSurface9* g_pHDRSurface;
 	extern IDirect3DSurface9* g_pBackBuffer;
 	extern UINT g_deviceWidth;
 	extern UINT g_deviceHeight;
-
-	bool isUsable();
 
 	//
 	// Standard Procedure Functions

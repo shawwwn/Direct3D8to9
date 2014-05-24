@@ -219,14 +219,53 @@ STDMETHODIMP CDirect3DDevice8::Present(THIS_ CONST RECT* pSourceRect, CONST RECT
 #ifdef _DEBUG
 	// Enable debug flag for PostProcess
 	if (GetAsyncKeyState(VK_F11))
+	{
 		DB::g_dbDebugOn = true;
+		MessageBox(NULL, "Capturing render sequence, please be patient...", "info", MB_OK);
+	}
 	else
 		DB::g_dbDebugOn = false;
 	DB::restDrawPrimitiveCount();
 
 	// Enable/Disable ShadowVolume
-	if (GetAsyncKeyState(VK_F10))
+	if (GetAsyncKeyState(VK_F8))
+	{
 		CTRL::g_EnableSV = !CTRL::g_EnableSV;
+		if (CTRL::g_EnableSV)
+			MessageBox(NULL, "ShadowVolume has been enabled!", "info", MB_OK);
+		else
+			MessageBox(NULL, "ShadowVolume has been disabled!", "info", MB_OK);
+	}
+
+	// Enable/Disable NormalMap
+	if (GetAsyncKeyState(VK_F7))
+	{
+		CTRL::g_EnableNP = !CTRL::g_EnableNP;
+		if (CTRL::g_EnableNP)
+			MessageBox(NULL, "NormalMap has been enabled!", "info", MB_OK);
+		else
+			MessageBox(NULL, "NormalMap has been disabled!", "info", MB_OK);
+	}
+
+	// Enable/Disable PostProcess
+	if (GetAsyncKeyState(VK_F6))
+	{
+		CTRL::g_EnablePP = !CTRL::g_EnablePP;
+		if (CTRL::g_EnablePP)
+			MessageBox(NULL, "PostProcess has been enabled!", "info", MB_OK);
+		else
+			MessageBox(NULL, "PostProcess has been disabled!", "info", MB_OK);
+	}
+
+	// Enable/Disable HDR
+	if (GetAsyncKeyState(VK_F5))
+	{
+		CTRL::g_EnableHDR = !CTRL::g_EnableHDR;
+		if (CTRL::g_EnableHDR)
+			MessageBox(NULL, "HDR has been enabled!", "info", MB_OK);
+		else
+			MessageBox(NULL, "HDR has been disabled!", "info", MB_OK);
+	}
 #endif
 
 	PP::g_presented = false;
@@ -482,16 +521,18 @@ STDMETHODIMP CDirect3DDevice8::BeginScene(THIS)
 {
 	HRESULT hr = pDevice9->BeginScene();
 
-	HDR::onBeginScene();
+	if (CTRL::g_EnableHDR)
+		HDR::onBeginScene();
 
 	return hr;
 }
 
 STDMETHODIMP CDirect3DDevice8::EndScene(THIS)
 {
-	HDR::onEndScene();
-	pDevice9->Clear( 0L, NULL, D3DCLEAR_STENCIL, 0xff00bfff, 1.0f, 0L );
+	if (CTRL::g_EnableHDR)
+		HDR::onEndScene();
 
+	pDevice9->Clear( 0L, NULL, D3DCLEAR_STENCIL, 0xff00bfff, 1.0f, 0L );
 	return pDevice9->EndScene();
 }
 
@@ -796,6 +837,10 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 		{
 			SV::g_rendered = true;
 			SV::DrawShadow(pDevice9);
+			pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
+			pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
+			pDevice9->SetIndices(g_pIndexData9);									// restore indices
+			pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
 		}
 
 		// Post Process

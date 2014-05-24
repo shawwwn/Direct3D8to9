@@ -4,7 +4,7 @@ namespace HDR {
 	//
 	// Private Functions and Variables
 	//
-	bool isEnable, isAdaptorSupported;
+	bool g_IsAdaptorSupported;
 
 	HRESULT initTemporaryResources()
 	{
@@ -61,11 +61,6 @@ namespace HDR {
 	IDirect3DSurface9* g_pBackBuffer = NULL;
 	UINT g_deviceWidth = 800;
 	UINT g_deviceHeight = 600;
-	
-	bool isUsable()
-	{
-		return (isEnable && isAdaptorSupported);
-	}
 
 
 	//
@@ -76,47 +71,33 @@ namespace HDR {
 		m_pDevice = pd3dDevice;
 
 		// TODO: Check device capabilities
-		isEnable = true;
-		isAdaptorSupported = true;
-
-		if (isUsable())
+		g_IsAdaptorSupported = true;
+		if (!g_IsAdaptorSupported)
 		{
-			initTemporaryResources();
+			CTRL::g_EnableHDR = false;
+			return;
 		}
+
+		initTemporaryResources();
 	}
 	void onBeginScene()
 	{
-		if (isUsable())
-		{
-			setHDRRenderTarget();
-		}
+		setHDRRenderTarget();
 	}
 	void onEndScene()
 	{
-		if (isUsable())
-		{
-			restoreBackBuffer();
-		}
+		restoreBackBuffer();
 	}
 	void onLostDevice()
 	{
-		if (isUsable())
-		{
-			releaseTemporaryResources();
-		}
+		releaseTemporaryResources();
 	}
 	void onResetDevice(IDirect3DDevice9* pd3dDevice)
 	{
-		if (isUsable())
-		{
-			initTemporaryResources();
-		}
+		initTemporaryResources();
 	}
 	void onDestroy(IDirect3DDevice9* pd3dDevice)
 	{
-		if (isUsable())
-		{
-			releaseTemporaryResources();
-		}
+		releaseTemporaryResources();
 	}
 }
