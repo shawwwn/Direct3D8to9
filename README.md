@@ -9,6 +9,7 @@ This is a convertor of Direct3D8 to Direct3D9 plus various new effects.
 - Normal Map
 - SMAA: Enhanced Subpixel Morphological Antialiasing (http://www.iryoku.com/smaa/)
 - HDR
+- ShadowVolume(experimental)
 
 ==============================================================================
 ####Getting Started
