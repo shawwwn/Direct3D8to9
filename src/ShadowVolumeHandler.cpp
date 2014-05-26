@@ -252,10 +252,10 @@ namespace SV {
 		v[1].p = D3DXVECTOR4(  0,  0, 0.0f, 1.0f );
 		v[2].p = D3DXVECTOR4( sx, sy, 0.0f, 1.0f );
 		v[3].p = D3DXVECTOR4( sx,  0, 0.0f, 1.0f );
-		v[0].color = 0x4f000000;
-		v[1].color = 0x4f000000;
-		v[2].color = 0x4f000000;
-		v[3].color = 0x4f000000;
+		v[0].color = 0x5f000000;
+		v[1].color = 0x5f000000;
+		v[2].color = 0x5f000000;
+		v[3].color = 0x5f000000;
 		g_pBigSquareVB->Unlock();
 
 		return S_OK;
