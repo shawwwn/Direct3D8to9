@@ -1,33 +1,59 @@
 #include "ShadowVolumeHandler.h"
 
 namespace SV {
+	ShadowTable g_shwTable;
 	bool g_rendered = false;
 	LPDIRECT3DVERTEXBUFFER9 g_pBigSquareVB = NULL;
 	ShadowVolume g_HumBaseShadow;
 	UINT g_deviceHeight = 0;
 	UINT g_deviceWidth = 0;
 
-	void GenerateShadow(IDirect3DDevice9* pd3dDevice, IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer, DWORD startIndex, DWORD primCount, DWORD baseVertexIndex, D3DMATRIX* pMatrix)
+	//
+	// Compute light vector then generate shadow mesh
+	//
+	void GenerateShadow(IDirect3DDevice9* pd3dDevice, IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer, DWORD startIndex, DWORD primCount, DWORD baseVertexIndex, D3DMATRIX* pMatrix, int inversion)
 	{
+		D3DXVECTOR3 vLight;					// light vector in object space
+		D3DXVECTOR3* pRefLight = NULL;		// reference light value
+
 		/*
-		// Transform the light vector to be in object space
-		D3DXVECTOR3 tLight;
+		// Get the global lightning. Deal with for extreme value(open dialog, etc.)
 		D3DLIGHT9 light;
 		pd3dDevice->GetLight(0, &light);
-		D3DVECTOR& vLight = light.Direction;
-		D3DXMATRIXA16 maxInvesed;
-		D3DXMatrixInverse( &maxInvesed, NULL, (D3DXMATRIXA16*)pMatrix );
-		tLight.x = vLight.x*maxInvesed._11 + vLight.y*maxInvesed._21 + vLight.z*maxInvesed._31 + maxInvesed._41;
-		tLight.y = vLight.x*maxInvesed._12 + vLight.y*maxInvesed._22 + vLight.z*maxInvesed._32 + maxInvesed._42;
-		tLight.z = vLight.x*maxInvesed._13 + vLight.y*maxInvesed._23 + vLight.z*maxInvesed._33 + maxInvesed._43;
-		tLight.z *= -1;
+		D3DVECTOR& wc3Light = light.Direction;
 		*/
-		//D3DXVec3Normalize(&tLight, &tLight);
 
-		D3DXVECTOR3 tLight(-25, -25, 30);	// hardcoded directional light
-	
+		if (inversion & SHW_FLYING_UNIT)
+			pRefLight = const_cast<D3DXVECTOR3*>(&wc3Light_fly);
+		else
+			pRefLight = const_cast<D3DXVECTOR3*>(&wc3Light);
+
+		if (inversion & SHW_USE_TRANSFORMATION)
+		{
+			// Transform the light vector to be in object space
+			D3DXMATRIX worldMax;
+			pd3dDevice->GetTransform(D3DTS_WORLD, &worldMax);
+			D3DXMatrixInverse((D3DXMATRIXA16*)&worldMax, NULL, (D3DXMATRIXA16*)&worldMax); // inverse world matrix
+			vLight.x = pRefLight->x*worldMax._11 + pRefLight->y*worldMax._21 + pRefLight->z*worldMax._31; // + maxInvesed._41;
+			vLight.y = pRefLight->x*worldMax._12 + pRefLight->y*worldMax._22 + pRefLight->z*worldMax._32; // + maxInvesed._42;
+			vLight.z = pRefLight->x*worldMax._13 + pRefLight->y*worldMax._23 + pRefLight->z*worldMax._33; // + maxInvesed._43;
+			//D3DXVec3Normalize(&vLight, &vLight);
+		}
+		else
+		{
+			// Use hardcoded light vector
+			vLight = *pRefLight;
+		}
+		
+		
+		if (!(inversion & SHW_X_INVERTED))
+			vLight.x *= -1;
+		if (!(inversion & SHW_Y_INVERTED))
+			vLight.y *= -1;
+		if (!(inversion & SHW_Z_INVERTED))
+			vLight.z *= -1;
 		g_HumBaseShadow.Reset();
-		g_HumBaseShadow.BuildFromStreamBuffer(pVertexBuffer, pIndexBuffer, startIndex, primCount, baseVertexIndex, tLight);
+		g_HumBaseShadow.BuildFromStreamBuffer(pVertexBuffer, pIndexBuffer, startIndex, primCount, baseVertexIndex, vLight);
 	}
 
 	//
@@ -226,10 +252,10 @@ namespace SV {
 		v[1].p = D3DXVECTOR4(  0,  0, 0.0f, 1.0f );
 		v[2].p = D3DXVECTOR4( sx, sy, 0.0f, 1.0f );
 		v[3].p = D3DXVECTOR4( sx,  0, 0.0f, 1.0f );
-		v[0].color = 0x7f000000;
-		v[1].color = 0x7f000000;
-		v[2].color = 0x7f000000;
-		v[3].color = 0x7f000000;
+		v[0].color = 0x4f000000;
+		v[1].color = 0x4f000000;
+		v[2].color = 0x4f000000;
+		v[3].color = 0x4f000000;
 		g_pBigSquareVB->Unlock();
 
 		return S_OK;
@@ -247,6 +273,7 @@ namespace SV {
 	//
 	void onCreateDevice(IDirect3DDevice9* pd3dDevice)
 	{
+		InitShadowTable(g_shwTable);
 		setupScreenDimensions(pd3dDevice);
 		initTemporaryResources(pd3dDevice);
 	}

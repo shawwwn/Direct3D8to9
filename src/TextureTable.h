@@ -12,32 +12,30 @@ namespace NP {
 
 	struct TextureKeys
 	{
-		public:
-			TextureKeys(DWORD stride, DWORD numVertices, DWORD primCount);
-			bool operator <(const TextureKeys &right) const;
-			DWORD m_Stride;	// Stride
-			DWORD m_NumVertices;	// NumVertices
-			DWORD m_PrimCount;	// primCount
+		TextureKeys(DWORD stride, DWORD numVertices, DWORD primCount);
+		bool operator <(const TextureKeys &right) const;
+		DWORD m_Stride;	// Stride
+		DWORD m_NumVertices;	// NumVertices
+		DWORD m_PrimCount;	// primCount
 	};
 
 	struct TextureItem
 	{
-		public:
-			TextureItem();
-			TextureItem(bool computed, IDirect3DTexture9* pBaseTexture, IDirect3DTexture9* pNormalTexture, 
-						UINT width, UINT height, bool inverted, bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef);
-			bool TextureItem::operator ==(const TextureItem &right) const;
+		TextureItem();
+		TextureItem(bool computed, IDirect3DTexture9* pBaseTexture, IDirect3DTexture9* pNormalTexture, 
+					UINT width, UINT height, bool inverted, bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef);
+		bool TextureItem::operator ==(const TextureItem &right) const;
 			
-			// member variables
-			IDirect3DTexture9* m_pBaseTexture;
-			IDirect3DTexture9* m_pNormalTexture;
-			bool m_Computed;
-			UINT m_Width;
-			UINT m_Height;
-			bool m_Inverted;
-			bool m_IsMask;
-			UINT m_TransplantAlphaRef;
-			UINT m_NormalAlphaRef;
+		// member variables
+		IDirect3DTexture9* m_pBaseTexture;
+		IDirect3DTexture9* m_pNormalTexture;
+		bool m_Computed;
+		UINT m_Width;
+		UINT m_Height;
+		bool m_Inverted;
+		bool m_IsMask;
+		UINT m_TransplantAlphaRef;
+		UINT m_NormalAlphaRef;
 	};
 
 	class TextureTable
@@ -61,6 +59,7 @@ namespace NP {
 			IDirect3DTexture9* queryNormalTexture(TextureKeys &keys);
 			void computeNormalTextures();
 			void cleanup();
+
 			// member variables
 			std::map<TextureKeys, TextureItem> m_Table;
 	};

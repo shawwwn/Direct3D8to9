@@ -76,6 +76,20 @@ namespace SV {
 				AddEdge( pEdges, dwNumEdges, wFace0, wFace1 );
 				AddEdge( pEdges, dwNumEdges, wFace1, wFace2 );
 				AddEdge( pEdges, dwNumEdges, wFace2, wFace0 );
+
+				m_pVertices[m_dwNumVertices++] = v2;
+				m_pVertices[m_dwNumVertices++] = v1;
+				m_pVertices[m_dwNumVertices++] = v0;
+			}
+			else
+			{
+				D3DXVECTOR3 v3 = v0 - vLight*LIGHT_RANGE;
+				D3DXVECTOR3 v4 = v1 - vLight*LIGHT_RANGE;
+				D3DXVECTOR3 v5 = v2 - vLight*LIGHT_RANGE;
+
+				m_pVertices[m_dwNumVertices++] = v5;
+				m_pVertices[m_dwNumVertices++] = v4;
+				m_pVertices[m_dwNumVertices++] = v3;
 			}
 		}
 
@@ -83,8 +97,8 @@ namespace SV {
 		{
 			D3DXVECTOR3 v1 = pVerticesData[baseVertexIndex + pEdges[2*i+0]].p;
 			D3DXVECTOR3 v2 = pVerticesData[baseVertexIndex + pEdges[2*i+1]].p;
-			D3DXVECTOR3 v3 = v1 - vLight*200;
-			D3DXVECTOR3 v4 = v2 - vLight*200;
+			D3DXVECTOR3 v3 = v1 - vLight*LIGHT_RANGE;
+			D3DXVECTOR3 v4 = v2 - vLight*LIGHT_RANGE;
 
 			// Add a quad (two triangles) to the vertex list
 			m_pVertices[m_dwNumVertices++] = v1;

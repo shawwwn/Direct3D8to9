@@ -545,6 +545,10 @@ STDMETHODIMP CDirect3DDevice8::SetTransform(THIS_ D3DTRANSFORMSTATETYPE State, C
 {
 	g_State=State;
 	g_pMatrix=(D3DMATRIX*)pMatrix;
+	if (g_State == D3DTS_WORLD)
+	{
+		g_pWorldMatrix = g_pMatrix;
+	}
 	return pDevice9->SetTransform(State, pMatrix);
 }
 
@@ -837,10 +841,10 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 		{
 			SV::g_rendered = true;
 			SV::DrawShadow(pDevice9);
-			//pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
-			//pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
-			//pDevice9->SetIndices(g_pIndexData9);									// restore indices
-			//pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
+			pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
+			pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
+			pDevice9->SetIndices(g_pIndexData9);									// restore indices
+			pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
 		}
 
 		// Post Process
@@ -869,23 +873,19 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 		}
 
 		// Shadow Volume
-		if (CTRL::g_EnableSV)
+		if (CTRL::g_EnableSV && g_Stride == 32 && Type == 4 && g_FVFHandle == 274)
 		{
-			bool found = false;
+			int shwParam = -1;
 			DWORD dwZWriteEnable;
 			pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwZWriteEnable);
-			if ((NumVertices==320 && primCount==153) || (NumVertices==454 && primCount==209) || (NumVertices==302 && primCount==270) || 
-				(NumVertices==615 && primCount==486) || (NumVertices==447 && primCount==288))
-				found = true;
-			if (((NumVertices==46 && primCount==60) || (NumVertices==21 && primCount==26) || (NumVertices==52 && primCount==35))
-				&& dwZWriteEnable == 0)
-				found = true;
-			if (found)
+			if (dwZWriteEnable == 1 && ((DWORD)g_State == 256 || (DWORD)g_State == 17))
+				shwParam = SV::g_shwTable.getShadowParam(NumVertices, primCount);
+			if (shwParam != -1)
 			{
 				if (FAILED(hr))	// If NormalMapHandler hasn't rendered an object, render it here.
 					pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 
-				SV::GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex, g_pMatrix);
+				SV::GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex, g_pWorldMatrix, shwParam);
 				//SV::RenderShadowVolume(pDevice9);	// for debug...
 				SV::RenderShadow(pDevice9);
 

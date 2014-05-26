@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Windows.h>
+#include <d3dx9.h>
 
 #ifndef SAFE_DELETE
 #define SAFE_DELETE(p) { if (p) { delete (p); (p) = nullptr; } }
@@ -34,3 +35,5 @@
 
 // Return the current module on whatever code you're running
 HMODULE GetCurrentModule();
+
+void GetRotation(D3DMATRIX* pMatrix, float& Yaw, float& Pitch, float& Roll);

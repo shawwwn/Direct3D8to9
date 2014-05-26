@@ -51,6 +51,9 @@
     <Filter Include="effect\ShadowVolume">
       <UniqueIdentifier>{5fe4aa28-1a02-47f4-ad89-a7e87b0848d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="effect\ShadowVolume\data">
+      <UniqueIdentifier>{e62b70aa-e618-47d3-82c9-593612f69c8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Direct3D8.cpp">
@@ -145,6 +148,12 @@
     </ClCompile>
     <ClCompile Include="..\src\RenderController.cpp">
       <Filter>effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ShadowTable.cpp">
+      <Filter>effect\ShadowVolume\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ShadowData.cpp">
+      <Filter>effect\ShadowVolume\data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -267,6 +276,9 @@
     </ClInclude>
     <ClInclude Include="..\src\RenderController.h">
       <Filter>effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ShadowTable.h">
+      <Filter>effect\ShadowVolume\data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

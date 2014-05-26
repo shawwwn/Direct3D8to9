@@ -3,10 +3,12 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 
+#define LIGHT_RANGE 1000;
+
 namespace SV {
 	class ShadowVolume
 	{
-		D3DXVECTOR3 m_pVertices[32000]; // Vertex data for rendering shadow volume
+		D3DXVECTOR3 m_pVertices[320000]; // Vertex data for rendering shadow volume
 		DWORD       m_dwNumVertices;
 
 		public:
