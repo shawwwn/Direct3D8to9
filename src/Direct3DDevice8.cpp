@@ -878,7 +878,8 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 			int shwParam = -1;
 			DWORD dwZWriteEnable;
 			pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwZWriteEnable);
-			if (dwZWriteEnable == 1 && ((DWORD)g_State == 256 || (DWORD)g_State == 17))
+			if ( ((DWORD)g_State == 256 && dwZWriteEnable == 1) || 
+				 ((DWORD)g_State == 17 && dwZWriteEnable == 0) )
 				shwParam = SV::g_shwTable.getShadowParam(NumVertices, primCount);
 			if (shwParam != -1)
 			{
