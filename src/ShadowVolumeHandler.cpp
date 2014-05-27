@@ -7,6 +7,8 @@ namespace SV {
 	ShadowVolume g_HumBaseShadow;
 	UINT g_deviceHeight = 0;
 	UINT g_deviceWidth = 0;
+	bool g_enterUnitShadow = false;
+	bool g_finishUnitShadow = false;
 
 	//
 	// Compute light vector then generate shadow mesh

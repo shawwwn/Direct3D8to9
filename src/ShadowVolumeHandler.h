@@ -17,6 +17,8 @@ namespace SV {
 	extern ShadowVolume g_HumBaseShadow;
 	extern UINT g_deviceHeight;
 	extern UINT g_deviceWidth;
+	extern bool g_enterUnitShadow;
+	extern bool g_finishUnitShadow;
 
 	void InitShadowTable(ShadowTable& table);
 	void GenerateShadow(IDirect3DDevice9* pd3dDevice, IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer, 

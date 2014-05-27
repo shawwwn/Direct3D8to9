@@ -55,7 +55,7 @@ namespace SV {
 		*/
 
 		/* Flying Units */
-		/*
+		
 		table.addShadow(32,   40,   SHW_FLYING_UNIT);								// Griffin - top [leak]
 		table.addShadow(451,  369,  SHW_FLYING_UNIT);								// Griffin - body [leak]
 		table.addShadow(21,   22,   SHW_FLYING_UNIT);								// Griffin - hammer
@@ -63,7 +63,7 @@ namespace SV {
 		table.addShadow(558,  391,  SHW_FLYING_UNIT);								// DragonHawk - body [leak]
 		table.addShadow(89,   53,   SHW_FLYING_UNIT);								// Helicopter - top
 		table.addShadow(445,  374,  SHW_FLYING_UNIT);								// Helicopter - body (dislay issue)
-		*/
+		
 
 		/*
 		 *	NE

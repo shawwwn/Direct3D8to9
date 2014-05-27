@@ -270,6 +270,8 @@ STDMETHODIMP CDirect3DDevice8::Present(THIS_ CONST RECT* pSourceRect, CONST RECT
 
 	PP::g_presented = false;
 	SV::g_rendered = false;
+	SV::g_finishUnitShadow = false;
+	SV::g_enterUnitShadow = false;
 	NP::EXCP::CheckAll();	// check exception list
 	return pDevice9->Present(pSourceRect, pDestRect, hDestWindowOverride, pDirtyRegion);
 }
@@ -833,6 +835,24 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 		return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 	}
 #endif
+
+	// Disable unit shadows
+	if (CTRL::g_EnableSV && !SV::g_finishUnitShadow)
+	{
+		if (CTRL::g_DisableUnitShadow && g_Stride==36 && Type==5 && (DWORD)g_State==17 && g_FVFHandle==338 && primCount==NumVertices*2-4)
+		{
+			DWORD dwLighting;
+			pDevice9->GetRenderState(D3DRS_LIGHTING, &dwLighting);
+			if (dwLighting==0)
+			{
+				SV::g_enterUnitShadow = true;
+				return D3D_OK;
+			}
+		}
+		// check if unit shadow rendering process has finished
+		if (!SV::g_finishUnitShadow && SV::g_enterUnitShadow && Type!=5)
+			SV::g_finishUnitShadow = true;
+	}
 
 	if (g_Stride==36 && NumVertices==4 && primCount==2 && alphaRef==192 && Type==5)
 	{
