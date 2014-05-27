@@ -1,5 +1,6 @@
 #include "NormalMapHandler.h"
 #include "DebugUtils.h"
+#pragma comment(lib, "dxguid.lib")
 
 namespace NP {
 	TextureTable g_texTable;

@@ -329,10 +329,10 @@ namespace NP {
 		texTable.addTextureEntry(32,  178,  116,  256, 256, false);								// Item - book
 		texTable.addTextureEntry(32,  76,   48,   256, 256, false);								// Item - treasure box
 
-		//texTable.addTextureEntry(32,  36,   28,  256, 256, false);								// Tree
-		//texTable.addTextureEntry(32,  247,  336, 256, 256, false);								// Test Subject
+		//texTable.addTextureEntry(32,  36,   28,  256, 256, false);							// Tree
+		//texTable.addTextureEntry(32,  247,  336, 256, 256, false);							// Test Subject
 
-		//texTable.addTextureEntry(32,  1065, 1143,256, 256, false);								// Main Screen
+		//texTable.addTextureEntry(32,  1065, 1143,256, 256, false);							// Main Screen
 		// TODO: add more...
 	}
 }

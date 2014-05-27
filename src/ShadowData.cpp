@@ -3,9 +3,7 @@
 namespace SV {
 	void InitShadowTable(ShadowTable& table)
 	{
-		/*
-		 *	HUM
-		 */
+		#pragma region Human
 		table.addShadow(28,   25);													// Human Rally Point - top
 		/* Heroes */
 		table.addShadow(21,   26);													// Archmage - top
@@ -24,7 +22,7 @@ namespace SV {
 		table.addShadow(280,  278);													// Militia - body
 		table.addShadow(138,  107);													// Spellbreaker - top
 		table.addShadow(310,  296);													// Spellbreaker - body
-		table.addShadow(42,   25);													// Spellbreaker - sword
+		table.addShadow(42,   25,  SHW_USE_TRANSFORMATION);							// Spellbreaker - sword
 		table.addShadow(52,   35);													// Footman - top
 		table.addShadow(447,  288);													// Footman - body
 		table.addShadow(169,  115);													// Riflemane - top
@@ -54,11 +52,11 @@ namespace SV {
 		table.addShadow(558,  391,  SHW_FLYING_UNIT);								// DragonHawk - body [leak]
 		table.addShadow(89,   53,   SHW_FLYING_UNIT);								// Helicopter - top
 		table.addShadow(445,  374,  SHW_FLYING_UNIT);								// Helicopter - body (dislay issue)
-		
+		#pragma endregion
 
-		/*
-		 *	ORC
-		 */
+		#pragma region Orc
+		table.addShadow(8,    6);													// Orc Rally Point - top
+		table.addShadow(32,   18);													// Orc Rally Point - body
 		/* Heroes */
 		table.addShadow(42,   41);													// Blasdemaster - top
 		table.addShadow(405,  365);													// Blasdemaster - body
@@ -126,13 +124,11 @@ namespace SV {
 		table.addShadow(20,   12,   SHW_FLYING_UNIT | SHW_USE_TRANSFORMATION);		// Troll Batrider - bomb [projectile]
 		table.addShadow(108,  73,   SHW_FLYING_UNIT);								// Troll Batrider - wings
 		*/
+		#pragma endregion
 
-
-		/*
-		 *	NE
-		 */
-		table.addShadow(72,   40,   SHW_USE_TRANSFORMATION);						// NightElf Rally Point - top [conflict]
-		table.addShadow(12,   6,    SHW_USE_TRANSFORMATION);						// NightElf Rally Point - body [conflict]
+		#pragma region Night Elf
+		table.addShadow(72,   40,   SHW_USE_TRANSFORMATION);						// NightElf Rally Point - top
+		table.addShadow(12,   6,    SHW_USE_TRANSFORMATION);						// NightElf Rally Point - body
 		/* Heroes */
 		table.addShadow(30,   36);													// Demon Hunter - top
 		table.addShadow(377,  397);													// Demon Hunter	- body
@@ -195,16 +191,97 @@ namespace SV {
 		table.addShadow(42,   32,   SHW_FLYING_UNIT);								// Druid of the Talon - bird top [leak]
 		table.addShadow(205,  224,  SHW_FLYING_UNIT);								// Druid of the Talon - bird body [leak]
 		*/
+		#pragma endregion
 
+		#pragma region Undead
+		table.addShadow(76,   42,   SHW_USE_TRANSFORMATION);						// Undead Rally Point
+		/* Heroes */
+		table.addShadow(82,   39);													// Death Knight - top
+		table.addShadow(597,  556);													// Death Knight - body
+		table.addShadow(110,  94);													// Cryptlord - top
+		table.addShadow(513,  587);													// Cryptlord - body
+		table.addShadow(128,  79);													// Lich - top
+		table.addShadow(562,  418);													// Lich - body
+		table.addShadow(99,   68);													// Dreadlord - top
+		table.addShadow(432,  442);													// Dreadlord - body
+		/* Units */
+		table.addShadow(243,  358);													// Inferno - body
+		table.addShadow(28,   32);													// Crypt Fiend - top
+		table.addShadow(455,  460);													// Crypt Fiend - body
+		table.addShadow(72,   42);													// Necromancer - top
+		table.addShadow(500,  498);													// Necromancer - body
+		table.addShadow(49,   28,   SHW_FLYING_UNIT);								// Witch - top
+		table.addShadow(308,  272,  SHW_FLYING_UNIT);								// Witch - body
+		table.addShadow(48,   32);													// Meat Wagon - top
+		table.addShadow(695,  490);													// Meat Wagon - body
+		table.addShadow(31,   34);													// Abomination - top
+		table.addShadow(379,  441);													// Abomination - body
+		table.addShadow(65,   63,   SHW_USE_TRANSFORMATION);						// Gargoyle ground - top
+		table.addShadow(343,  276,  SHW_USE_TRANSFORMATION);						// Gargoyle ground - body
+		table.addShadow(51,   62,   SHW_USE_TRANSFORMATION);						// Obsidian Statue - top
+		table.addShadow(415,  546,  SHW_USE_TRANSFORMATION);						// Obsidian Statue - body
+		table.addShadow(109,  62,   SHW_USE_TRANSFORMATION);						// Obsidian Statue - base
+		table.addShadow(31,   26);													// Ghoul - top
+		table.addShadow(504,  437);													// Ghoul - body
+		table.addShadow(58,   37);													// Acolyte - top
+		table.addShadow(365,  316);													// Acolyte - body
+		table.addShadow(248,  259,  SHW_FLYING_UNIT);								// Shadow - body
+		table.addShadow(42,   37,   SHW_FLYING_UNIT);								// Shadow - top
+		table.addShadow(24,   32);													// Beetle - top
+		table.addShadow(168,  200);													// Beetle - top
+		table.addShadow(8,    9,    SHW_USE_TRANSFORMATION);						// Skeleton - top
+		table.addShadow(327,  325);													// Skeleton - body
+		table.addShadow(36,   40);													// Skeleton Mage - top
+		table.addShadow(363,  321);													// Skeleton Mage - body
+		/* Flying Unit */
 		/*
-		 *	Netural
-		 */
+		table.addShadow(102,  83,   SHW_FLYING_UNIT);								// Gargoyle fly - top
+		table.addShadow(485,  385,  SHW_FLYING_UNIT);								// Gargoyle fly - body
+		table.addShadow(53,   64,   SHW_FLYING_UNIT);								// Destroyer - top
+		table.addShadow(500,  549,  SHW_FLYING_UNIT);								// Destroyer - body
+		table.addShadow(89,   56,   SHW_FLYING_UNIT);								// Frost Wyrm - top
+		table.addShadow(125,  110,  SHW_FLYING_UNIT);								// Frost Wyrm - rib
+		table.addShadow(358,  279,  SHW_FLYING_UNIT);								// Frost Wyrm - body
+		*/
+		#pragma endregion
+
+		#pragma region Neutral
 		/* Units */
 		table.addShadow(75,   69);													// Sheep
+		table.addShadow(30,   21);													// Orge Mauler - top
+		table.addShadow(565,  473);													// Orge Mauler - body
+		table.addShadow(521,  328);													// Boulder Golem - body
+		//table.addShadow(37,   62);												// Boulder Golem - head
+		table.addShadow(286,  272);													// Forest Troll Priest - body
+		table.addShadow(361,  373);													// Forest Troll Hunter - body
+		table.addShadow(257,  183);													// Murloc Reaver - top
+		table.addShadow(218,  176);													// Murloc Reaver - body
+		table.addShadow(116,  58);													// Dragon Turtle - top
+		table.addShadow(566,  513);													// Dragon Turtle - body
+		table.addShadow(117,  113);													// Kobos mage - top
+		table.addShadow(136,  124);													// Kobos mage - body
+		table.addShadow(90,   81);													// Kobos warrior - top
+		table.addShadow(19,   22);													// Kobos warrior - weapon
+		table.addShadow(165,  152);													// Kobos warrior - weapon
+		table.addShadow(566,  513);													// Dragon Turtle - body
+		table.addShadow(132,  146);													// Gnoll archer - top
+		table.addShadow(281,  256);													// Gnoll archer - body
+		table.addShadow(90,   110);													// Gnoll warrior - top
+		table.addShadow(296,  268);													// Gnoll warrior - body
+		table.addShadow(105,  62);													// Bandit warrior - top
+		table.addShadow(369,  268);													// Bandit warrior - body
+		table.addShadow(78,   62);													// Bandit archer - top
+		table.addShadow(299,  228);													// Bandit archer - body
+		table.addShadow(14,   18);													// Skeleton archer - top
+		table.addShadow(321,  316);													// Skeleton archer - body
+		table.addShadow(57,   44);													// Sasquatch - top
+		table.addShadow(380,  371);													// Sasquatch - body
+		#pragma endregion
 
-		/*
-		 *	Item
-		 */
-		table.addShadow(178,  116);													// book
+		#pragma region Misc
+		/* Item */
+		table.addShadow(178,  116,  SHW_USE_TRANSFORMATION);						// book
+		table.addShadow(76,   48,   SHW_USE_TRANSFORMATION);						// treasure box
+		#pragma endregion
 	}
 }

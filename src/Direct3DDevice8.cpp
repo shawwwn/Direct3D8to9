@@ -227,6 +227,16 @@ STDMETHODIMP CDirect3DDevice8::Present(THIS_ CONST RECT* pSourceRect, CONST RECT
 		DB::g_dbDebugOn = false;
 	DB::restDrawPrimitiveCount();
 
+	// Enable/Disable Unit Shadow
+	if (GetAsyncKeyState(VK_F9))
+	{
+		CTRL::g_DisableUnitShadow = !CTRL::g_DisableUnitShadow;
+		if (CTRL::g_DisableUnitShadow)
+			MessageBox(NULL, "Default unit shadow has been disabled!", "info", MB_OK);
+		else
+			MessageBox(NULL, "Default unit shadow has been enabled!", "info", MB_OK);
+	}
+
 	// Enable/Disable ShadowVolume
 	if (GetAsyncKeyState(VK_F8))
 	{
@@ -837,20 +847,22 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 #endif
 
 	// Disable unit shadows
-	if (CTRL::g_EnableSV && !SV::g_finishUnitShadow)
+	if (!SV::g_finishUnitShadow)
 	{
-		if (CTRL::g_DisableUnitShadow && g_Stride==36 && Type==5 && (DWORD)g_State==17 && g_FVFHandle==338 && primCount==NumVertices*2-4)
+		if (g_Stride==36 && Type==5 && (DWORD)g_State==17 && g_FVFHandle==338 && primCount==NumVertices*2-4)
 		{
-			SV::g_enterUnitShadow = true;
 			DWORD dwLighting;
 			pDevice9->GetRenderState(D3DRS_LIGHTING, &dwLighting);
 			if (dwLighting==0)
 			{
-				return D3D_OK;
+				SV::g_enterUnitShadow = true;
+				if (CTRL::g_DisableUnitShadow)
+					return D3D_OK;
 			}
 		}
+		// TODO: Fix the bug where finish shadow never set true
 		// check if unit shadow rendering process has finished
-		if (!SV::g_finishUnitShadow && SV::g_enterUnitShadow && (g_State!=17 || g_Stride!=36))
+		if (SV::g_enterUnitShadow && (g_State!=17 || Type!=5))
 			SV::g_finishUnitShadow = true;
 	}
 
@@ -885,6 +897,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 	else
 	{
 		HRESULT hr = D3DERR_INVALIDCALL;
+		// TODO: Implement render stage control
 		if (SV::g_finishUnitShadow && !PP::g_presented)
 		{
 			// Normal Map
@@ -902,8 +915,8 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 				DWORD dwFogEnable;
 				pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwZWriteEnable);
 				pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwFogEnable);
-				if ( (DWORD)g_State == 256  || 
-					 (((DWORD)g_State == 17 || (DWORD)g_State == 16 || (DWORD)g_State == 2) && (dwZWriteEnable == 1 || dwFogEnable == 0)))
+				if ( ((DWORD)g_State == 256  || ((DWORD)g_State == 17 || (DWORD)g_State == 16 || (DWORD)g_State == 2)) &&
+					 (dwZWriteEnable == 1 || dwFogEnable == 0) )
 					shwParam = SV::g_shwTable.getShadowParam(NumVertices, primCount);
 				if (shwParam != -1)
 				{
