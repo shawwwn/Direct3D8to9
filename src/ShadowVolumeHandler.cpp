@@ -102,6 +102,8 @@ namespace SV {
 
 		// Dont bother with interpolating color
 		pd3dDevice->SetRenderState( D3DRS_SHADEMODE,     D3DSHADE_FLAT );
+		pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE, false );
+		pd3dDevice->SetRenderState( D3DRS_ALPHAREF, 192 );
 
 		// Set up stencil compare fuction, reference value, and masks.
 		// Stencil test passes if ((ref & mask) cmpfn (stencil & mask)) is true.
@@ -122,7 +124,7 @@ namespace SV {
 		pd3dDevice->SetRenderState( D3DRS_SRCBLEND,  D3DBLEND_ZERO );
 		pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_ONE );
 	
-		if( true )
+		if( true ) 
 		{
 			// With 2-sided stencil, we can avoid rendering twice:
 			pd3dDevice->SetRenderState( D3DRS_TWOSIDEDSTENCILMODE, TRUE );

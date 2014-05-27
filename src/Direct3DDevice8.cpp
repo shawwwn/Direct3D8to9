@@ -850,7 +850,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 			}
 		}
 		// check if unit shadow rendering process has finished
-		if (!SV::g_finishUnitShadow && SV::g_enterUnitShadow && Type!=5)
+		if (!SV::g_finishUnitShadow && SV::g_enterUnitShadow && g_Stride!=36)
 			SV::g_finishUnitShadow = true;
 	}
 
@@ -901,7 +901,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 			pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwZWriteEnable);
 			pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwFogEnable);
 			if ( (DWORD)g_State == 256  || 
-				 (((DWORD)g_State == 17 || (DWORD)g_State == 16) && (dwZWriteEnable == 1 || dwFogEnable == 0)))
+				 (((DWORD)g_State == 17 || (DWORD)g_State == 16 || (DWORD)g_State == 2) && (dwZWriteEnable == 1 || dwFogEnable == 0)))
 				shwParam = SV::g_shwTable.getShadowParam(NumVertices, primCount);
 			if (shwParam != -1)
 			{
