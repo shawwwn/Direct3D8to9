@@ -6,6 +6,7 @@ namespace SV {
 		/*
 		 *	HUM
 		 */
+		table.addShadow(28,   25);													// Human Rally Point - top
 		table.addShadow(46,   60);													// Peasant - body
 		table.addShadow(302,  270);													// Peasant - top
 		table.addShadow(120,  48,  SHW_USE_TRANSFORMATION);							// Peasant - lumber
@@ -27,19 +28,31 @@ namespace SV {
 		table.addShadow(407,  369);													// Mage - body
 		table.addShadow(40,   29);													// Motar Team - top
 		table.addShadow(490,  481);													// Motar Team - body
-		table.addShadow(17,   22,  SHW_USE_TRANSFORMATION);							// Motar Team - scope
+		//table.addShadow(17,   22,  SHW_USE_TRANSFORMATION);						// Motar Team - scope
 		table.addShadow(52,   44);													// Motar Team - cannon
 		table.addShadow(22,   18);													// Tank - top
 		table.addShadow(778,  512);													// Tank - body
-		table.addShadow(78,   118, SHW_USE_TRANSFORMATION);							// Tank - eagle head
+		//table.addShadow(78,   118, SHW_USE_TRANSFORMATION);						// Tank - eagle head
 		table.addShadow(21,   26);													// Archmage - top
 		table.addShadow(615,  486);													// Archmage - body
-		table.addShadow(64,   64);													// Blood Mage - top [leak]
+		//table.addShadow(64,   64);												// Blood Mage - top [leak]
 		table.addShadow(643,  505);													// Blood Mage - body
 		table.addShadow(63,   58);													// Paladin - top [leak]
 		table.addShadow(510,  382);													// Paladin - body [leak]
 		table.addShadow(18,   22);													// Mountain King - top
-		//table.addShadow(458,  415,  SHW_USE_TRANSFORMATION);						// Mountain King - body (dislay issue)
+		table.addShadow(458,  415,  SHW_USE_TRANSFORMATION);						// Mountain King - body
+
+		table.addShadow(20,   12);													// Water Element - top
+		table.addShadow(206,  134);													// Water Element - upper part
+		table.addShadow(72,   38);													// Water Element - body
+
+		/* Buildings */
+		/*
+		table.addShadow(99,   46,   SHW_USE_TRANSFORMATION);						// Barracks - top
+		table.addShadow(387,  209,  SHW_USE_TRANSFORMATION);						// Barracks - body
+		table.addShadow(27,   15,   SHW_USE_TRANSFORMATION);						// Tower - top
+		table.addShadow(251,  149,  SHW_USE_TRANSFORMATION);						// Tower - body
+		*/
 
 		/* Flying Units */
 		/*
@@ -57,5 +70,11 @@ namespace SV {
 		 */
 		table.addShadow(30,   36);													// Demon Hunter - top
 		table.addShadow(377,  397);													// Demon Hunter	- body
+
+		/*
+		 *	Netural
+		 */
+		/* Buildings */
+		//table.addShadow(271,  239,  SHW_USE_TRANSFORMATION);						// Golb Mine - mine
 	}
 }

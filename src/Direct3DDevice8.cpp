@@ -877,9 +877,11 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 		{
 			int shwParam = -1;
 			DWORD dwZWriteEnable;
+			DWORD dwFogEnable;
 			pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwZWriteEnable);
-			if ( ((DWORD)g_State == 256 && dwZWriteEnable == 1) || 
-				 ((DWORD)g_State == 17 && dwZWriteEnable == 0) )
+			pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwFogEnable);
+			if ( (DWORD)g_State == 256  || 
+				 (((DWORD)g_State == 17 || (DWORD)g_State == 16) && (dwZWriteEnable == 1 || dwFogEnable == 0)))
 				shwParam = SV::g_shwTable.getShadowParam(NumVertices, primCount);
 			if (shwParam != -1)
 			{
@@ -887,7 +889,8 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 					pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 
 				SV::GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex, g_pWorldMatrix, shwParam);
-				//SV::RenderShadowVolume(pDevice9);	// for debug...
+				pDevice9->SetTexture(g_Stage, NULL);
+				//SV::RenderShadowVolume(pDevice9);	// for debug...	
 				SV::RenderShadow(pDevice9);
 
 				pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
