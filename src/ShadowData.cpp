@@ -62,7 +62,7 @@ namespace SV {
 		/* Heroes */
 		table.addShadow(42,   41);													// Blasdemaster - top
 		table.addShadow(405,  365);													// Blasdemaster - body
-		table.addShadow(24,   18,   SHW_USE_TRANSFORMATION);						// Blasdemaster - blade
+		//table.addShadow(24,   18,   SHW_USE_TRANSFORMATION);						// Blasdemaster - blade [conflict]
 		table.addShadow(31,   30);													// Farseer - top
 		table.addShadow(673,  518);													// Farseer - body
 		table.addShadow(48,   60);													// Shadow Hunter - top
@@ -131,15 +131,80 @@ namespace SV {
 		/*
 		 *	NE
 		 */
+		table.addShadow(72,   40,   SHW_USE_TRANSFORMATION);						// NightElf Rally Point - top [conflict]
+		table.addShadow(12,   6,    SHW_USE_TRANSFORMATION);						// NightElf Rally Point - body [conflict]
 		/* Heroes */
 		table.addShadow(30,   36);													// Demon Hunter - top
 		table.addShadow(377,  397);													// Demon Hunter	- body
-
+		table.addShadow(411,  460);													// Demon Hunter	- demon
+		table.addShadow(82,   61);													// Keeper of the Grove - top
+		table.addShadow(486,  482);													// Keeper of the Grove - body
+		table.addShadow(41,   50);													// Warden - top
+		table.addShadow(94,   46);													// Warden - cloak
+		table.addShadow(86,   46);													// Warden - cloak2
+		table.addShadow(610,  521);													// Warden - body
+		table.addShadow(60,   66);													// Priest of the Moon - top
+		table.addShadow(50,   26);													// Priest of the Moon - bow
+		table.addShadow(419,  394);													// Priest of the Moon - body
+		/* Units */
+		table.addShadow(73,   37);													// Archer - top
+		table.addShadow(331,  380);													// Archer - body
+		table.addShadow(74,   43);													// Huntress - top
+		table.addShadow(49,   23);													// Huntress - glaive
+		table.addShadow(490,  457);													// Huntress - body
+		table.addShadow(66,   62);													// Dryad - top
+		table.addShadow(280,  354);													// Dryad - body [leak]
+		//table.addShadow(6,    7,    SHW_USE_TRANSFORMATION);						// Dryad - spear [projectile]
+		//table.addShadow(20,   20,   SHW_USE_TRANSFORMATION);						// Dryad - spear top [projectile]
+		table.addShadow(62,   52);													// Druid of the Talon - top
+		table.addShadow(514,  402);													// Druid of the Talon - body
+		table.addShadow(41,   38);													// Druid of the Talon - death top
+		table.addShadow(22,   16);													// Druid of the Talon - death top cloak
+		table.addShadow(232,  234);													// Druid of the Talon - death body
+		table.addShadow(136,  151);													// Druid of the Talon - death body2
+		table.addShadow(28,   16);													// Druid of the Claw - top
+		table.addShadow(486,  489);													// Druid of the Claw - body
+		//table.addShadow(116,  144);												// Druid of the Claw - backpack
+		table.addShadow(22,   16);													// Druid of the Claw - bear top
+		table.addShadow(493,  428);													// Druid of the Claw - bear body
+		table.addShadow(34,   26);													// Mountain Giant - top
+		table.addShadow(634,  541);													// Mountain Giant - body
+		//table.addShadow(126,  70);												// Mountain Giant - grass
+		table.addShadow(27,   22);													// Mountain Giant - weapon1
+		table.addShadow(55,   46);													// Mountain Giant - weapon2
+		//table.addShadow(12,   8);													// Glaive Thrower - top
+		table.addShadow(359,  239);													// Glaive Thrower - body
+		//table.addShadow(38,   42,   SHW_USE_TRANSFORMATION);						// Glaive Thrower - glaive [projectile]
+		table.addShadow(152,  114);													// Treant - top
+		table.addShadow(278,  230);													// Treant - body
+		table.addShadow(22,   14);													// Small Ghost - top
+		table.addShadow(521,  413);													// Small Ghost - body
+		table.addShadow(825,  649);													// Big Ghost - body
+		/* Flying Units */
+		/*
+		table.addShadow(53,   54,   SHW_FLYING_UNIT);								// Chimaera - top [leak]
+		table.addShadow(500,  418,  SHW_FLYING_UNIT);								// Chimaera - body [leak]
+		table.addShadow(87,   85,   SHW_FLYING_UNIT);								// Hippogryph - top [leak]
+		table.addShadow(325,  259,  SHW_FLYING_UNIT);								// Hippogryph - body [leak]
+		table.addShadow(81,   81,   SHW_FLYING_UNIT);								// Hippogryph - mounted top wing [leak]
+		table.addShadow(90,   48,   SHW_FLYING_UNIT);								// Hippogryph - mounted top archer cloak [leak]
+		table.addShadow(246,  253,  SHW_FLYING_UNIT);								// Hippogryph - mounted archer [leak]
+		table.addShadow(290,  239,  SHW_FLYING_UNIT);								// Hippogryph - mounted body [leak]
+		table.addShadow(76,   80,   SHW_FLYING_UNIT);								// Faerie Dragon - top [leak]
+		table.addShadow(264,  260,  SHW_FLYING_UNIT);								// Faerie Dragon - body [leak]
+		table.addShadow(42,   32,   SHW_FLYING_UNIT);								// Druid of the Talon - bird top [leak]
+		table.addShadow(205,  224,  SHW_FLYING_UNIT);								// Druid of the Talon - bird body [leak]
+		*/
 
 		/*
 		 *	Netural
 		 */
 		/* Units */
 		table.addShadow(75,   69);													// Sheep
+
+		/*
+		 *	Item
+		 */
+		table.addShadow(178,  116);													// book
 	}
 }
