@@ -102,8 +102,6 @@ namespace SV {
 
 		// Dont bother with interpolating color
 		pd3dDevice->SetRenderState( D3DRS_SHADEMODE,     D3DSHADE_FLAT );
-		pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE, false );
-		pd3dDevice->SetRenderState( D3DRS_ALPHAREF, 192 );
 
 		// Set up stencil compare fuction, reference value, and masks.
 		// Stencil test passes if ((ref & mask) cmpfn (stencil & mask)) is true.
