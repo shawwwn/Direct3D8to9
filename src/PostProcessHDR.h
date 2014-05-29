@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RenderController.h"
+#include "EffectController.h"
 #include "PostProcess.h"
 
 namespace PP {

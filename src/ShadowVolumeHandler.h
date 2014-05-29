@@ -3,7 +3,7 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "SysUtils.h"
-#include "RenderController.h"
+#include "EffectController.h"
 #include "ShadowVolume.h"
 #include "ShadowTable.h"
 
@@ -22,7 +22,7 @@ namespace SV {
 
 	void InitShadowTable(ShadowTable& table);
 	void GenerateShadow(IDirect3DDevice9* pd3dDevice, IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer, 
-						DWORD startIndex, DWORD primCount, DWORD baseVertexIndex, D3DMATRIX* pMatrix, int inversion);
+						DWORD startIndex, DWORD primCount, DWORD baseVertexIndex, int inversion);
 	void RenderShadowVolume(IDirect3DDevice9* pd3dDevice);
 	HRESULT RenderShadow(IDirect3DDevice9* pd3dDevice);
 	HRESULT DrawShadow(IDirect3DDevice9* pd3dDevice);

@@ -3,7 +3,7 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "SysUtils.h"
-#include "RenderController.h"
+#include "EffectController.h"
 
 namespace HDR {
 	extern bool g_IsAdaptorSupported;

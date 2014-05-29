@@ -25,6 +25,7 @@
     <ClCompile Include="..\src\Direct3DVertexBuffer8.cpp" />
     <ClCompile Include="..\src\Direct3DVolume8.cpp" />
     <ClCompile Include="..\src\Direct3DVolumeTexture8.cpp" />
+    <ClCompile Include="..\src\EffectController.cpp" />
     <ClCompile Include="..\src\ExceptionalMeshTable.cpp" />
     <ClCompile Include="..\src\HDRScene.cpp" />
     <ClCompile Include="..\src\NormalMapData.cpp" />
@@ -35,7 +36,7 @@
     <ClCompile Include="..\src\PostProcessHandler.cpp" />
     <ClCompile Include="..\src\PostProcessHDR.cpp" />
     <ClCompile Include="..\src\PostProcessSMAA.cpp" />
-    <ClCompile Include="..\src\RenderController.cpp" />
+    <ClCompile Include="..\src\RenderStageController.cpp" />
     <ClCompile Include="..\src\ShadowData.cpp" />
     <ClCompile Include="..\src\ShadowTable.cpp" />
     <ClCompile Include="..\src\ShadowVolume.cpp" />
@@ -66,6 +67,7 @@
     <ClInclude Include="..\src\Direct3DVertexBuffer8.h" />
     <ClInclude Include="..\src\Direct3DVolume8.h" />
     <ClInclude Include="..\src\Direct3DVolumeTexture8.h" />
+    <ClInclude Include="..\src\EffectController.h" />
     <ClInclude Include="..\src\ExceptionalMeshTable.h" />
     <ClInclude Include="..\src\HDRScene.h" />
     <ClInclude Include="..\src\NormalMapExceptionHandler.h" />
@@ -76,7 +78,7 @@
     <ClInclude Include="..\src\PostProcessHandler.h" />
     <ClInclude Include="..\src\PostProcessHDR.h" />
     <ClInclude Include="..\src\PostProcessSMAA.h" />
-    <ClInclude Include="..\src\RenderController.h" />
+    <ClInclude Include="..\src\RenderStageController.h" />
     <ClInclude Include="..\src\SearchTex.h" />
     <ClInclude Include="..\src\ShaderResource.h" />
     <ClInclude Include="..\src\ShadowTable.h" />

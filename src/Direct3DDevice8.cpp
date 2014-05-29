@@ -8,7 +8,8 @@
 #include "Direct3DVertexBuffer8.h"
 #include "Direct3DVolumeTexture8.h"
 
-#include "RenderController.h"		// external...
+#include "EffectController.h"		// external...
+#include "RenderStageController.h"	// external...
 #include "PostProcessHandler.h"		// external...
 #include "NormalMapHandler.h"		// external...
 #include "HDRScene.h"				// external...
@@ -278,6 +279,7 @@ STDMETHODIMP CDirect3DDevice8::Present(THIS_ CONST RECT* pSourceRect, CONST RECT
 	}
 #endif
 
+	resetRenderStage();
 	PP::g_presented = false;
 	SV::g_rendered = false;
 	SV::g_finishUnitShadow = false;
@@ -556,11 +558,6 @@ STDMETHODIMP CDirect3DDevice8::Clear(THIS_ DWORD Count, CONST D3DRECT* pRects, D
 STDMETHODIMP CDirect3DDevice8::SetTransform(THIS_ D3DTRANSFORMSTATETYPE State, CONST D3DMATRIX* pMatrix)
 {
 	g_State=State;
-	g_pMatrix=(D3DMATRIX*)pMatrix;
-	if (g_State == D3DTS_WORLD)
-	{
-		g_pWorldMatrix = g_pMatrix;
-	}
 	return pDevice9->SetTransform(State, pMatrix);
 }
 
@@ -626,9 +623,22 @@ STDMETHODIMP CDirect3DDevice8::GetClipPlane(THIS_ DWORD Index, float* pPlane)
 
 STDMETHODIMP CDirect3DDevice8::SetRenderState(THIS_ D3DRENDERSTATETYPE State, DWORD Value)
 {
-	if (State == 153/*D3DRS_SOFTWAREVERTEXPROCESSING*/)
+	if (State == 153)
 	{
 		return pDevice9->SetSoftwareVertexProcessing(!!Value);
+	}
+
+	// Record values
+	switch (State)
+	{
+	case D3DRS_ALPHAREF:
+		g_dwAlphaRef = Value;
+		break;
+	case D3DRS_LIGHTING:
+		g_dwLighting = Value;
+		break;
+	default:
+		break;
 	}
 	return pDevice9->SetRenderState(State, Value);
 }
@@ -833,81 +843,48 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 	DWORD alphaRef;
 	pDevice9->GetRenderState(D3DRS_ALPHAREF, &alphaRef);
 
+	// invisible models..
+	if (g_pTexture9==NULL)
+	{
+		return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
+	}
+
 #ifdef _DEBUG
 	if (DB::g_dbDebugOn)
 	{
 		DB::saveRenderStatesUsingDrawPrimitiveCount(pDevice9);
-		DB::savePrimitiveStatesUsingDrawPrimitiveCount(Type, minIndex, NumVertices, startIndex, primCount, 
+		DB::savePrimitiveStatesUsingDrawPrimitiveCount(pDevice9, Type, minIndex, NumVertices, startIndex, primCount, 
 														g_StreamNumber, g_Stride, g_Stage, g_State, g_FVFHandle,
 														g_baseVertexIndex, zBufferDiscardingEnabled, g_pTexture9);
 		DB::saveBackBufferToImage(pDevice9, false);
+		DB::logTextureUsingDrawPrimitiveCount(pDevice9, (IDirect3DTexture9*)g_pTexture9);
+		DB::logTextureDescUsingDrawPrimitiveCount(pDevice9, (IDirect3DTexture9*)g_pTexture9);
 		DB::increaseDrawPrimitiveCount();
-		//return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
+		return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 	}
 #endif
 
-	// Disable unit shadows
-	if (!SV::g_finishUnitShadow)
+	bool restore = false;
+	int currentRenderStage=checkRenderStage(g_Stride, Type, g_FVFHandle, g_State, NumVertices, primCount, (IDirect3DTexture9*)g_pTexture9);
+	switch (currentRenderStage)
 	{
-		if (g_Stride==36 && Type==5 && (DWORD)g_State==17 && g_FVFHandle==338 && primCount==NumVertices*2-4)
+	case STAGE_UNIT_SHADOW:
 		{
-			DWORD dwLighting;
-			pDevice9->GetRenderState(D3DRS_LIGHTING, &dwLighting);
-			if (dwLighting==0)
-			{
-				SV::g_enterUnitShadow = true;
-				if (CTRL::g_DisableUnitShadow)
-					return D3D_OK;
-			}
+			// Disable default unit shadows
+			if (CTRL::g_DisableUnitShadow)
+				return D3D_OK;
 		}
-		// TODO: Fix the bug where finish shadow never set true
-		// check if unit shadow rendering process has finished
-		if (SV::g_enterUnitShadow && (g_State!=17 || Type!=5))
-			SV::g_finishUnitShadow = true;
-	}
-
-	if (g_Stride==36 && NumVertices==4 && primCount==2 && alphaRef==192 && Type==5)
-	{
-		// Shadow Volume
-		if (!SV::g_rendered && CTRL::g_EnableSV)
+		break;
+	case STAGE_UNIT:
 		{
-			SV::g_rendered = true;
-			SV::DrawShadow(pDevice9);
-			pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
-			pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
-			pDevice9->SetIndices(g_pIndexData9);									// restore indices
-			pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
-		}
-
-		// Post Process
-		if (!PP::g_presented && CTRL::g_EnablePP)
-		{
-			PP::g_presented = true;
-			pDevice9->EndScene(); // end the scene first
-
-			PP::PerformPostProcess(pDevice9);
-			// restore the original process
-			pDevice9->BeginScene();													// begin the scene
-			pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
-			pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
-			pDevice9->SetIndices(g_pIndexData9);									// restore indices
-			pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
-		}
-	}
-	else
-	{
-		HRESULT hr = D3DERR_INVALIDCALL;
-		// TODO: Implement render stage control
-		if (SV::g_finishUnitShadow && !PP::g_presented)
-		{
-			// Normal Map
+			HRESULT hr = D3DERR_INVALIDCALL;
+			// Render Normal Map
 			if (CTRL::g_EnableNP)
 			{
 				hr = NP::PerformNormalMappping(pDevice9, g_pTexture9, Type, g_baseVertexIndex, minIndex, startIndex,
-												g_Stride, NumVertices, primCount, alphaRef, (DWORD)g_State);
+											   g_Stride, NumVertices, primCount, alphaRef, (DWORD)g_State);
 			}
-
-			// Shadow Volume
+			// Render Shadow Volume
 			if (CTRL::g_EnableSV && g_Stride == 32 && Type == 4 && g_FVFHandle == 274)
 			{
 				int shwParam = -1;
@@ -916,28 +893,68 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 				pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwZWriteEnable);
 				pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwFogEnable);
 				if ( ((DWORD)g_State == 256  || ((DWORD)g_State == 17 || (DWORD)g_State == 16 || (DWORD)g_State == 2)) &&
-					 (dwZWriteEnable == 1 || dwFogEnable == 0) )
+					(dwZWriteEnable == 1 || dwFogEnable == 0) )
 					shwParam = SV::g_shwTable.getShadowParam(NumVertices, primCount);
 				if (shwParam != -1)
 				{
 					if (FAILED(hr))	// If NormalMapHandler hasn't rendered an object, render it here.
+					{
+						pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
+						pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
+						pDevice9->SetIndices(g_pIndexData9);									// restore indices
+						pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
 						pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
-
-					SV::GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex, g_pWorldMatrix, shwParam);
+					}
+					SV::GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex, shwParam);
 					pDevice9->SetTexture(g_Stage, NULL);
 					//SV::RenderShadowVolume(pDevice9);	// for debug...	
 					SV::RenderShadow(pDevice9);
-
 					pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
 					pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
 					pDevice9->SetIndices(g_pIndexData9);									// restore indices
 					pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
-					return D3D_OK;
+					hr = D3D_OK;
 				}
 			}
+			// Return if the object has already been rendered
+			if (SUCCEEDED(hr))
+				return hr;
+			else
+				restore = true;
 		}
-		if (SUCCEEDED(hr))
-			return hr;	// return if the object has already been rendered
+		break;
+	case STAGE_UI:
+		{
+			// Draw shadow volume
+			if (!SV::g_rendered && CTRL::g_EnableSV)
+			{
+				SV::g_rendered = true;
+				SV::DrawShadow(pDevice9);
+				restore = true;
+			}
+			// Perform Post Process
+			if (!PP::g_presented && CTRL::g_EnablePP)
+			{
+				PP::g_presented = true;
+				pDevice9->EndScene(); // end the scene first
+				PP::PerformPostProcess(pDevice9);
+				pDevice9->BeginScene();	
+				restore = true;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+
+	// Restore
+	if (restore)
+	{
+		pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
+		pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
+		pDevice9->SetIndices(g_pIndexData9);									// restore indices
+		pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
+		//return D3D_OK;
 	}
 	return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 }

@@ -102,7 +102,7 @@ namespace NP {
 					pItem->m_pNormalTexture = NULL;
 					#ifdef _DEBUG
 						MessageBox(NULL, "Compute Normal Map Texture Failed!", "Error", MB_OK);
-						DB::savePrimitiveStatesToFile(Type, minIndex, NumVertices, startIndex, primCount, 
+						DB::savePrimitiveStatesToFile(pd3dDevice, Type, minIndex, NumVertices, startIndex, primCount, 
 							0, Stride, 0, (D3DTRANSFORMSTATETYPE)TransformStateType, 0,
 							baseVertexIndex, 0, pBaseTexture, "failTex.txt");
 						D3DXSaveTextureToFile("failTex.bmp", D3DXIFF_BMP, pBaseTexture, NULL);

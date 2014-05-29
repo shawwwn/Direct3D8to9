@@ -13,7 +13,7 @@ namespace SV {
 	//
 	// Compute light vector then generate shadow mesh
 	//
-	void GenerateShadow(IDirect3DDevice9* pd3dDevice, IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer, DWORD startIndex, DWORD primCount, DWORD baseVertexIndex, D3DMATRIX* pMatrix, int inversion)
+	void GenerateShadow(IDirect3DDevice9* pd3dDevice, IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer, DWORD startIndex, DWORD primCount, DWORD baseVertexIndex, int inversion)
 	{
 		D3DXVECTOR3 vLight;					// light vector in object space
 		D3DXVECTOR3* pRefLight = NULL;		// reference light value

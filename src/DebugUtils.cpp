@@ -20,7 +20,7 @@ namespace DB {
 		if (!dirExists(dirPath))
 			mkdir(dirPath);
 	}
-	void savePrimitiveStatesUsingDrawPrimitiveCount(D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount, 
+	void savePrimitiveStatesUsingDrawPrimitiveCount(IDirect3DDevice9* pd3dDevice, D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount, 
                                 UINT StreamNumber, UINT Stride, DWORD Stage, D3DTRANSFORMSTATETYPE State, DWORD FVFHandle,
 							    UINT baseVertexIndex, BOOL zBufferDiscardingEnabled, IDirect3DBaseTexture9* g_pTexture9)
 	{
@@ -31,12 +31,12 @@ namespace DB {
 		itoa(g_dbDrawPrimitiveCount, fileName, 10);
 		strcat(fullPath, fileName);
 		strcat(fullPath, fileSuffix);
-		savePrimitiveStatesToFile(Type, minIndex, NumVertices, startIndex, primCount, 
+		savePrimitiveStatesToFile(pd3dDevice, Type, minIndex, NumVertices, startIndex, primCount, 
 			                   StreamNumber, Stride, Stage, State, FVFHandle,
 							   baseVertexIndex, zBufferDiscardingEnabled, g_pTexture9,
 							   fullPath);
 	}
-	void savePrimitiveStatesToFile(D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount, 
+	void savePrimitiveStatesToFile(IDirect3DDevice9* pd3dDevice, D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount, 
                                 UINT StreamNumber, UINT Stride, DWORD Stage, D3DTRANSFORMSTATETYPE State, DWORD FVFHandle,
 							    UINT baseVertexIndex, BOOL zBufferDiscardingEnabled, IDirect3DBaseTexture9* g_pTexture9,
 								char* filename)
@@ -56,6 +56,7 @@ namespace DB {
 		myfile << "BaseVertexIndex: " << baseVertexIndex << "\n";
 		myfile << "zBufferDiscardingEnabled: " << zBufferDiscardingEnabled << "\n";
 		myfile << "pTexture9: " << (UINT)g_pTexture9 << "\n";
+		myfile << "RenderStage: " << checkRenderStage(Stride, Type, FVFHandle, State, NumVertices, primCount, (IDirect3DTexture9*)g_pTexture9) << "\n";
 		myfile.close();
 	}
 	void saveBackBufferToImage(IDirect3DDevice9* pd3dDevice, bool post)
@@ -387,10 +388,24 @@ namespace DB {
 
 		  myfile.close();
 	}
+	void logTexture(IDirect3DDevice9* pd3dDevice, IDirect3DTexture9* pTexture, char* filename)
+	{
+		D3DXSaveTextureToFile(filename, D3DXIFF_JPG, pTexture, NULL);
+	}
+	void logTextureUsingDrawPrimitiveCount(IDirect3DDevice9* pd3dDevice, IDirect3DTexture9* pTexture)
+	{
+		char fullPath[64]="pics/";
+		char fileName[16];
+		char fileSuffix[16]="_tex.jpg";
+		itoa(g_dbDrawPrimitiveCount, fileName, 10);
+		strcat(fullPath, fileName);
+		strcat(fullPath, fileSuffix);
+		logTexture(pd3dDevice, pTexture, fullPath);
+	}
 	void logTextureDesc(IDirect3DDevice9* pd3dDevice, IDirect3DTexture9* pTexture, char* filename)
 	{
 		D3DSURFACE_DESC Desc;
-		pTexture->GetLevelDesc(2, &Desc);
+		pTexture->GetLevelDesc(0, &Desc);
 		std::ofstream myfile;
 		myfile.open (filename);
 		myfile << "Format: "             << (DWORD)(Desc.Format)             << "\n";
@@ -402,5 +417,15 @@ namespace DB {
 		myfile << "Width: "              << (DWORD)(Desc.Width)              << "\n";
 		myfile << "Height: "             << (DWORD)(Desc.Height)             << "\n";
 		myfile.close();
+	}
+	void logTextureDescUsingDrawPrimitiveCount(IDirect3DDevice9* pd3dDevice, IDirect3DTexture9* pTexture)
+	{
+		char fullPath[64]="pics/";
+		char fileName[16];
+		char fileSuffix[16]="_texDesc.txt";
+		itoa(g_dbDrawPrimitiveCount, fileName, 10);
+		strcat(fullPath, fileName);
+		strcat(fullPath, fileSuffix);
+		logTextureDesc(pd3dDevice, pTexture, fullPath);
 	}
 }

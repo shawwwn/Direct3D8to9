@@ -146,14 +146,17 @@
     <ClCompile Include="..\src\ShadowVolumeHandler.cpp">
       <Filter>effect\ShadowVolume</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\RenderController.cpp">
-      <Filter>effect</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ShadowTable.cpp">
       <Filter>effect\ShadowVolume\data</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ShadowData.cpp">
       <Filter>effect\ShadowVolume\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RenderStageController.cpp">
+      <Filter>effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\EffectController.cpp">
+      <Filter>effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -274,11 +277,14 @@
     <ClInclude Include="..\src\ShadowVolumeHandler.h">
       <Filter>effect\ShadowVolume</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\RenderController.h">
-      <Filter>effect</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\ShadowTable.h">
       <Filter>effect\ShadowVolume\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\RenderStageController.h">
+      <Filter>effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\EffectController.h">
+      <Filter>effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

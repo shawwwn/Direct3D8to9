@@ -32,10 +32,7 @@ private:
 	DWORD g_Stage;
 	IDirect3DBaseTexture9* g_pTexture9;
 	D3DTRANSFORMSTATETYPE g_State;
-	D3DMATRIX* g_pMatrix;
 	DWORD g_FVFHandle;
-
-	D3DMATRIX* g_pWorldMatrix;
 
 public:
 	CObjectPool<CDirect3DCubeTexture8>   CubeTexturePool;
