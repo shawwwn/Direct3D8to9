@@ -11,6 +11,7 @@ namespace SV {
 	const D3DXVECTOR3 wc3Light(0.675f, 0.406f, -0.616f);	// WC3's default directional light in most scenerios
 	const D3DXVECTOR3 wc3Light_fly(0, 0, -0.616f);			// for flying units
 
+	extern IDirect3DDevice9* m_pDevice;
 	extern ShadowTable g_shwTable;
 	extern bool g_rendered;
 	extern LPDIRECT3DVERTEXBUFFER9 g_pBigSquareVB;

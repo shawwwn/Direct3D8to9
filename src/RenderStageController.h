@@ -11,8 +11,7 @@
 
 #define STAGE_UI					10
 
-extern DWORD g_dwAlphaRef;
-extern DWORD g_dwLighting;
+extern DWORD g_DRS[257];			// RenderState array, indexing from 1-256
 
 void resetRenderStage();
 int getRenderStage();

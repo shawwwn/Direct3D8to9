@@ -623,22 +623,11 @@ STDMETHODIMP CDirect3DDevice8::GetClipPlane(THIS_ DWORD Index, float* pPlane)
 
 STDMETHODIMP CDirect3DDevice8::SetRenderState(THIS_ D3DRENDERSTATETYPE State, DWORD Value)
 {
+	g_DRS[State] = Value;	// record
+
 	if (State == 153)
 	{
 		return pDevice9->SetSoftwareVertexProcessing(!!Value);
-	}
-
-	// Record values
-	switch (State)
-	{
-	case D3DRS_ALPHAREF:
-		g_dwAlphaRef = Value;
-		break;
-	case D3DRS_LIGHTING:
-		g_dwLighting = Value;
-		break;
-	default:
-		break;
 	}
 	return pDevice9->SetRenderState(State, Value);
 }
@@ -888,12 +877,8 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 			if (CTRL::g_EnableSV && g_Stride == 32 && Type == 4 && g_FVFHandle == 274)
 			{
 				int shwParam = -1;
-				DWORD dwZWriteEnable;
-				DWORD dwFogEnable;
-				pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwZWriteEnable);
-				pDevice9->GetRenderState(D3DRS_ZWRITEENABLE, &dwFogEnable);
 				if ( ((DWORD)g_State == 256  || ((DWORD)g_State == 17 || (DWORD)g_State == 16 || (DWORD)g_State == 2)) &&
-					(dwZWriteEnable == 1 || dwFogEnable == 0) )
+					(g_DRS[D3DRS_ZWRITEENABLE] == 1 || g_DRS[D3DRS_FOGENABLE] == 0) )
 					shwParam = SV::g_shwTable.getShadowParam(NumVertices, primCount);
 				if (shwParam != -1)
 				{

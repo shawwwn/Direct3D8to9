@@ -1,6 +1,7 @@
 #include "ShadowVolumeHandler.h"
 
 namespace SV {
+	IDirect3DDevice9* m_pDevice = NULL;
 	ShadowTable g_shwTable;
 	bool g_rendered = false;
 	LPDIRECT3DVERTEXBUFFER9 g_pBigSquareVB = NULL;
@@ -42,10 +43,7 @@ namespace SV {
 			//D3DXVec3Normalize(&vLight, &vLight);
 		}
 		else
-		{
-			// Use hardcoded light vector
-			vLight = *pRefLight;
-		}
+			vLight = *pRefLight; // Use hardcoded light vector
 		
 		
 		if (!(inversion & SHW_X_INVERTED))
@@ -54,6 +52,7 @@ namespace SV {
 			vLight.y *= -1;
 		if (!(inversion & SHW_Z_INVERTED))
 			vLight.z *= -1;
+
 		g_HumBaseShadow.Reset();
 		g_HumBaseShadow.BuildFromStreamBuffer(pVertexBuffer, pIndexBuffer, startIndex, primCount, baseVertexIndex, vLight);
 	}
@@ -71,50 +70,16 @@ namespace SV {
 	//
 	HRESULT RenderShadow(IDirect3DDevice9* pd3dDevice)
 	{
-		// Backup render states
-		DWORD dwZWriteEnable, dwStencilEnable, dwShadeMode, dwStencilFunc, dwStencilZFail, dwStencilFail, dwStencilRef, dwStencilMask,
-			  dwStencilWriteMask, dwStencilPass, dwAlphaBlendEnable, dwSrcBlend, dwDestBlend, dwTwoSidedStencilMode, dwCCWStencilFunc,
-			  dwCCWStencilZFail, dwCCWStencilFail, dwCCWStencilPass, dwCullMode;
-		pd3dDevice->GetRenderState(D3DRS_ZWRITEENABLE,          &dwZWriteEnable);
-		pd3dDevice->GetRenderState(D3DRS_STENCILENABLE,         &dwStencilEnable);
-		pd3dDevice->GetRenderState(D3DRS_SHADEMODE,             &dwShadeMode);
-		pd3dDevice->GetRenderState(D3DRS_STENCILFUNC,           &dwStencilFunc);
-		pd3dDevice->GetRenderState(D3DRS_STENCILZFAIL,          &dwStencilZFail);
-		pd3dDevice->GetRenderState(D3DRS_STENCILFAIL,           &dwStencilFail);
-		pd3dDevice->GetRenderState(D3DRS_STENCILREF,            &dwStencilRef);
-		pd3dDevice->GetRenderState(D3DRS_STENCILMASK,           &dwStencilMask);
-		pd3dDevice->GetRenderState(D3DRS_STENCILWRITEMASK,      &dwStencilWriteMask);
-		pd3dDevice->GetRenderState(D3DRS_STENCILPASS,           &dwStencilPass);
-		pd3dDevice->GetRenderState(D3DRS_ALPHABLENDENABLE,      &dwAlphaBlendEnable);
-		pd3dDevice->GetRenderState(D3DRS_SRCBLEND,              &dwSrcBlend);
-		pd3dDevice->GetRenderState(D3DRS_DESTBLEND,             &dwDestBlend);
-		pd3dDevice->GetRenderState(D3DRS_TWOSIDEDSTENCILMODE,   &dwTwoSidedStencilMode);
-		pd3dDevice->GetRenderState(D3DRS_CCW_STENCILFUNC,       &dwCCWStencilFunc);
-		pd3dDevice->GetRenderState(D3DRS_CCW_STENCILZFAIL,      &dwCCWStencilZFail);
-		pd3dDevice->GetRenderState(D3DRS_CCW_STENCILFAIL,       &dwCCWStencilFail);
-		pd3dDevice->GetRenderState(D3DRS_CCW_STENCILPASS,       &dwCCWStencilPass);
-		pd3dDevice->GetRenderState(D3DRS_CULLMODE,              &dwCullMode);
+		IDirect3DStateBlock9* pStateBlock = NULL;
+		pd3dDevice->CreateStateBlock(D3DSBT_ALL, &pStateBlock);
 
 		// Disable z-buffer writes (note: z-testing still occurs), and enable the
 		// stencil-buffer
 		pd3dDevice->SetRenderState( D3DRS_ZWRITEENABLE,  FALSE );
 		pd3dDevice->SetRenderState( D3DRS_STENCILENABLE, TRUE );
 
-		// Dont bother with interpolating color
-		pd3dDevice->SetRenderState( D3DRS_SHADEMODE,     D3DSHADE_FLAT );
-
-		// Set up stencil compare fuction, reference value, and masks.
-		// Stencil test passes if ((ref & mask) cmpfn (stencil & mask)) is true.
-		// Note: since we set up the stencil-test to always pass, the STENCILFAIL
-		// renderstate is really not needed.
-		pd3dDevice->SetRenderState( D3DRS_STENCILFUNC,  D3DCMP_ALWAYS );
-		pd3dDevice->SetRenderState( D3DRS_STENCILZFAIL, D3DSTENCILOP_KEEP );
-		pd3dDevice->SetRenderState( D3DRS_STENCILFAIL,  D3DSTENCILOP_KEEP );
-
 		// If ztest passes, inc/decrement stencil buffer value
 		pd3dDevice->SetRenderState( D3DRS_STENCILREF,       0x1 );
-		pd3dDevice->SetRenderState( D3DRS_STENCILMASK,      0xffffffff );
-		pd3dDevice->SetRenderState( D3DRS_STENCILWRITEMASK, 0xffffffff );
 		pd3dDevice->SetRenderState( D3DRS_STENCILPASS,      D3DSTENCILOP_INCR );
 	
 		// Make sure that no pixels get drawn to the frame buffer
@@ -122,13 +87,11 @@ namespace SV {
 		pd3dDevice->SetRenderState( D3DRS_SRCBLEND,  D3DBLEND_ZERO );
 		pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_ONE );
 	
-		if( true ) 
+		// TODO: Check device caps
+		if(true)
 		{
 			// With 2-sided stencil, we can avoid rendering twice:
 			pd3dDevice->SetRenderState( D3DRS_TWOSIDEDSTENCILMODE, TRUE );
-			pd3dDevice->SetRenderState( D3DRS_CCW_STENCILFUNC,  D3DCMP_ALWAYS );
-			pd3dDevice->SetRenderState( D3DRS_CCW_STENCILZFAIL, D3DSTENCILOP_KEEP );
-			pd3dDevice->SetRenderState( D3DRS_CCW_STENCILFAIL,  D3DSTENCILOP_KEEP );
 			pd3dDevice->SetRenderState( D3DRS_CCW_STENCILPASS, D3DSTENCILOP_DECR );
 
 			pd3dDevice->SetRenderState( D3DRS_CULLMODE,  D3DCULL_NONE );
@@ -154,26 +117,9 @@ namespace SV {
 			g_HumBaseShadow.Render( pd3dDevice );
 		}
 
-		// Restore render states
-		pd3dDevice->SetRenderState(D3DRS_ZWRITEENABLE,          dwZWriteEnable);
-		pd3dDevice->SetRenderState(D3DRS_STENCILENABLE,         dwStencilEnable);
-		pd3dDevice->SetRenderState(D3DRS_SHADEMODE,             dwShadeMode);
-		pd3dDevice->SetRenderState(D3DRS_STENCILFUNC,           dwStencilFunc);
-		pd3dDevice->SetRenderState(D3DRS_STENCILZFAIL,          dwStencilZFail);
-		pd3dDevice->SetRenderState(D3DRS_STENCILFAIL,           dwStencilFail);
-		pd3dDevice->SetRenderState(D3DRS_STENCILREF,            dwStencilRef);
-		pd3dDevice->SetRenderState(D3DRS_STENCILMASK,           dwStencilMask);
-		pd3dDevice->SetRenderState(D3DRS_STENCILWRITEMASK,      dwStencilWriteMask);
-		pd3dDevice->SetRenderState(D3DRS_STENCILPASS,           dwStencilPass);
-		pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE,      dwAlphaBlendEnable);
-		pd3dDevice->SetRenderState(D3DRS_SRCBLEND,              dwSrcBlend);
-		pd3dDevice->SetRenderState(D3DRS_DESTBLEND,             dwDestBlend);
-		pd3dDevice->SetRenderState(D3DRS_TWOSIDEDSTENCILMODE,   dwTwoSidedStencilMode);
-		pd3dDevice->SetRenderState(D3DRS_CCW_STENCILFUNC,       dwCCWStencilFunc);
-		pd3dDevice->SetRenderState(D3DRS_CCW_STENCILZFAIL,      dwCCWStencilZFail);
-		pd3dDevice->SetRenderState(D3DRS_CCW_STENCILFAIL,       dwCCWStencilFail);
-		pd3dDevice->SetRenderState(D3DRS_CCW_STENCILPASS,       dwCCWStencilPass);
-		pd3dDevice->SetRenderState(D3DRS_CULLMODE,              dwCullMode);
+		pd3dDevice->EndStateBlock(&pStateBlock);
+		pStateBlock->Apply();
+		SAFE_RELEASE(pStateBlock);
 		return S_OK;
 	}
 
@@ -182,13 +128,9 @@ namespace SV {
 	//
 	HRESULT DrawShadow(IDirect3DDevice9* pd3dDevice)
 	{
-		// backup..
-		DWORD dwCullMode, dwStencilRef, dwStencilFunc, dwStencilPass;
-		pd3dDevice->GetRenderState(D3DRS_CULLMODE,          &dwCullMode);
-		pd3dDevice->GetRenderState(D3DRS_STENCILREF,        &dwStencilRef);
-		pd3dDevice->GetRenderState(D3DRS_STENCILFUNC,       &dwStencilFunc);
-		pd3dDevice->GetRenderState(D3DRS_STENCILPASS,       &dwStencilPass);
-		
+		IDirect3DStateBlock9* pStateBlock = NULL;
+		pd3dDevice->CreateStateBlock(D3DSBT_ALL, &pStateBlock);
+
 		// Set renderstates (disable z-buffering, enable stencil, disable fog, and
 		// turn on alphablending)
 		pd3dDevice->SetRenderState(D3DRS_ZENABLE,           FALSE);
@@ -212,21 +154,16 @@ namespace SV {
 		pd3dDevice->SetRenderState( D3DRS_STENCILFUNC, D3DCMP_LESSEQUAL );
 		pd3dDevice->SetRenderState( D3DRS_STENCILPASS, D3DSTENCILOP_KEEP );
 
-		// Draw a big, gray square
 		pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW); // counter clock-wise render triangles
+		pd3dDevice->EndStateBlock(&pStateBlock);
+
+		// Draw a big, gray square
 		pd3dDevice->SetFVF( SHADOWVERTEX::FVF );
 		pd3dDevice->SetStreamSource( 0, g_pBigSquareVB, 0, sizeof(SHADOWVERTEX) );
 		pd3dDevice->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, 2 );
 
-		// Restore render states
-		pd3dDevice->SetRenderState(D3DRS_ZENABLE,           TRUE);
-		pd3dDevice->SetRenderState(D3DRS_STENCILENABLE,     FALSE);
-		pd3dDevice->SetRenderState(D3DRS_FOGENABLE,         TRUE);
-		pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE,  TRUE);
-		pd3dDevice->SetRenderState(D3DRS_CULLMODE,          dwCullMode);
-		pd3dDevice->SetRenderState(D3DRS_STENCILREF,        dwStencilRef);
-		pd3dDevice->SetRenderState(D3DRS_STENCILFUNC,       dwStencilFunc);
-		pd3dDevice->SetRenderState(D3DRS_STENCILPASS,       dwStencilPass);
+		pStateBlock->Apply();
+		SAFE_RELEASE(pStateBlock);
 		return S_OK;
 	}
 
@@ -275,6 +212,7 @@ namespace SV {
 	//
 	void onCreateDevice(IDirect3DDevice9* pd3dDevice)
 	{
+		m_pDevice = pd3dDevice;
 		InitShadowTable(g_shwTable);
 		setupScreenDimensions(pd3dDevice);
 		initTemporaryResources(pd3dDevice);

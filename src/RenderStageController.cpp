@@ -1,7 +1,6 @@
 #include "RenderStageController.h"
 
-DWORD g_dwAlphaRef		= 0;
-DWORD g_dwLighting		= 0;
+DWORD g_DRS[257] = {0};
 
 static int g_curRenderStage = STAGE_UNREDERED;
 
@@ -21,7 +20,7 @@ inline bool isTerrainStage(UINT stride, D3DPRIMITIVETYPE primType, DWORD hFVF, D
 }
 inline bool isBuidlingTerrainStage(UINT stride, D3DPRIMITIVETYPE primType, DWORD hFVF, DWORD stateType, UINT numVertices, UINT primCount)
 {
-	return (g_dwLighting==1 && primType==5 && stateType==17 && stride==36 && hFVF==338 && numVertices*2==primCount+4);
+	return (g_DRS[D3DRS_LIGHTING]==1 && primType==5 && stateType==17 && stride==36 && hFVF==338 && numVertices*2==primCount+4);
 }
 inline bool isFootPrintStage(UINT stride, D3DPRIMITIVETYPE primType, DWORD hFVF, DWORD stateType, UINT numVertices, UINT primCount)
 {
@@ -38,11 +37,11 @@ inline bool isWarFogStage(UINT stride, D3DPRIMITIVETYPE primType, DWORD hFVF, DW
 }
 inline bool isUnitShadowStage(UINT stride, D3DPRIMITIVETYPE primType, DWORD hFVF, DWORD stateType, UINT numVertices, UINT primCount)
 {
-	return (g_dwLighting==0 && primType==5 && stateType==17 && stride==36 && hFVF==338 && numVertices*2==primCount+4);
+	return (g_DRS[D3DRS_LIGHTING]==0 && primType==5 && stateType==17 && stride==36 && hFVF==338 && numVertices*2==primCount+4);
 }
 inline bool isUIStage(UINT stride, D3DPRIMITIVETYPE primType, DWORD hFVF, DWORD stateType, UINT numVertices, UINT primCount)
 {
-	return (stateType==2 && stride==36 && numVertices==4 && primCount==2 && g_dwAlphaRef==192);
+	return (stateType==2 && stride==36 && numVertices==4 && primCount==2 && g_DRS[D3DRS_ALPHAREF]==192);
 }
 
 int checkRenderStage(UINT stride, D3DPRIMITIVETYPE primType, DWORD hFVF, DWORD stateType, UINT numVertices, UINT primCount, IDirect3DTexture9* pTexture)
