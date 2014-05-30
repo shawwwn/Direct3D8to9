@@ -83,6 +83,7 @@ int checkRenderStage(UINT stride, D3DPRIMITIVETYPE primType, DWORD hFVF, DWORD s
 			g_curRenderStage = STAGE_UNIT_SHADOW;
 		else
 			g_curRenderStage = STAGE_UNIT;
+		break;
 	case STAGE_WAR_FOG:
 		if (isWarFogStage(stride, primType, hFVF, stateType, numVertices, primCount, pTexture)) {}
 		else if (isUnitShadowStage(stride, primType, hFVF, stateType, numVertices, primCount))

@@ -860,7 +860,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 		DB::logTextureUsingDrawPrimitiveCount(pDevice9, (IDirect3DTexture9*)g_pTexture9);
 		DB::logTextureDescUsingDrawPrimitiveCount(pDevice9, (IDirect3DTexture9*)g_pTexture9);
 		DB::increaseDrawPrimitiveCount();
-		return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
+		//return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 	}
 #endif
 
@@ -899,10 +899,6 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 				{
 					if (FAILED(hr))	// If NormalMapHandler hasn't rendered an object, render it here.
 					{
-						pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
-						pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
-						pDevice9->SetIndices(g_pIndexData9);									// restore indices
-						pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
 						pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 					}
 					SV::GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex, shwParam);
@@ -911,7 +907,6 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 					SV::RenderShadow(pDevice9);
 					pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
 					pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
-					pDevice9->SetIndices(g_pIndexData9);									// restore indices
 					pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
 					hr = D3D_OK;
 				}
@@ -919,8 +914,6 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 			// Return if the object has already been rendered
 			if (SUCCEEDED(hr))
 				return hr;
-			else
-				restore = true;
 		}
 		break;
 	case STAGE_UI:
@@ -954,7 +947,6 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 		pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
 		pDevice9->SetIndices(g_pIndexData9);									// restore indices
 		pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
-		//return D3D_OK;
 	}
 	return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 }
