@@ -844,7 +844,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 		DB::saveRenderStatesUsingDrawPrimitiveCount(pDevice9);
 		DB::savePrimitiveStatesUsingDrawPrimitiveCount(pDevice9, Type, minIndex, NumVertices, startIndex, primCount, 
 														g_StreamNumber, g_Stride, g_Stage, g_State, g_FVFHandle,
-														g_baseVertexIndex, zBufferDiscardingEnabled, g_pTexture9);
+														g_baseVertexIndex, zBufferDiscardingEnabled, g_pTexture9, g_pStreamData9, g_pIndexData9);
 		DB::saveBackBufferToImage(pDevice9, false);
 		DB::logTextureUsingDrawPrimitiveCount(pDevice9, (IDirect3DTexture9*)g_pTexture9);
 		DB::logTextureDescUsingDrawPrimitiveCount(pDevice9, (IDirect3DTexture9*)g_pTexture9);
@@ -868,7 +868,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 		{
 			HRESULT hr = D3DERR_INVALIDCALL;
 			// Render Normal Map
-			if (CTRL::g_EnableNP)
+			if (CTRL::g_EnableNP && g_FVFHandle == 274)
 			{
 				hr = NP::PerformNormalMappping(pDevice9, g_pTexture9, Type, g_baseVertexIndex, minIndex, startIndex,
 											   g_Stride, NumVertices, primCount, alphaRef, (DWORD)g_State);

@@ -246,9 +246,18 @@ namespace SV {
 		#pragma endregion
 
 		#pragma region Neutral
-		/* Units */
+		/* Heroes */
+		table.addShadow(26,   28);													// Tinker - top
+
+		/* Small Animals */
 		table.addShadow(75,   69);													// Sheep
 		table.addShadow(209,  212);													// Deer
+		table.addShadow(139,  98);													// Chicken
+		table.addShadow(157,  105);													// Fog
+		table.addShadow(91,   70);													// Pig
+		table.addShadow(160,  107);													// Rabbit
+		table.addShadow(291,  212);													// Racoon
+		/* Units */
 		table.addShadow(30,   21);													// Orge Mauler - top
 		table.addShadow(565,  473);													// Orge Mauler - body
 		table.addShadow(521,  328);													// Boulder Golem - body
@@ -277,6 +286,73 @@ namespace SV {
 		table.addShadow(321,  316);													// Skeleton archer - body
 		table.addShadow(57,   44);													// Sasquatch - top
 		table.addShadow(380,  371);													// Sasquatch - body
+		table.addShadow(58,   54);													// Crab - top
+		table.addShadow(298,  321);													// Crab - body
+		table.addShadow(317,  292);													// Hydra - top
+		table.addShadow(160,  136);													// Hydra - body
+		table.addShadow(34,   38);													// Makrura - top
+		table.addShadow(476,  524);													// Makrura - body
+		table.addShadow(71,   72);													// Tuskarr - top
+		table.addShadow(366,  424);													// Tuskarr - body
+		table.addShadow(34,   48);													// Mammoth - top
+		table.addShadow(541,  515);													// Mammoth - body
+		table.addShadow(40,   20);													// Arachnathid - top
+		table.addShadow(617,  518);													// Arachnathid - body
+		table.addShadow(52,   52);													// Magnataur - top
+		table.addShadow(733,  741);													// Magnataur - body
+		table.addShadow(17,   14);													// Spider - top
+		table.addShadow(392,  334);													// Spider - body
+		table.addShadow(56,   46);													// Bear - top
+		table.addShadow(457,  396);													// Bear - body
+		table.addShadow(46,   42);													// Clockwreck Goblin - top
+		table.addShadow(350,  219);													// Clockwreck Goblin - top
+		table.addShadow(164,  74);													// Goblin Shredder - top
+		table.addShadow(593,  318);													// Goblin Shredder - body
+		table.addShadow(13,   10);													// Goblin Sapper - top
+		table.addShadow(742,  536);													// Goblin Sapper - body
+		table.addShadow(82,   84);													// Lava Spawn - top
+		table.addShadow(419,  378);													// Lava Spawn - body
+		table.addShadow(52,   50);													// Quilbeast - top
+		table.addShadow(398,  403);													// Quilbeast - body
+		table.addShadow(43,   42);													// Furbolg mage- top
+		table.addShadow(282,  230);													// Furbolg mage- body
+		table.addShadow(26,   16);													// Furbolg warrior - top
+		table.addShadow(325,  272);													// Furbolg warrior - body
+		table.addShadow(80,   48);													// Lightning Lizard - top
+		table.addShadow(528,  485);													// Lightning Lizard - body
+		table.addShadow(85,   93);													// Satyr - top
+		table.addShadow(350,  311);													// Satyr - body
+		table.addShadow(53,   44);													// Centaur archer - top
+		table.addShadow(209,  222);													// Centaur archer - body
+		table.addShadow(30,   29);													// Centaur warrior - top
+		table.addShadow(233,  238);													// Centaur warrior - body
+		table.addShadow(38,   34);													// Wildkin - top
+		table.addShadow(617,  520);													// Wildkin - body
+		table.addShadow(66,   53);													// Razormane - top
+		table.addShadow(450,  349);													// Razormane - body
+		table.addShadow(40,   38);													// Draenei - top
+		table.addShadow(541,  431);													// Draenei - body
+		table.addShadow(78,   61);													// Felguard - top
+		table.addShadow(529,  538);													// Felguard - body
+		table.addShadow(56,   42);													// Diabolist - top
+		table.addShadow(375,  379);													// Diabolist - body
+		table.addShadow(183,  108);													// Diabolist - cloak
+		table.addShadow(539,  509);													// Fel Beast - body
+		table.addShadow(31,   23);													// Inferno Contraption - top
+		table.addShadow(605,  596);													// Inferno Contraption - body
+		table.addShadow(60,   30);													// Succubus - top
+		table.addShadow(548,  586);													// Succubus - body
+		table.addShadow(68,   65);													// Apprentice Wizard - top
+		table.addShadow(315,  322);													// Apprentice Wizard - body
+		table.addShadow(48,   39);													// Reject - top
+		table.addShadow(290,  228);													// Reject - body
+		table.addShadow(303,  283);													// Zombie - body
+		table.addShadow(48,   40);													// Dragonspawn - top
+		table.addShadow(571,  526);													// Dragonspawn - body
+		table.addShadow(104,  110);													// Dragonspawn - tail
+		table.addShadow(21,   36);													// Dragonspawn - weapon
+		table.addShadow(60,   28);													// Faceless - top
+		table.addShadow(545,  412);													// Faceless - body
 		#pragma endregion
 
 		#pragma region Misc

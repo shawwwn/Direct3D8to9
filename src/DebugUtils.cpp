@@ -20,9 +20,10 @@ namespace DB {
 		if (!dirExists(dirPath))
 			mkdir(dirPath);
 	}
-	void savePrimitiveStatesUsingDrawPrimitiveCount(IDirect3DDevice9* pd3dDevice, D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount, 
-                                UINT StreamNumber, UINT Stride, DWORD Stage, D3DTRANSFORMSTATETYPE State, DWORD FVFHandle,
-							    UINT baseVertexIndex, BOOL zBufferDiscardingEnabled, IDirect3DBaseTexture9* g_pTexture9)
+	void savePrimitiveStatesUsingDrawPrimitiveCount(IDirect3DDevice9* pd3dDevice, D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices,
+													UINT startIndex, UINT primCount, UINT StreamNumber, UINT Stride, DWORD Stage,
+													D3DTRANSFORMSTATETYPE State, DWORD FVFHandle, UINT baseVertexIndex, BOOL zBufferDiscardingEnabled,
+													IDirect3DBaseTexture9* pTexture, IDirect3DVertexBuffer9* pVertexData, IDirect3DIndexBuffer9* pIndexData)
 	{
 		char fullPath[64]="pics/";
 		char fileName[16];
@@ -33,13 +34,14 @@ namespace DB {
 		strcat(fullPath, fileSuffix);
 		savePrimitiveStatesToFile(pd3dDevice, Type, minIndex, NumVertices, startIndex, primCount, 
 			                   StreamNumber, Stride, Stage, State, FVFHandle,
-							   baseVertexIndex, zBufferDiscardingEnabled, g_pTexture9,
+							   baseVertexIndex, zBufferDiscardingEnabled, pTexture, pVertexData, pIndexData,
 							   fullPath);
 	}
-	void savePrimitiveStatesToFile(IDirect3DDevice9* pd3dDevice, D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount, 
-                                UINT StreamNumber, UINT Stride, DWORD Stage, D3DTRANSFORMSTATETYPE State, DWORD FVFHandle,
-							    UINT baseVertexIndex, BOOL zBufferDiscardingEnabled, IDirect3DBaseTexture9* g_pTexture9,
-									char* filename)
+	void savePrimitiveStatesToFile(IDirect3DDevice9* pd3dDevice, D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices,
+                                   UINT startIndex, UINT primCount, UINT StreamNumber, UINT Stride, DWORD Stage,
+								   D3DTRANSFORMSTATETYPE State, DWORD FVFHandle, UINT baseVertexIndex, BOOL zBufferDiscardingEnabled,
+								   IDirect3DBaseTexture9* pTexture, IDirect3DVertexBuffer9* pVertexData, IDirect3DIndexBuffer9* pIndexData,
+								   char* filename)
 	{
 		std::ofstream myfile;
 		myfile.open (filename);
@@ -55,8 +57,10 @@ namespace DB {
 		myfile << "FVFHandle: " << FVFHandle << "\n";
 		myfile << "BaseVertexIndex: " << baseVertexIndex << "\n";
 		myfile << "zBufferDiscardingEnabled: " << zBufferDiscardingEnabled << "\n";
-		myfile << "pTexture9: " << (UINT)g_pTexture9 << "\n";
-		myfile << "RenderStage: " << checkRenderStage(Stride, Type, FVFHandle, State, NumVertices, primCount, (IDirect3DTexture9*)g_pTexture9) << "\n";
+		myfile << "pTexture9: " << (UINT)pTexture << "\n";
+		myfile << "pVertexBuffer: " << (UINT)pVertexData << "\n";
+		myfile << "pIndexBuffer: " << (UINT)pIndexData << "\n";
+		myfile << "RenderStage: " << checkRenderStage(Stride, Type, FVFHandle, State, NumVertices, primCount, (IDirect3DTexture9*)pTexture) << "\n";
 		myfile.close();
 	}
 	void saveBackBufferToImage(IDirect3DDevice9* pd3dDevice, bool post)

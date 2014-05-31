@@ -16,13 +16,15 @@ namespace DB {
 
 	bool dirExists(const char* dirPath);
 	void createDir(const char* dirPath);
-	void savePrimitiveStatesUsingDrawPrimitiveCount(IDirect3DDevice9* pd3dDevice, D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount, 
-                                UINT StreamNumber, UINT Stride, DWORD Stage, D3DTRANSFORMSTATETYPE State, DWORD FVFHandle,
-							    UINT baseVertexIndex, BOOL zBufferDiscardingEnabled, IDirect3DBaseTexture9* g_pTexture9);
-	void savePrimitiveStatesToFile(IDirect3DDevice9* pd3dDevice, D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount, 
-                                UINT StreamNumber, UINT Stride, DWORD Stage, D3DTRANSFORMSTATETYPE State, DWORD FVFHandle,
-							    UINT baseVertexIndex, BOOL zBufferDiscardingEnabled, IDirect3DBaseTexture9* g_pTexture9,
-								char* filename);
+	void savePrimitiveStatesUsingDrawPrimitiveCount(IDirect3DDevice9* pd3dDevice, D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices,
+													UINT startIndex, UINT primCount, UINT StreamNumber, UINT Stride, DWORD Stage,
+													D3DTRANSFORMSTATETYPE State, DWORD FVFHandle, UINT baseVertexIndex, BOOL zBufferDiscardingEnabled,
+													IDirect3DBaseTexture9* pTexture, IDirect3DVertexBuffer9* pVertexData, IDirect3DIndexBuffer9* pIndexData);
+	void savePrimitiveStatesToFile(IDirect3DDevice9* pd3dDevice, D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices,
+                                   UINT startIndex, UINT primCount, UINT StreamNumber, UINT Stride, DWORD Stage,
+								   D3DTRANSFORMSTATETYPE State, DWORD FVFHandle, UINT baseVertexIndex, BOOL zBufferDiscardingEnabled,
+								   IDirect3DBaseTexture9* pTexture, IDirect3DVertexBuffer9* pVertexData, IDirect3DIndexBuffer9* pIndexData,
+								   char* filename);
 	void saveBackBufferToImage(IDirect3DDevice9* pd3dDevice, bool post);
 	void restDrawPrimitiveCount();
 	void increaseDrawPrimitiveCount();
