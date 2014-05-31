@@ -314,8 +314,12 @@ namespace SV {
 		table.addShadow(419,  378);													// Lava Spawn - body
 		table.addShadow(52,   50);													// Quilbeast - top
 		table.addShadow(398,  403);													// Quilbeast - body
-		table.addShadow(43,   42);													// Furbolg mage- top
-		table.addShadow(282,  230);													// Furbolg mage- body
+		table.addShadow(43,   42);													// Furbolg mage - top
+		table.addShadow(282,  230);													// Furbolg mage - body
+		table.addShadow(139,  84);													// Furbolg mage - top
+		table.addShadow(287,  230);													// Furbolg mage - body
+		table.addShadow(155,  96);													// Furbolg mage - top
+		table.addShadow(335,  246);													// Furbolg mage - body
 		table.addShadow(26,   16);													// Furbolg warrior - top
 		table.addShadow(325,  272);													// Furbolg warrior - body
 		table.addShadow(80,   48);													// Lightning Lizard - top
@@ -350,7 +354,7 @@ namespace SV {
 		table.addShadow(48,   40);													// Dragonspawn - top
 		table.addShadow(571,  526);													// Dragonspawn - body
 		table.addShadow(104,  110);													// Dragonspawn - tail
-		table.addShadow(21,   36);													// Dragonspawn - weapon
+		table.addShadow(21,   36,   SHW_USE_TRANSFORMATION);						// Dragonspawn - weapon
 		table.addShadow(60,   28);													// Faceless - top
 		table.addShadow(545,  412);													// Faceless - body
 		#pragma endregion

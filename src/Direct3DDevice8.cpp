@@ -866,39 +866,38 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 		break;
 	case STAGE_UNIT:
 		{
-			HRESULT hr = D3DERR_INVALIDCALL;
-			// Render Normal Map
-			if (CTRL::g_EnableNP && g_FVFHandle == 274)
+			if (g_Stride == 32 && Type == 4 && g_FVFHandle == 274 && ((DWORD)g_State == 256  || (DWORD)g_State == 17 || (DWORD)g_State == 16))	// filter out non-unit meshes
 			{
-				hr = NP::PerformNormalMappping(pDevice9, g_pTexture9, Type, g_baseVertexIndex, minIndex, startIndex,
-											   g_Stride, NumVertices, primCount, alphaRef, (DWORD)g_State);
-			}
-			// Render Shadow Volume
-			if (CTRL::g_EnableSV && g_Stride == 32 && Type == 4 && g_FVFHandle == 274)
-			{
-				int shwParam = -1;
-				if ( ((DWORD)g_State == 256  || ((DWORD)g_State == 17 || (DWORD)g_State == 16 || (DWORD)g_State == 2)) &&
-					(g_DRS[D3DRS_ZWRITEENABLE] == 1 || g_DRS[D3DRS_FOGENABLE] == 0) )
-					shwParam = SV::g_shwTable.getShadowParam(NumVertices, primCount);
-				if (shwParam != -1)
+				HRESULT hr = D3DERR_INVALIDCALL;
+				// Render Normal Map
+				if (CTRL::g_EnableNP)
 				{
-					if (FAILED(hr))	// If NormalMapHandler hasn't rendered an object, render it here.
-					{
-						pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
-					}
-					SV::GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex, shwParam);
-					pDevice9->SetTexture(g_Stage, NULL);
-					//SV::RenderShadowVolume(pDevice9);	// for debug...	
-					SV::RenderShadow(pDevice9);
-					pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
-					pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
-					pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
-					hr = D3D_OK;
+					hr = NP::PerformNormalMappping(pDevice9, g_pTexture9, Type, g_baseVertexIndex, minIndex, startIndex,
+													g_Stride, NumVertices, primCount, alphaRef, (DWORD)g_State);
 				}
-			}
-			// Return if the object has already been rendered
-			if (SUCCEEDED(hr))
-				return hr;
+				if (CTRL::g_EnableSV)
+				{
+					int shwParam = -1;
+					if (g_DRS[D3DRS_ZWRITEENABLE] == 1 || g_DRS[D3DRS_FOGENABLE] == 0)
+						shwParam = SV::g_shwTable.getShadowParam(NumVertices, primCount);
+					if (shwParam != -1)
+					{
+						if (FAILED(hr))	// If NormalMapHandler hasn't rendered an object, render it here.
+							pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
+						SV::GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex, shwParam);
+						pDevice9->SetTexture(g_Stage, NULL);
+						//SV::RenderShadowVolume(pDevice9);	// for debug...	
+						SV::RenderShadow(pDevice9);
+						pDevice9->SetTexture(g_Stage, g_pTexture9);								// restore texture
+						pDevice9->SetStreamSource(g_StreamNumber, g_pStreamData9, 0, g_Stride);	// restore stream source
+						pDevice9->SetFVF(g_FVFHandle);											// restore vertex shader
+						hr = D3D_OK;
+					}
+				}
+				// Return if the object has already been rendered
+				if (SUCCEEDED(hr))
+					return hr;
+			}			
 		}
 		break;
 	case STAGE_UI:
