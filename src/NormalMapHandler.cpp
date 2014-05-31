@@ -4,6 +4,10 @@
 
 namespace NP {
 	TextureTable g_texTable;
+	UINT g_NumVertices_last = NULL;
+	UINT g_PrimCount_last = NULL;
+	IDirect3DBaseTexture9* g_pBaseTexture_last = NULL;
+	TextureItem* g_pItem_last;
 	DWORD g_dwAlphaValue = D3DCOLOR_ARGB(178,0,0,255);	// 70% transparency for transpant models
 	DWORD g_dwNormalTextureAlpha = D3DCOLOR_ARGB(255,0,0,255);	// 100% opacity for normal models
 
@@ -49,74 +53,91 @@ namespace NP {
 		if (!isExceptionalMesh && TransformStateType==2) { return D3DERR_INVALIDCALL; }	// filter out terrain texture
 		HRESULT hr = D3D_OK;
 		IDirect3DTexture9* pNormalTexture = NULL;
-		bool isPureColorMesh;
-		bool isAlphaBenldEnable = (g_DRS[D3DRS_ALPHATESTENABLE]==1 && g_DRS[D3DRS_ALPHABLENDENABLE]==1);
+		bool isPureColorMesh = false;
+		bool isAlphaBlendEnable = (g_DRS[D3DRS_ALPHATESTENABLE]==1 && g_DRS[D3DRS_ALPHABLENDENABLE]==1);
 
-		//
-		// Query For Normal Map Texture
-		//
-		TextureKeys keys(Stride, NumVertices, primCount);
-		try
+		// Prevent querying twice on the same mesh
+		if (g_NumVertices_last==NumVertices && g_PrimCount_last==primCount && g_pBaseTexture_last==pBaseTexture)
 		{
-			TextureItem* pItem = &(g_texTable.at(keys));	// check if item exists, return in reference
-
-			// Check if the TextureItem is excluded temporary
-			if (EXCP::isExcluded(pItem))
+			if (g_pItem_last!=NULL && g_pItem_last->m_pNormalTexture!=NULL)
 			{
-				return D3DERR_INVALIDCALL;
+				pNormalTexture = g_pItem_last->m_pNormalTexture;
+				isPureColorMesh = (g_pItem_last->m_IsMask && g_DRS[D3DRS_ZWRITEENABLE]==1);
 			}
-
-			if (!pItem->m_Computed)
+		}
+		
+		if (pNormalTexture==NULL)
+		{
+			g_NumVertices_last = NumVertices;
+			g_PrimCount_last = primCount;
+			g_pBaseTexture_last = pBaseTexture;
+			//
+			// Query For Normal Map Texture
+			//
+			TextureKeys keys(Stride, NumVertices, primCount);
+			try
 			{
-				// Create normal map texture
-				if (pItem->m_pNormalTexture == NULL)
+				TextureItem* pItem = &(g_texTable.at(keys));	// check if item exists, return in reference
+				g_pItem_last = pItem;
+
+				// Check if the TextureItem is excluded temporary
+				if (EXCP::isExcluded(pItem))
 				{
-					hr = D3DXCreateTexture(pd3dDevice, pItem->m_Width, pItem->m_Height, 0, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &(pItem->m_pNormalTexture));
+					return D3DERR_INVALIDCALL;
+				}
+
+				if (!pItem->m_Computed)
+				{
+					// Create normal map texture
+					if (pItem->m_pNormalTexture == NULL)
+					{
+						hr = D3DXCreateTexture(pd3dDevice, pItem->m_Width, pItem->m_Height, 0, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &(pItem->m_pNormalTexture));
+						if (FAILED(hr))
+						{
+							pItem->m_pNormalTexture = NULL;
+							EXCP::AddException(pItem);
+							#ifdef _DEBUG
+								MessageBox(NULL, "Create Normal Map Texture Failed!", "Error", MB_OK);
+							#endif
+							return D3DERR_INVALIDCALL;	// return to normal rendering
+						}
+					}
+
+					// Compute normal map texture
+					float invertSign = pItem->m_Inverted ? -1.0f : 1.0f;
+					hr = D3DXComputeNormalMap(pItem->m_pNormalTexture, (IDirect3DTexture9*)pBaseTexture, 0, D3DX_NORMALMAP_MIRROR, D3DX_CHANNEL_LUMINANCE, NORMAL_AMPLITUDE*invertSign);
 					if (FAILED(hr))
 					{
-						pItem->m_pNormalTexture = NULL;
+					
 						EXCP::AddException(pItem);
+						pItem->m_pNormalTexture->Release();
+						pItem->m_pNormalTexture = NULL;
 						#ifdef _DEBUG
-							MessageBox(NULL, "Create Normal Map Texture Failed!", "Error", MB_OK);
+							MessageBox(NULL, "Compute Normal Map Texture Failed!", "Error", MB_OK);
+							DB::savePrimitiveStatesToFile(pd3dDevice, Type, minIndex, NumVertices, startIndex, primCount, 
+								0, Stride, 0, (D3DTRANSFORMSTATETYPE)TransformStateType, 0,
+								baseVertexIndex, 0, pBaseTexture, NULL, NULL, "failTex.txt");
+							D3DXSaveTextureToFile("failTex.bmp", D3DXIFF_BMP, pBaseTexture, NULL);
 						#endif
 						return D3DERR_INVALIDCALL;	// return to normal rendering
 					}
+					pItem->m_Computed = true;
 				}
+				pNormalTexture = pItem->m_pNormalTexture;
+				isPureColorMesh = (pItem->m_IsMask && g_DRS[D3DRS_ZWRITEENABLE]==1);
 
-				// Compute normal map texture
-				float invertSign = pItem->m_Inverted ? -1.0f : 1.0f;
-				hr = D3DXComputeNormalMap(pItem->m_pNormalTexture, (IDirect3DTexture9*)pBaseTexture, 0, D3DX_NORMALMAP_MIRROR, D3DX_CHANNEL_LUMINANCE, NORMAL_AMPLITUDE*invertSign);
-				if (FAILED(hr))
-				{
-					
-					EXCP::AddException(pItem);
-					pItem->m_pNormalTexture->Release();
-					pItem->m_pNormalTexture = NULL;
-					#ifdef _DEBUG
-						MessageBox(NULL, "Compute Normal Map Texture Failed!", "Error", MB_OK);
-						DB::savePrimitiveStatesToFile(pd3dDevice, Type, minIndex, NumVertices, startIndex, primCount, 
-							0, Stride, 0, (D3DTRANSFORMSTATETYPE)TransformStateType, 0,
-							baseVertexIndex, 0, pBaseTexture, NULL, NULL, "failTex.txt");
-						D3DXSaveTextureToFile("failTex.bmp", D3DXIFF_BMP, pBaseTexture, NULL);
-					#endif
-					return D3DERR_INVALIDCALL;	// return to normal rendering
-				}
-				pItem->m_Computed = true;
 			}
-			pNormalTexture = pItem->m_pNormalTexture;
-			isPureColorMesh = (pItem->m_IsMask && g_DRS[D3DRS_ZWRITEENABLE]==1);
-
-		}
-		catch (const std::out_of_range)
-		{
-			return D3DERR_INVALIDCALL;	// not exists
+			catch (const std::out_of_range)
+			{
+				g_pItem_last = NULL;
+				return D3DERR_INVALIDCALL;	// not exists
+			}
 		}
 
-
 		//
-		// Filter pre-build placement model
+		// Filter out pre-build placement model
 		//
-		if (isPureColorMesh && isAlphaBenldEnable)
+		if (isPureColorMesh && isAlphaBlendEnable)
 		{
 			return D3DERR_INVALIDCALL;	// The model is a pre-build placement
 		}

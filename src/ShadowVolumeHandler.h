@@ -21,6 +21,9 @@ namespace SV {
 	extern UINT g_deviceWidth;
 	extern bool g_enterUnitShadow;
 	extern bool g_finishUnitShadow;
+	extern UINT g_NumVertices_last;
+	extern UINT g_PrimCount_last;
+	extern int g_shwParam_last;
 
 	void InitShadowTable(ShadowTable& table);
 	void GenerateShadow(IDirect3DDevice9* pd3dDevice, IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer, 

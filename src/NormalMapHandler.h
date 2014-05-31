@@ -12,6 +12,10 @@ namespace NP {
 	#define MAX_EXCEPTIONAL_MESH_COUNT 10
 	extern TextureTable g_texTable;
 	extern const ExceptionalMeshKeys g_exceptionalMeshes[MAX_EXCEPTIONAL_MESH_COUNT];
+	extern UINT g_NumVertices_last;
+	extern UINT g_PrimCount_last;
+	extern IDirect3DBaseTexture9* g_pBaseTexture_last;
+	extern TextureItem* g_pItem_last;
 	extern DWORD g_dwAlphaValue;
 	extern DWORD g_dwNormalTextureAlpha;
 

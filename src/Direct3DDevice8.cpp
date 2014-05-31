@@ -875,11 +875,21 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 					hr = NP::PerformNormalMappping(pDevice9, g_pTexture9, Type, g_baseVertexIndex, minIndex, startIndex,
 													g_Stride, NumVertices, primCount, alphaRef, (DWORD)g_State);
 				}
-				if (CTRL::g_EnableSV)
+				if (CTRL::g_EnableSV && (g_DRS[D3DRS_ZWRITEENABLE] == 1 || g_DRS[D3DRS_FOGENABLE] == 0))	// We only need the solid color mesh
 				{
+					// TODO: Wrap below inside ShadowVolumeController
 					int shwParam = -1;
-					if (g_DRS[D3DRS_ZWRITEENABLE] == 1 || g_DRS[D3DRS_FOGENABLE] == 0)
+					if (NumVertices==SV::g_NumVertices_last && primCount==SV::g_PrimCount_last)
+					{
+						shwParam = SV::g_shwParam_last;
+					}
+					else
+					{
 						shwParam = SV::g_shwTable.getShadowParam(NumVertices, primCount);
+						SV::g_shwParam_last = shwParam;
+						SV::g_NumVertices_last = NumVertices;
+						SV::g_PrimCount_last = primCount;
+					}
 					if (shwParam != -1)
 					{
 						if (FAILED(hr))	// If NormalMapHandler hasn't rendered an object, render it here.

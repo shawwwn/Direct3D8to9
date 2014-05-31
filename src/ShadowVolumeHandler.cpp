@@ -10,6 +10,9 @@ namespace SV {
 	UINT g_deviceWidth = 0;
 	bool g_enterUnitShadow = false;
 	bool g_finishUnitShadow = false;
+	UINT g_NumVertices_last = 0;
+	UINT g_PrimCount_last = 0;
+	int g_shwParam_last = -1;
 
 	//
 	// Compute light vector then generate shadow mesh
