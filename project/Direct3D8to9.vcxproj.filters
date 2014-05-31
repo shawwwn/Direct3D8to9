@@ -235,9 +235,6 @@
     <ClInclude Include="..\src\TextureTable.h">
       <Filter>effect\NormalMap\data</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\PostProcess.h">
-      <Filter>effect\PostProcess</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\ShaderResource.h">
       <Filter>effect\PostProcess</Filter>
     </ClInclude>
@@ -291,6 +288,9 @@
     </ClInclude>
     <ClInclude Include="..\src\DxUtils.h">
       <Filter>effect\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PostProcess.h">
+      <Filter>effect\PostProcess\effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

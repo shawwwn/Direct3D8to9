@@ -2,6 +2,7 @@
 
 #include <d3d9.h>
 #include <d3dx9.h>
+#include "DxUtils.h"
 #include "PostPRocess.h"
 #include "PostProcessBloom.h"
 #include "PostProcessSMAA.h"
@@ -11,17 +12,6 @@
 
 namespace PP{
 	#define MAX_POST_PROCESS_COUNT 5
-	extern DWORD dwZEnable;
-	extern DWORD dwZWriteEnable;
-	extern DWORD dwLocalViewer;
-	extern DWORD dwAlphaTestEnable;
-	extern DWORD dwCullMode;
-	extern DWORD dwAlphaBlendEnable;
-	extern DWORD dwZFunc;
-	extern DWORD dwSrcBlend;
-	extern DWORD dwDestBlend;
-	extern DWORD dwFogEnable;
-	extern DWORD dwLighting;
 
 	extern IDirect3DDevice9* m_pDevice;
 	extern UINT g_deviceWidth;
@@ -47,8 +37,6 @@ namespace PP{
 	void setupScreenDimensions(IDirect3DDevice9* pd3dDevice);
 	void swapTextures();
 	HRESULT PerformPostProcess(IDirect3DDevice9* pd3dDevice);
-	void backupStates(IDirect3DDevice9* pd3dDevice);
-	void restoreStates(IDirect3DDevice9* pd3dDevice);
 
 	//
 	// Standard Procedure Functions
