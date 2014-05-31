@@ -38,7 +38,7 @@ namespace SV {
 		table.addShadow(490,  481);													// Motar Team - body
 		//table.addShadow(17,   22,  SHW_USE_TRANSFORMATION);						// Motar Team - scope
 		table.addShadow(52,   44);													// Motar Team - cannon
-		table.addShadow(22,   18);													// Tank - top
+		table.addShadow(22,   18,   SHW_USE_TRANSFORMATION);						// Tank - top
 		table.addShadow(778,  512);													// Tank - body
 		//table.addShadow(78,   118, SHW_USE_TRANSFORMATION);						// Tank - eagle head
 		table.addShadow(20,   12,   SHW_FLYING_UNIT | SHW_USE_TRANSFORMATION);		// Water Element - top
@@ -248,6 +248,7 @@ namespace SV {
 		#pragma region Neutral
 		/* Units */
 		table.addShadow(75,   69);													// Sheep
+		table.addShadow(209,  212);													// Deer
 		table.addShadow(30,   21);													// Orge Mauler - top
 		table.addShadow(565,  473);													// Orge Mauler - body
 		table.addShadow(521,  328);													// Boulder Golem - body

@@ -15,12 +15,6 @@ namespace NP {
 	DWORD g_dwAlphaArg2_0;
 	DWORD g_dwTexCoordIndex_0;
 
-	DWORD g_dwAlphaTestEnable;
-	DWORD g_dwAlphaBlendEnable;
-	DWORD g_dwSrcBlend;
-	DWORD g_dwDestBlend;
-	DWORD g_dwTextureFactor;
-
 	bool IsExceptionalMesh(UINT numVertices, UINT primCount, DWORD srcBlend, DWORD destBlend, DWORD alphaRef)
 	{
 		ExceptionalMeshKeys endKey = EMK_END();
@@ -50,15 +44,13 @@ namespace NP {
                                   D3DPRIMITIVETYPE Type, UINT baseVertexIndex, UINT minIndex, UINT startIndex,
                                   UINT Stride, UINT NumVertices, UINT primCount, DWORD AlphaRef, DWORD TransformStateType)
 	{
-		bool isExceptionalMesh = IsExceptionalMesh(NumVertices, primCount, g_dwSrcBlend, g_dwDestBlend, AlphaRef); // exceptional mesh flag
+		bool isExceptionalMesh = IsExceptionalMesh(NumVertices, primCount, g_DRS[D3DRS_SRCBLEND], g_DRS[D3DRS_DESTBLEND], AlphaRef); // exceptional mesh flag
 
 		if (!isExceptionalMesh && TransformStateType==2) { return D3DERR_INVALIDCALL; }	// filter out terrain texture
 		HRESULT hr = D3D_OK;
 		IDirect3DTexture9* pNormalTexture = NULL;
-		DWORD dwZWriteEnable;
-		pd3dDevice->GetRenderState(D3DRS_ZWRITEENABLE, &dwZWriteEnable);
 		bool isPureColorMesh;
-		bool isAlphaBenldEnable = (g_dwAlphaTestEnable==1 && g_dwAlphaBlendEnable==1);
+		bool isAlphaBenldEnable = (g_DRS[D3DRS_ALPHATESTENABLE]==1 && g_DRS[D3DRS_ALPHABLENDENABLE]==1);
 
 		//
 		// Query For Normal Map Texture
@@ -112,7 +104,7 @@ namespace NP {
 				pItem->m_Computed = true;
 			}
 			pNormalTexture = pItem->m_pNormalTexture;
-			isPureColorMesh = (pItem->m_IsMask && dwZWriteEnable==1);
+			isPureColorMesh = (pItem->m_IsMask && g_DRS[D3DRS_ZWRITEENABLE]==1);
 
 		}
 		catch (const std::out_of_range)
@@ -132,8 +124,8 @@ namespace NP {
 		//
 		// Render Normal Map
 		//
-		backupTextureStageStates(pd3dDevice);
-		backupRenderStates(pd3dDevice);
+		IDirect3DStateBlock9* pStateBlock = NULL;
+		pd3dDevice->CreateStateBlock(D3DSBT_ALL, &pStateBlock);
 
 		// Pass1 - original
 		pd3dDevice->SetTexture(0, pBaseTexture);
@@ -143,14 +135,15 @@ namespace NP {
 		pd3dDevice->SetTexture(0, pNormalTexture);
 		pd3dDevice->SetTexture(1, pBaseTexture);
 		// set alpha blending
-		pd3dDevice->SetRenderState(D3DRS_TEXTUREFACTOR, g_dwAlphaValue);
+		SetRenderStateSafe(pd3dDevice, D3DRS_TEXTUREFACTOR,		g_dwAlphaValue);
+		SetRenderStateSafe(pd3dDevice, D3DRS_ALPHABLENDENABLE,	TRUE);
+		SetRenderStateSafe(pd3dDevice, D3DRS_SRCBLEND,			D3DBLEND_SRCALPHA);
+		SetRenderStateSafe(pd3dDevice, D3DRS_DESTBLEND,			D3DBLEND_INVSRCALPHA);
+		SetRenderStateSafe(pd3dDevice, D3DRS_ALPHATESTENABLE,	FALSE);
+		//SetRenderStateSafe(pd3dDevice, D3DRS_ALPHAREF,		0x08);
+		//SetRenderStateSafe(pd3dDevice, D3DRS_ALPHAFUNC,		D3DCMP_GREATEREQUAL);
+		pd3dDevice->EndStateBlock(&pStateBlock);
 
-		pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-		pd3dDevice->SetRenderState(D3DRS_SRCBLEND,  D3DBLEND_SRCALPHA);
-		pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-		pd3dDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-		//pd3dDevice->SetRenderState(D3DRS_ALPHAREF, 0x08);
-		//pd3dDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
 		// use dot3 product
 		DWORD coord;
 		pd3dDevice->GetTextureStageState(0, D3DTSS_TEXCOORDINDEX, &coord);
@@ -166,9 +159,9 @@ namespace NP {
 			// Pass3 - transparency
 			pd3dDevice->SetTexture(0, pBaseTexture);
 			pd3dDevice->SetTexture(1, pBaseTexture);
-			pd3dDevice->SetTextureStageState(0,D3DTSS_COLOROP, D3DTOP_MODULATE);
-			pd3dDevice->SetTextureStageState(0,D3DTSS_COLORARG1, D3DTA_TEXTURE);
-			pd3dDevice->SetTextureStageState(0,D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+			pd3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+			pd3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+			pd3dDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
 			pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 			pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 			pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
@@ -209,7 +202,6 @@ namespace NP {
 			pd3dDevice->SetTextureStageState(3, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 			pd3dDevice->SetTextureStageState(3, D3DTSS_ALPHAARG1, D3DTA_CURRENT);
 			pd3dDevice->SetTextureStageState(3, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
-			
 		}
 		pd3dDevice->DrawIndexedPrimitive(Type, baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 
@@ -217,19 +209,10 @@ namespace NP {
 		//
 		//	Restore
 		//
-		pd3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, dwZWriteEnable);
-		pd3dDevice->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_DISABLE);
-		pd3dDevice->SetTextureStageState(1, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
-		pd3dDevice->SetTextureStageState(2, D3DTSS_COLOROP, D3DTOP_DISABLE);
-		pd3dDevice->SetTextureStageState(2, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
-		pd3dDevice->SetTextureStageState(3, D3DTSS_COLOROP, D3DTOP_DISABLE);
-		pd3dDevice->SetTextureStageState(3, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
-		pd3dDevice->SetTexture(1, NULL);
-		pd3dDevice->SetTexture(2, NULL);
-		pd3dDevice->SetTexture(3, NULL);
-		restoreTextureStageStates(pd3dDevice);
-		restoreRenderStates(pd3dDevice);
+		pStateBlock->Apply();
+		SAFE_RELEASE(pStateBlock);
 		pd3dDevice->SetTexture(0, pBaseTexture);
+		pd3dDevice->SetTexture(1, NULL);
 		return D3D_OK;
 	}
 
@@ -252,22 +235,6 @@ namespace NP {
 		pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, g_dwAlphaArg1_0);
 		pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, g_dwAlphaArg2_0);
 		pd3dDevice->SetTextureStageState(0, D3DTSS_TEXCOORDINDEX, g_dwTexCoordIndex_0);
-	}
-	void backupRenderStates(IDirect3DDevice9* pd3dDevice)
-	{
-		pd3dDevice->GetRenderState(D3DRS_ALPHATESTENABLE, &g_dwAlphaTestEnable);
-		pd3dDevice->GetRenderState(D3DRS_ALPHABLENDENABLE, &g_dwAlphaBlendEnable);
-		pd3dDevice->GetRenderState(D3DRS_SRCBLEND, &g_dwSrcBlend);
-		pd3dDevice->GetRenderState(D3DRS_DESTBLEND, &g_dwDestBlend);
-		pd3dDevice->GetRenderState(D3DRS_TEXTUREFACTOR, &g_dwTextureFactor);
-	}
-	void restoreRenderStates(IDirect3DDevice9* pd3dDevice)
-	{
-		pd3dDevice->SetRenderState(D3DRS_ALPHATESTENABLE, g_dwAlphaTestEnable);
-		pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, g_dwAlphaBlendEnable);
-		pd3dDevice->SetRenderState(D3DRS_SRCBLEND, g_dwSrcBlend);
-		pd3dDevice->SetRenderState(D3DRS_DESTBLEND, g_dwDestBlend);
-		pd3dDevice->SetRenderState(D3DRS_TEXTUREFACTOR, g_dwTextureFactor);
 	}
 
 	#pragma region Standard Procedure Functions

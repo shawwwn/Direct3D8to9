@@ -35,5 +35,3 @@
 
 // Return the current module on whatever code you're running
 HMODULE GetCurrentModule();
-
-void GetRotation(D3DMATRIX* pMatrix, float& Yaw, float& Pitch, float& Roll);

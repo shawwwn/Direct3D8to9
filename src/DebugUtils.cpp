@@ -39,7 +39,7 @@ namespace DB {
 	void savePrimitiveStatesToFile(IDirect3DDevice9* pd3dDevice, D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount, 
                                 UINT StreamNumber, UINT Stride, DWORD Stage, D3DTRANSFORMSTATETYPE State, DWORD FVFHandle,
 							    UINT baseVertexIndex, BOOL zBufferDiscardingEnabled, IDirect3DBaseTexture9* g_pTexture9,
-								char* filename)
+									char* filename)
 	{
 		std::ofstream myfile;
 		myfile.open (filename);

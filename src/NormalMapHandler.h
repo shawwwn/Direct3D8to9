@@ -3,6 +3,7 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "TextureTable.h"
+#include "DxUtils.h"
 #include "ExceptionalMeshTable.h"
 #include "NormalMapExceptionHandler.h"
 
@@ -22,12 +23,6 @@ namespace NP {
 	extern DWORD g_dwAlphaArg2_0;
 	extern DWORD g_dwTexCoordIndex_0;
 
-	extern DWORD g_dwAlphaTestEnable;
-	extern DWORD g_dwAlphaBlendEnable;
-	extern DWORD g_dwSrcBlend;
-	extern DWORD g_dwDestBlend;
-	extern DWORD g_dwTextureFactor;
-
 	// Is mesh a exceptional mesh
 	bool IsExceptionalMesh(UINT numVertices, UINT primCount, DWORD srcBlend, DWORD destBlend, DWORD alphaRef);
 	// Initialize normal map texture table
@@ -42,10 +37,6 @@ namespace NP {
 	void backupTextureStageStates(IDirect3DDevice9* pd3dDevice);
 	// Restore TextureStageStates
 	void restoreTextureStageStates(IDirect3DDevice9* pd3dDevice);
-	// Backup RenderStates
-	void backupRenderStates(IDirect3DDevice9* pd3dDevice);
-	// Restore RenderStates
-	void restoreRenderStates(IDirect3DDevice9* pd3dDevice);
 
 	//
 	// Standard Procedure Functions

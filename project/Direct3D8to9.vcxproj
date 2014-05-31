@@ -25,6 +25,7 @@
     <ClCompile Include="..\src\Direct3DVertexBuffer8.cpp" />
     <ClCompile Include="..\src\Direct3DVolume8.cpp" />
     <ClCompile Include="..\src\Direct3DVolumeTexture8.cpp" />
+    <ClCompile Include="..\src\DxUtils.cpp" />
     <ClCompile Include="..\src\EffectController.cpp" />
     <ClCompile Include="..\src\ExceptionalMeshTable.cpp" />
     <ClCompile Include="..\src\HDRScene.cpp" />
@@ -67,6 +68,7 @@
     <ClInclude Include="..\src\Direct3DVertexBuffer8.h" />
     <ClInclude Include="..\src\Direct3DVolume8.h" />
     <ClInclude Include="..\src\Direct3DVolumeTexture8.h" />
+    <ClInclude Include="..\src\DxUtils.h" />
     <ClInclude Include="..\src\EffectController.h" />
     <ClInclude Include="..\src\ExceptionalMeshTable.h" />
     <ClInclude Include="..\src\HDRScene.h" />

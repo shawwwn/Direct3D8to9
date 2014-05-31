@@ -75,43 +75,42 @@ namespace SV {
 
 		// Disable z-buffer writes (note: z-testing still occurs), and enable the
 		// stencil-buffer
-		pd3dDevice->SetRenderState( D3DRS_ZWRITEENABLE,  FALSE );
-		pd3dDevice->SetRenderState( D3DRS_STENCILENABLE, TRUE );
+		SetRenderStateSafe(pd3dDevice, D3DRS_ZWRITEENABLE,	FALSE);
+		SetRenderStateSafe(pd3dDevice, D3DRS_STENCILENABLE,	TRUE);
 
 		// If ztest passes, inc/decrement stencil buffer value
-		pd3dDevice->SetRenderState( D3DRS_STENCILREF,       0x1 );
-		pd3dDevice->SetRenderState( D3DRS_STENCILPASS,      D3DSTENCILOP_INCR );
+		SetRenderStateSafe(pd3dDevice, D3DRS_STENCILREF,	0x1);
+		SetRenderStateSafe(pd3dDevice, D3DRS_STENCILPASS,	D3DSTENCILOP_INCR);
 	
 		// Make sure that no pixels get drawn to the frame buffer
-		pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-		pd3dDevice->SetRenderState( D3DRS_SRCBLEND,  D3DBLEND_ZERO );
-		pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_ONE );
-	
+		SetRenderStateSafe(pd3dDevice, D3DRS_ALPHABLENDENABLE,	TRUE);
+		SetRenderStateSafe(pd3dDevice, D3DRS_SRCBLEND,			D3DBLEND_ZERO);
+		SetRenderStateSafe(pd3dDevice, D3DRS_DESTBLEND,			D3DBLEND_ONE);
+
 		// TODO: Check device caps
 		if(true)
 		{
 			// With 2-sided stencil, we can avoid rendering twice:
-			pd3dDevice->SetRenderState( D3DRS_TWOSIDEDSTENCILMODE, TRUE );
-			pd3dDevice->SetRenderState( D3DRS_CCW_STENCILPASS, D3DSTENCILOP_DECR );
-
-			pd3dDevice->SetRenderState( D3DRS_CULLMODE,  D3DCULL_NONE );
+			SetRenderStateSafe(pd3dDevice, D3DRS_TWOSIDEDSTENCILMODE,	TRUE);
+			SetRenderStateSafe(pd3dDevice, D3DRS_CCW_STENCILPASS,		D3DSTENCILOP_DECR);
+			SetRenderStateSafe(pd3dDevice, D3DRS_CULLMODE,				D3DCULL_NONE);
 
 			// Draw both sides of shadow volume in stencil/z only
 			g_HumBaseShadow.Render( pd3dDevice );
 
-			pd3dDevice->SetRenderState( D3DRS_TWOSIDEDSTENCILMODE, FALSE );
+			SetRenderStateSafe(pd3dDevice, D3DRS_TWOSIDEDSTENCILMODE,	FALSE);
 		}
 		else
 		{
 			// Draw front-side of shadow volume in stencil/z only
-			pd3dDevice->SetRenderState( D3DRS_CULLMODE,   D3DCULL_CCW );
+			SetRenderStateSafe(pd3dDevice, D3DRS_CULLMODE,		D3DCULL_CCW);
 			g_HumBaseShadow.Render( pd3dDevice );
 
 			// Now reverse cull order so back sides of shadow volume are written.
-			pd3dDevice->SetRenderState( D3DRS_CULLMODE,   D3DCULL_CW );
+			SetRenderStateSafe(pd3dDevice, D3DRS_CULLMODE,		D3DCULL_CW);
 
 			// Decrement stencil buffer value
-			pd3dDevice->SetRenderState( D3DRS_STENCILPASS, D3DSTENCILOP_DECR );
+			SetRenderStateSafe(pd3dDevice, D3DRS_STENCILPASS,	D3DSTENCILOP_DECR);
 
 			// Draw back-side of shadow volume in stencil/z only
 			g_HumBaseShadow.Render( pd3dDevice );
@@ -133,28 +132,19 @@ namespace SV {
 
 		// Set renderstates (disable z-buffering, enable stencil, disable fog, and
 		// turn on alphablending)
-		pd3dDevice->SetRenderState(D3DRS_ZENABLE,           FALSE);
-		pd3dDevice->SetRenderState(D3DRS_STENCILENABLE,     TRUE);
-		pd3dDevice->SetRenderState(D3DRS_FOGENABLE,         FALSE);
-		pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE,  TRUE);
-		pd3dDevice->SetRenderState(D3DRS_SRCBLEND,          D3DBLEND_SRCALPHA);
-		pd3dDevice->SetRenderState(D3DRS_DESTBLEND,         D3DBLEND_INVSRCALPHA);
-		pd3dDevice->SetRenderState(D3DRS_ALPHATESTENABLE,   FALSE);
-		
-		pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-		pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );
-		pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
-		pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
-		pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE );
-		pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
+		SetRenderStateSafe(pd3dDevice, D3DRS_ZENABLE,			FALSE);
+		SetRenderStateSafe(pd3dDevice, D3DRS_STENCILENABLE,		TRUE);
+		SetRenderStateSafe(pd3dDevice, D3DRS_FOGENABLE,			FALSE);
+		SetRenderStateSafe(pd3dDevice, D3DRS_ALPHABLENDENABLE,	TRUE);
+		SetRenderStateSafe(pd3dDevice, D3DRS_SRCBLEND,			D3DBLEND_SRCALPHA);
+		SetRenderStateSafe(pd3dDevice, D3DRS_DESTBLEND,			D3DBLEND_INVSRCALPHA);
+		SetRenderStateSafe(pd3dDevice, D3DRS_ALPHATESTENABLE,	FALSE);
 		
 		// Only write where stencil val >= 1 (count indicates # of shadows that
 		// overlap that pixel)
-		pd3dDevice->SetRenderState( D3DRS_STENCILREF,  0x1 );
-		pd3dDevice->SetRenderState( D3DRS_STENCILFUNC, D3DCMP_LESSEQUAL );
-		pd3dDevice->SetRenderState( D3DRS_STENCILPASS, D3DSTENCILOP_KEEP );
-
-		pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW); // counter clock-wise render triangles
+		SetRenderStateSafe(pd3dDevice, D3DRS_STENCILREF,		0x1);
+		SetRenderStateSafe(pd3dDevice, D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL);
+		SetRenderStateSafe(pd3dDevice, D3DRS_CULLMODE,			D3DCULL_CCW); // counter clock-wise render triangles
 		pd3dDevice->EndStateBlock(&pStateBlock);
 
 		// Draw a big, gray square

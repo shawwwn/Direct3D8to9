@@ -158,6 +158,9 @@
     <ClCompile Include="..\src\EffectController.cpp">
       <Filter>effect</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\DxUtils.cpp">
+      <Filter>effect\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Direct3D8.h">
@@ -285,6 +288,9 @@
     </ClInclude>
     <ClInclude Include="..\src\EffectController.h">
       <Filter>effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DxUtils.h">
+      <Filter>effect\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
