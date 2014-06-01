@@ -45,6 +45,7 @@ namespace SV {
 		table.addShadow(206,  134,  SHW_FLYING_UNIT);								// Water Element - upper part
 		table.addShadow(72,   38,   SHW_FLYING_UNIT);								// Water Element - body
 		/* Flying Units */
+		/*
 		table.addShadow(32,   40,   SHW_FLYING_UNIT);								// Griffin - top [leak]
 		table.addShadow(451,  369,  SHW_FLYING_UNIT);								// Griffin - body [leak]
 		table.addShadow(21,   22,   SHW_FLYING_UNIT);								// Griffin - hammer
@@ -52,6 +53,7 @@ namespace SV {
 		table.addShadow(558,  391,  SHW_FLYING_UNIT);								// DragonHawk - body [leak]
 		table.addShadow(89,   53,   SHW_FLYING_UNIT);								// Helicopter - top
 		table.addShadow(445,  374,  SHW_FLYING_UNIT);								// Helicopter - body (dislay issue)
+		*/
 		#pragma endregion
 
 		#pragma region Orc
@@ -302,9 +304,16 @@ namespace SV {
 		table.addShadow(353,  374);													// Crab
 		table.addShadow(356,  374);													// Helmet Crab
 		table.addShadow(251,  194);													// Lizard
+		table.addShadow(132,  96);													// Sandworm
+		table.addShadow(155,  168);													// Wolf
+		table.addShadow(96,   72);													// Mouse
+		table.addShadow(69,   52);													// Seal
+		table.addShadow(157,  156);													// Penguin
+		table.addShadow(394,  325);													// Villager Lady
+		table.addShadow(232,  277);													// Villager Man - body
+		table.addShadow(49,   34);													// Villager Man - head
+		table.addShadow(185,  216);													// Villager Kid
 		/* Units */
-		table.addShadow(49,   28);													// Ghost - top
-		table.addShadow(308,  272);													// Ghost - body
 		table.addShadow(102,  122);													// Nerubian warrior - top
 		table.addShadow(121,  106);													// Nerubian warrior - body
 		table.addShadow(269,  140);													// Nerubian warrior - claws
@@ -355,6 +364,7 @@ namespace SV {
 		table.addShadow(476,  524);													// Makrura - body
 		table.addShadow(71,   72);													// Tuskarr - top
 		table.addShadow(366,  424);													// Tuskarr - body
+		table.addShadow(426,  486);													// Tuskarr - body2
 		table.addShadow(34,   48);													// Mammoth - top
 		table.addShadow(541,  515);													// Mammoth - body
 		table.addShadow(40,   20);													// Arachnathid - top
@@ -419,12 +429,20 @@ namespace SV {
 		table.addShadow(21,   36,   SHW_USE_TRANSFORMATION);						// Dragonspawn - weapon
 		table.addShadow(60,   28);													// Faceless - top
 		table.addShadow(545,  412);													// Faceless - body
+		table.addShadow(22,   15);													// Centaur small - top
+		table.addShadow(251,  252);													// Centaur small - body
+		table.addShadow(18,   27,   SHW_USE_TRANSFORMATION);						// Centaur small - body
+		table.addShadow(93,   78);													// Poisonous TreeAnt - top
+		table.addShadow(282,  399);													// Poisonous TreeAnt - body
+		table.addShadow(422,  265);													// War Golem
+		table.addShadow(299,  172);													// Nerubian - body2
+		table.addShadow(91,   74);													// Nerubian - body2 claws
 		#pragma endregion
 
 		#pragma region Misc
 		/* Item */
-		table.addShadow(178,  116,  SHW_USE_TRANSFORMATION);						// book
-		table.addShadow(76,   48,   SHW_USE_TRANSFORMATION);						// treasure box
+		table.addShadow(178,  116,  SHW_USE_TRANSFORMATION);						// Book
+		table.addShadow(76,   48,   SHW_USE_TRANSFORMATION);						// Treasure Box
 		#pragma endregion
 	}
 }
