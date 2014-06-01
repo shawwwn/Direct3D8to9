@@ -59,14 +59,15 @@ namespace NP {
 		// Prevent querying twice on the same mesh
 		if (g_NumVertices_last==NumVertices && g_PrimCount_last==primCount && g_pBaseTexture_last==pBaseTexture)
 		{
-			if (g_pItem_last!=NULL && g_pItem_last->m_pNormalTexture!=NULL)
+			if (g_pItem_last==NULL || g_pItem_last->m_pNormalTexture==NULL)
+				return D3DERR_INVALIDCALL;
+			else
 			{
 				pNormalTexture = g_pItem_last->m_pNormalTexture;
 				isPureColorMesh = (g_pItem_last->m_IsMask && g_DRS[D3DRS_ZWRITEENABLE]==1);
 			}
 		}
-		
-		if (pNormalTexture==NULL)
+		else
 		{
 			g_NumVertices_last = NumVertices;
 			g_PrimCount_last = primCount;

@@ -866,7 +866,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 		break;
 	case STAGE_UNIT:
 		{
-			if (g_Stride == 32 && Type == 4 && g_FVFHandle == 274 && ((DWORD)g_State == 256  || (DWORD)g_State == 17 || (DWORD)g_State == 16))	// filter out non-unit meshes
+			if (g_Stride == 32 && Type == 4 && g_FVFHandle == 274 && ((DWORD)g_State == 256  || (DWORD)g_State == 17 || (DWORD)g_State == 16) && g_DRS[D3DRS_DESTBLEND]!=2)	// filter out non-unit meshes
 			{
 				HRESULT hr = D3DERR_INVALIDCALL;
 				// Render Normal Map
@@ -875,7 +875,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 					hr = NP::PerformNormalMappping(pDevice9, g_pTexture9, Type, g_baseVertexIndex, minIndex, startIndex,
 													g_Stride, NumVertices, primCount, alphaRef, (DWORD)g_State);
 				}
-				if (CTRL::g_EnableSV && (g_DRS[D3DRS_ZWRITEENABLE] == 1 || g_DRS[D3DRS_FOGENABLE] == 0))	// We only need the solid color mesh
+				if (CTRL::g_EnableSV && g_DRS[D3DRS_ZWRITEENABLE]==1)	// We only need the solid color mesh, so filter out the rest
 				{
 					// TODO: Wrap below inside ShadowVolumeController
 					int shwParam = -1;

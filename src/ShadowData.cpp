@@ -245,10 +245,52 @@ namespace SV {
 		*/
 		#pragma endregion
 
+		#pragma region Naga
+		/* Heroes */
+		table.addShadow(90,   83);													// Naga Sea Witch - top
+		table.addShadow(1073, 760);													// Naga Sea Witch - body
+
+		/* Units */
+		table.addShadow(77,   80);													// Couatl - top
+		table.addShadow(90,   52);													// Naga Siren - top
+		table.addShadow(543,  552);													// Naga Siren - body
+		table.addShadow(95,   74);													// Snap Dragon - top
+		table.addShadow(361,  378);													// Snap Dragon - body
+		table.addShadow(41,   46);													// Naga Myrmidon - top
+		table.addShadow(395,  425);													// Naga Myrmidon - body
+		//table.addShadow(39,   36);												// Naga Myrmidon - spikes
+		table.addShadow(92,   56);													// Naga Myrmidon - sword
+		table.addShadow(36,   34);													// Naga Loyal Guard - top
+		table.addShadow(412,  453);													// Naga Loyal Guard - body
+		//table.addShadow(94,   58);												// Naga Loyal Guard - spikes
+		table.addShadow(90,   83);													// Murloc Slave - top
+		table.addShadow(238,  207);													// Murloc Slave - body
+		#pragma endregion
+
 		#pragma region Neutral
 		/* Heroes */
 		table.addShadow(26,   28);													// Tinker - top
-
+		table.addShadow(1080, 681);													// Tinker - body
+		table.addShadow(38,   28);													// Alchemist - top
+		table.addShadow(763,  606);													// Alchemist - body
+		table.addShadow(60,   60);													// Alchemist - tusks
+		table.addShadow(33,   39);													// BeastMaster - top
+		table.addShadow(650,  563);													// BeastMaster - body
+		table.addShadow(9,    4);													// Dark Ranger - top
+		table.addShadow(505,  447);													// Dark Ranger - body
+		table.addShadow(56,   40);													// Firelord - top
+		table.addShadow(318,  308);													// Firelord - body
+		table.addShadow(260,  256);													// Firelord - armor
+		table.addShadow(12,   10);													// Brewmaster - top
+		table.addShadow(568,  481);													// Brewmaster - body
+		table.addShadow(72,   52);													// Brewmaster - barrel
+		table.addShadow(451,  413);													// Earth - body
+		table.addShadow(93,   62);													// Earth - stone
+		table.addShadow(505,  429);													// Fire - body
+		table.addShadow(48,   36);													// Fire - blades
+		table.addShadow(528,  439);													// Air - body
+		table.addShadow(20,   20);													// Pitlord - top
+		table.addShadow(702,  635);													// Pitlord - body
 		/* Small Animals */
 		table.addShadow(75,   69);													// Sheep
 		table.addShadow(209,  212);													// Deer
@@ -257,7 +299,26 @@ namespace SV {
 		table.addShadow(91,   70);													// Pig
 		table.addShadow(160,  107);													// Rabbit
 		table.addShadow(291,  212);													// Racoon
+		table.addShadow(353,  374);													// Crab
+		table.addShadow(356,  374);													// Helmet Crab
+		table.addShadow(251,  194);													// Lizard
 		/* Units */
+		table.addShadow(49,   28);													// Ghost - top
+		table.addShadow(308,  272);													// Ghost - body
+		table.addShadow(102,  122);													// Nerubian warrior - top
+		table.addShadow(121,  106);													// Nerubian warrior - body
+		table.addShadow(269,  140);													// Nerubian warrior - claws
+		table.addShadow(111,  71);													// Ice Revenant - top
+		table.addShadow(209,  215);													// Ice Revenant - body
+		table.addShadow(24,   16);													// Doom Guard - top
+		table.addShadow(652,  507);													// Doom Guard - body
+		table.addShadow(24,   16);													// Sea Giant - top
+		table.addShadow(688,  566);													// Sea Giant - body
+		table.addShadow(92,   72);													// Sea Giant - hat
+		table.addShadow(30,   32);													// Skeletal Orc - top
+		table.addShadow(273,  299);													// Skeletal Orc - body
+		table.addShadow(35,   34);													// Gul'dan - top
+		table.addShadow(536,  569);													// Gul'dan - body
 		table.addShadow(30,   21);													// Orge Mauler - top
 		table.addShadow(565,  473);													// Orge Mauler - body
 		table.addShadow(521,  328);													// Boulder Golem - body
@@ -334,8 +395,9 @@ namespace SV {
 		table.addShadow(617,  520);													// Wildkin - body
 		table.addShadow(66,   53);													// Razormane - top
 		table.addShadow(450,  349);													// Razormane - body
-		table.addShadow(40,   38);													// Draenei - top
-		table.addShadow(541,  431);													// Draenei - body
+		table.addShadow(40,   38);													// Draenei warrior - top
+		table.addShadow(541,  431);													// Draenei warrior - body
+		table.addShadow(577,  470);													// Draenei mage - body
 		table.addShadow(78,   61);													// Felguard - top
 		table.addShadow(529,  538);													// Felguard - body
 		table.addShadow(56,   42);													// Diabolist - top

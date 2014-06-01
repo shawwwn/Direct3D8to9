@@ -84,7 +84,7 @@ namespace PP {
 			{ "SMAA_PRESET_ULTRA", "1" },
 			{ "SMAA_PRESET_CUSTOM", "1" }
 		};
-		defines.push_back(presetMacros[int(3)]);	// choose quaility - SMAA_PRESET_ULTRA
+		defines.push_back(presetMacros[int(1)]);	// choose quaility - SMAA_PRESET_MEDIUM
 		// End macro
 		D3DXMACRO null = { nullptr, nullptr };
 		defines.push_back(null);
