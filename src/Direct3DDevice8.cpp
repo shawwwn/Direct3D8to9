@@ -534,19 +534,25 @@ STDMETHODIMP CDirect3DDevice8::GetDepthStencilSurface(THIS_ IDirect3DSurface8** 
 STDMETHODIMP CDirect3DDevice8::BeginScene(THIS)
 {
 	HRESULT hr = pDevice9->BeginScene();
-
-	if (CTRL::g_EnableHDR)
-		HDR::onBeginScene();
-
+	
+	if (CTRL::g_EnableEffect)
+	{
+		if (CTRL::g_EnableHDR)
+			HDR::onBeginScene();
+	}
 	return hr;
 }
 
 STDMETHODIMP CDirect3DDevice8::EndScene(THIS)
 {
-	if (CTRL::g_EnableHDR)
-		HDR::onEndScene();
+	if (CTRL::g_EnableEffect)
+	{
+		if (CTRL::g_EnableHDR)
+			HDR::onEndScene();
 
-	pDevice9->Clear( 0L, NULL, D3DCLEAR_STENCIL, 0xff00bfff, 1.0f, 0L );
+		if (CTRL::g_EnableSV)
+			pDevice9->Clear( 0L, NULL, D3DCLEAR_STENCIL, 0xff00bfff, 1.0f, 0L );
+	}
 	return pDevice9->EndScene();
 }
 
@@ -829,6 +835,10 @@ STDMETHODIMP CDirect3DDevice8::DrawPrimitive(THIS_ D3DPRIMITIVETYPE PrimitiveTyp
 
 STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount)
 {
+	// Disable all Effects
+	if (!CTRL::g_EnableEffect)
+		return pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
+
 	DWORD alphaRef;
 	pDevice9->GetRenderState(D3DRS_ALPHAREF, &alphaRef);
 

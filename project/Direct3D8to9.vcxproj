@@ -72,6 +72,7 @@
     <ClInclude Include="..\src\EffectController.h" />
     <ClInclude Include="..\src\ExceptionalMeshTable.h" />
     <ClInclude Include="..\src\HDRScene.h" />
+    <ClInclude Include="..\src\Nirvana_ext_export.h" />
     <ClInclude Include="..\src\NormalMapExceptionHandler.h" />
     <ClInclude Include="..\src\NormalMapHandler.h" />
     <ClInclude Include="..\src\ObjectPool.h" />

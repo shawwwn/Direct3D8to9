@@ -404,7 +404,8 @@ namespace SV {
 		table.addShadow(38,   34);													// Wildkin - top
 		table.addShadow(617,  520);													// Wildkin - body
 		table.addShadow(66,   53);													// Razormane - top
-		table.addShadow(450,  349);													// Razormane - body
+		table.addShadow(450,  349);													// Razormane warrior - body
+		table.addShadow(434,  349);													// Razormane archer - body
 		table.addShadow(40,   38);													// Draenei warrior - top
 		table.addShadow(541,  431);													// Draenei warrior - body
 		table.addShadow(577,  470);													// Draenei mage - body

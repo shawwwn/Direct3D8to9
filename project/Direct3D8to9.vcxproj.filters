@@ -292,6 +292,9 @@
     <ClInclude Include="..\src\PostProcess.h">
       <Filter>effect\PostProcess\effect</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Nirvana_ext_export.h">
+      <Filter>effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Direct3D8to9.rc">
