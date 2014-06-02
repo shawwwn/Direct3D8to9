@@ -393,7 +393,7 @@ namespace SV {
 		table.addShadow(335,  246);													// Furbolg mage - body
 		table.addShadow(26,   16);													// Furbolg warrior - top
 		table.addShadow(325,  272);													// Furbolg warrior - body
-		table.addShadow(80,   48);													// Lightning Lizard - top
+		table.addShadow(80,   48,   SHW_USE_TRANSFORMATION);						// Lightning Lizard - top
 		table.addShadow(528,  485);													// Lightning Lizard - body
 		table.addShadow(85,   93);													// Satyr - top
 		table.addShadow(350,  311);													// Satyr - body
@@ -416,7 +416,7 @@ namespace SV {
 		table.addShadow(539,  509);													// Fel Beast - body
 		table.addShadow(31,   23);													// Inferno Contraption - top
 		table.addShadow(605,  596);													// Inferno Contraption - body
-		table.addShadow(60,   30);													// Succubus - top
+		table.addShadow(60,   30,   SHW_USE_TRANSFORMATION);						// Succubus - top
 		table.addShadow(548,  586);													// Succubus - body
 		table.addShadow(68,   65);													// Apprentice Wizard - top
 		table.addShadow(315,  322);													// Apprentice Wizard - body

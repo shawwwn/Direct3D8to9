@@ -45,14 +45,14 @@
     <Filter Include="effect\shaders">
       <UniqueIdentifier>{5c50d4dc-8e82-4aab-b9fc-98676ecfbaee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="effect\HDR">
-      <UniqueIdentifier>{5109dc9e-6894-4a1a-b854-0bfc67fd6763}</UniqueIdentifier>
-    </Filter>
     <Filter Include="effect\ShadowVolume">
       <UniqueIdentifier>{5fe4aa28-1a02-47f4-ad89-a7e87b0848d4}</UniqueIdentifier>
     </Filter>
     <Filter Include="effect\ShadowVolume\data">
       <UniqueIdentifier>{e62b70aa-e618-47d3-82c9-593612f69c8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="effect\HDR">
+      <UniqueIdentifier>{5109dc9e-6894-4a1a-b854-0bfc67fd6763}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -55,7 +55,7 @@ extern "C" {
  * against the right headers.
  */
 
-IDirect3D8 * WINAPI Direct3DCreate8(UINT SDKVersion);
+IDirect3D8 * WINAPI Direct3DCreate8to9(UINT SDKVersion);
 
 
 /*
