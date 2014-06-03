@@ -948,9 +948,11 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 			if (!PP::g_presented && CTRL::g_EnablePP)
 			{
 				PP::g_presented = true;
-				pDevice9->EndScene(); // end the scene first
+				//pDevice9->EndScene(); // end the scene first
+				//pDevice9->BeginScene();
 				PP::PerformPostProcess(pDevice9);
-				pDevice9->BeginScene();	
+				//pDevice9->EndScene();
+				//pDevice9->BeginScene();	
 				restore = true;
 			}
 		}

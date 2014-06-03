@@ -100,7 +100,7 @@ namespace PP {
 		m_pDevice->SetVertexDeclaration(m_pVertDeclPP);	// Set the vertex declaration
 		m_pDevice->SetStreamSource(0, m_pVB, 0, sizeof(PPVERT));
 
-		if(SUCCEEDED(m_pDevice->BeginScene()))
+		//if(SUCCEEDED(m_pDevice->BeginScene()))
 		{
 			UINT cPasses;
 			// Bright pass
@@ -213,7 +213,7 @@ namespace PP {
 			m_pEffect->EndPass();
 			m_pEffect->End();
 
-			m_pDevice->EndScene(); // End the scene
+			//m_pDevice->EndScene(); // End the scene
 			return D3D_OK;
 		}
 		return D3DERR_INVALIDCALL;

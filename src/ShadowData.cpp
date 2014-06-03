@@ -538,7 +538,7 @@ namespace SV {
 		table.addShadow(287,  230);													// Furbolg mage - body
 		table.addShadow(155,  96);													// Furbolg mage - top
 		table.addShadow(335,  246);													// Furbolg mage - body
-		table.addShadow(26,   16);													// Furbolg warrior - top
+		table.addShadow(26,   16,   SHW_USE_TRANSFORMATION);						// Furbolg warrior - top
 		table.addShadow(325,  272);													// Furbolg warrior - body
 		table.addShadow(80,   48,   SHW_USE_TRANSFORMATION);						// Lightning Lizard - top
 		table.addShadow(528,  485);													// Lightning Lizard - body
