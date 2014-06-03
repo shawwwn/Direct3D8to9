@@ -12,17 +12,23 @@ namespace SV {
 		WORD*         pIndicesData;
 
 		// Lock the geometry buffers
-		pVertexBuffer->Lock(0, 0, (LPVOID*)&pVerticesData, D3DLOCK_DONOTWAIT | D3DLOCK_READONLY | D3DLOCK_NOOVERWRITE | D3DLOCK_NOSYSLOCK | D3DLOCK_NO_DIRTY_UPDATE);
-		pIndexBuffer->Lock(0, 0, (LPVOID*)&pIndicesData, D3DLOCK_DONOTWAIT | D3DLOCK_READONLY | D3DLOCK_NOOVERWRITE | D3DLOCK_NOSYSLOCK | D3DLOCK_NO_DIRTY_UPDATE);
-		
-		WORD idx0 = pIndicesData[startIndex + 0];
-		WORD idx2 = pIndicesData[startIndex + 2];
-		WORD idx3 = pIndicesData[startIndex + 3];
+		pVertexBuffer->Lock(baseVertexIndex * sizeof(SHADOWVERTEX),
+							8 * sizeof(SHADOWVERTEX),
+							(LPVOID*)&pVerticesData,
+							D3DLOCK_DONOTWAIT | D3DLOCK_READONLY | D3DLOCK_NOOVERWRITE | D3DLOCK_NOSYSLOCK | D3DLOCK_NO_DIRTY_UPDATE);
+		pIndexBuffer->Lock(startIndex * sizeof(WORD),
+							4 * sizeof(WORD),
+							(LPVOID*)&pIndicesData,
+							D3DLOCK_DONOTWAIT | D3DLOCK_READONLY | D3DLOCK_NOOVERWRITE | D3DLOCK_NOSYSLOCK | D3DLOCK_NO_DIRTY_UPDATE);
 
-		float tu0 = pVerticesData[baseVertexIndex + idx0].tu;
-		float tu3 = pVerticesData[baseVertexIndex + idx3].tu;
-		float tv0 = pVerticesData[baseVertexIndex + idx0].tv;
-		float tv2 = pVerticesData[baseVertexIndex + idx2].tv;
+		WORD idx0 = pIndicesData[0];
+		WORD idx2 = pIndicesData[2];
+		WORD idx3 = pIndicesData[3];
+
+		float tu0 = pVerticesData[idx0].tu;
+		float tu3 = pVerticesData[idx3].tu;
+		float tv0 = pVerticesData[idx0].tv;
+		float tv2 = pVerticesData[idx2].tv;
 
 		// Unlock the geometry buffers
 		pVertexBuffer->Unlock();
@@ -30,7 +36,7 @@ namespace SV {
 
 		float scale_x = 100.00f * 1.28f / (tu3-tu0);
 		float scale_y = 100.00f * 1.28f / (tv0-tv2);
-
+		
 		/*
 		char buffer[64];
 		memset(buffer, 0, 64);
@@ -40,7 +46,7 @@ namespace SV {
 
 		float remainder_x = fmod(scale_x , 10.0f);
 		float remainder_y = fmod(scale_y , 10.0f);
-		if (abs(remainder_x-5.0f) < 2)	// threshold, in WC3 unit shadow scale format
+		if (abs(remainder_x-5.0f) < 2 || abs(remainder_y-5.0f) < 2)	// threshold, in WC3 unit shadow scale format
 		{
 			return true;
 		}
