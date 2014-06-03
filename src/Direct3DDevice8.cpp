@@ -919,7 +919,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 					{
 						if (FAILED(hr))	// If NormalMapHandler hasn't rendered an object, render it here.
 							pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
-						SV::GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex, shwParam);
+						SV::GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, g_baseVertexIndex, startIndex, NumVertices, primCount, shwParam);
 						pDevice9->SetTexture(g_Stage, NULL);
 						//SV::RenderShadowVolume(pDevice9);	// for debug...	
 						SV::RenderShadow(pDevice9);

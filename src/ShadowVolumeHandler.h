@@ -24,8 +24,10 @@ namespace SV {
 	extern int g_shwParam_last;
 
 	void InitShadowTable(ShadowTable& table);
-	void GenerateShadow(IDirect3DDevice9* pd3dDevice, IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer, 
-						DWORD startIndex, DWORD primCount, DWORD baseVertexIndex, int inversion);
+	void GenerateShadow(IDirect3DDevice9* pd3dDevice, IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer,
+						DWORD baseVertexIndex, DWORD startIndex,
+						DWORD numVertices, DWORD primCount,
+						int inversion);
 	void RenderShadowVolume(IDirect3DDevice9* pd3dDevice);
 	HRESULT RenderShadow(IDirect3DDevice9* pd3dDevice);
 	HRESULT DrawShadow(IDirect3DDevice9* pd3dDevice);

@@ -31,7 +31,10 @@ namespace SV {
 		m_dwNumVertices = 0;
 	}
 
-	HRESULT ShadowVolume::BuildFromStreamBuffer(IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer, DWORD startIndex, DWORD primCount, DWORD baseVertexIndex, D3DXVECTOR3 vLight)
+	HRESULT ShadowVolume::BuildFromStreamBuffer(IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer,
+												DWORD baseVertexIndex, DWORD startIndex,
+												DWORD numVertices, DWORD primCount,
+												D3DXVECTOR3 vLight)
 	{
 		// Warcraft3 FVF
 		struct MESHVERTEX { D3DXVECTOR3 p, n; FLOAT tu, tv; };
@@ -40,8 +43,14 @@ namespace SV {
 		WORD*       pIndicesData;
 
 		// Lock the geometry buffers
-		pVertexBuffer->Lock(0, 0, (LPVOID*)&pVerticesData, D3DLOCK_DONOTWAIT | D3DLOCK_READONLY | D3DLOCK_NOOVERWRITE | D3DLOCK_NOSYSLOCK | D3DLOCK_NO_DIRTY_UPDATE);
-		pIndexBuffer->Lock(0, 0, (LPVOID*)&pIndicesData, D3DLOCK_DONOTWAIT | D3DLOCK_READONLY | D3DLOCK_NOOVERWRITE | D3DLOCK_NOSYSLOCK | D3DLOCK_NO_DIRTY_UPDATE );
+		pVertexBuffer->Lock(baseVertexIndex * sizeof(MESHVERTEX),
+							numVertices * sizeof(MESHVERTEX),
+							(LPVOID*)&pVerticesData,
+							D3DLOCK_DONOTWAIT | D3DLOCK_READONLY | D3DLOCK_NOOVERWRITE | D3DLOCK_NOSYSLOCK | D3DLOCK_NO_DIRTY_UPDATE);
+		pIndexBuffer->Lock(startIndex * sizeof(WORD),
+							primCount * 3,			// for triangle list
+							(LPVOID*)&pIndicesData,
+							D3DLOCK_DONOTWAIT | D3DLOCK_READONLY | D3DLOCK_NOOVERWRITE | D3DLOCK_NOSYSLOCK | D3DLOCK_NO_DIRTY_UPDATE );
 		DWORD dwNumFaces    = primCount;
 
 		// Allocate a temporary edge list
@@ -57,13 +66,13 @@ namespace SV {
 		// For each face
 		for( DWORD i=0; i<dwNumFaces; i++ )
 		{
-			WORD wFace0 = pIndicesData[startIndex + 3*i+0];
-			WORD wFace1 = pIndicesData[startIndex + 3*i+1];
-			WORD wFace2 = pIndicesData[startIndex + 3*i+2];
+			WORD wFace0 = pIndicesData[3*i+0];
+			WORD wFace1 = pIndicesData[3*i+1];
+			WORD wFace2 = pIndicesData[3*i+2];
 
-			D3DXVECTOR3 v0 = pVerticesData[baseVertexIndex + wFace0].p;
-			D3DXVECTOR3 v1 = pVerticesData[baseVertexIndex + wFace1].p;
-			D3DXVECTOR3 v2 = pVerticesData[baseVertexIndex + wFace2].p;
+			D3DXVECTOR3 v0 = pVerticesData[wFace0].p;
+			D3DXVECTOR3 v1 = pVerticesData[wFace1].p;
+			D3DXVECTOR3 v2 = pVerticesData[wFace2].p;
 
 			// Transform vertices or transform light?
 			D3DXVECTOR3 vCross1(v2-v1);
@@ -95,8 +104,8 @@ namespace SV {
 
 		for( DWORD i=0; i<dwNumEdges; i++ )
 		{
-			D3DXVECTOR3 v1 = pVerticesData[baseVertexIndex + pEdges[2*i+0]].p;
-			D3DXVECTOR3 v2 = pVerticesData[baseVertexIndex + pEdges[2*i+1]].p;
+			D3DXVECTOR3 v1 = pVerticesData[pEdges[2*i+0]].p;
+			D3DXVECTOR3 v2 = pVerticesData[pEdges[2*i+1]].p;
 			D3DXVECTOR3 v3 = v1 - vLight*LIGHT_RANGE;
 			D3DXVECTOR3 v4 = v2 - vLight*LIGHT_RANGE;
 

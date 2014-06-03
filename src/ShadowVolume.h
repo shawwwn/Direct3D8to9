@@ -13,7 +13,10 @@ namespace SV {
 
 		public:
 			void    Reset();
-			HRESULT BuildFromStreamBuffer(IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer, DWORD startIndex, DWORD primCount, DWORD baseVertexIndex, D3DXVECTOR3 vLight);
+			HRESULT BuildFromStreamBuffer(IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer,
+											DWORD baseVertexIndex, DWORD startIndex,
+											DWORD numVertices, DWORD primCount,
+											D3DXVECTOR3 vLight);
 			HRESULT Render(LPDIRECT3DDEVICE9 pd3dDevice);
 	};
 

@@ -16,7 +16,11 @@ namespace SV {
 	//
 	// Compute light vector then generate shadow mesh
 	//
-	void GenerateShadow(IDirect3DDevice9* pd3dDevice, IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer, DWORD startIndex, DWORD primCount, DWORD baseVertexIndex, int inversion)
+	void GenerateShadow(IDirect3DDevice9* pd3dDevice,
+						IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer,
+						DWORD baseVertexIndex, DWORD startIndex,
+						DWORD numVertices, DWORD primCount,
+						int inversion)
 	{
 		D3DXVECTOR3 vLight;					// light vector in object space
 		D3DXVECTOR3* pRefLight = NULL;		// reference light value
@@ -56,7 +60,7 @@ namespace SV {
 			vLight.z *= -1;
 
 		g_baseShadow.Reset();
-		g_baseShadow.BuildFromStreamBuffer(pVertexBuffer, pIndexBuffer, startIndex, primCount, baseVertexIndex, vLight);
+		g_baseShadow.BuildFromStreamBuffer(pVertexBuffer, pIndexBuffer, baseVertexIndex, startIndex, numVertices, primCount, vLight);
 	}
 
 	//
