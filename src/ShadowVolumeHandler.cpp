@@ -5,14 +5,13 @@ namespace SV {
 	ShadowTable g_shwTable;
 	bool g_rendered = false;
 	LPDIRECT3DVERTEXBUFFER9 g_pBigSquareVB = NULL;
-	ShadowVolume g_HumBaseShadow;
+	ShadowVolume g_baseShadow;
 	UINT g_deviceHeight = 0;
 	UINT g_deviceWidth = 0;
-	bool g_enterUnitShadow = false;
-	bool g_finishUnitShadow = false;
 	UINT g_NumVertices_last = 0;
 	UINT g_PrimCount_last = 0;
 	int g_shwParam_last = -1;
+
 
 	//
 	// Compute light vector then generate shadow mesh
@@ -56,8 +55,8 @@ namespace SV {
 		if (!(inversion & SHW_Z_INVERTED))
 			vLight.z *= -1;
 
-		g_HumBaseShadow.Reset();
-		g_HumBaseShadow.BuildFromStreamBuffer(pVertexBuffer, pIndexBuffer, startIndex, primCount, baseVertexIndex, vLight);
+		g_baseShadow.Reset();
+		g_baseShadow.BuildFromStreamBuffer(pVertexBuffer, pIndexBuffer, startIndex, primCount, baseVertexIndex, vLight);
 	}
 
 	//
@@ -65,7 +64,7 @@ namespace SV {
 	//
 	void RenderShadowVolume(IDirect3DDevice9* pd3dDevice)
 	{
-		g_HumBaseShadow.Render(pd3dDevice);
+		g_baseShadow.Render(pd3dDevice);
 	}
 
 	//
@@ -99,7 +98,7 @@ namespace SV {
 			SetRenderStateSafe(pd3dDevice, D3DRS_CULLMODE,				D3DCULL_NONE);
 
 			// Draw both sides of shadow volume in stencil/z only
-			g_HumBaseShadow.Render( pd3dDevice );
+			g_baseShadow.Render( pd3dDevice );
 
 			SetRenderStateSafe(pd3dDevice, D3DRS_TWOSIDEDSTENCILMODE,	FALSE);
 		}
@@ -107,7 +106,7 @@ namespace SV {
 		{
 			// Draw front-side of shadow volume in stencil/z only
 			SetRenderStateSafe(pd3dDevice, D3DRS_CULLMODE,		D3DCULL_CCW);
-			g_HumBaseShadow.Render( pd3dDevice );
+			g_baseShadow.Render( pd3dDevice );
 
 			// Now reverse cull order so back sides of shadow volume are written.
 			SetRenderStateSafe(pd3dDevice, D3DRS_CULLMODE,		D3DCULL_CW);
@@ -116,7 +115,7 @@ namespace SV {
 			SetRenderStateSafe(pd3dDevice, D3DRS_STENCILPASS,	D3DSTENCILOP_DECR);
 
 			// Draw back-side of shadow volume in stencil/z only
-			g_HumBaseShadow.Render( pd3dDevice );
+			g_baseShadow.Render( pd3dDevice );
 		}
 
 		pd3dDevice->EndStateBlock(&pStateBlock);
@@ -184,10 +183,10 @@ namespace SV {
 		v[1].p = D3DXVECTOR4(  0,  0, 0.0f, 1.0f );
 		v[2].p = D3DXVECTOR4( sx, sy, 0.0f, 1.0f );
 		v[3].p = D3DXVECTOR4( sx,  0, 0.0f, 1.0f );
-		v[0].color = 0x5f000000;
-		v[1].color = 0x5f000000;
-		v[2].color = 0x5f000000;
-		v[3].color = 0x5f000000;
+		v[0].color = 0x6f000000;
+		v[1].color = 0x6f000000;
+		v[2].color = 0x6f000000;
+		v[3].color = 0x6f000000;
 		g_pBigSquareVB->Unlock();
 
 		return S_OK;

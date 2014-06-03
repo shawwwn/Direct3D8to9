@@ -40,6 +40,7 @@
     <ClCompile Include="..\src\RenderStageController.cpp" />
     <ClCompile Include="..\src\ShadowData.cpp" />
     <ClCompile Include="..\src\ShadowTable.cpp" />
+    <ClCompile Include="..\src\ShadowType.cpp" />
     <ClCompile Include="..\src\ShadowVolume.cpp" />
     <ClCompile Include="..\src\ShadowVolumeHandler.cpp" />
     <ClCompile Include="..\src\SpinLock.cpp" />
@@ -85,6 +86,7 @@
     <ClInclude Include="..\src\SearchTex.h" />
     <ClInclude Include="..\src\ShaderResource.h" />
     <ClInclude Include="..\src\ShadowTable.h" />
+    <ClInclude Include="..\src\ShadowType.h" />
     <ClInclude Include="..\src\ShadowVolume.h" />
     <ClInclude Include="..\src\ShadowVolumeHandler.h" />
     <ClInclude Include="..\src\SpinLock.h" />

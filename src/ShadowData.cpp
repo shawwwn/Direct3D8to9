@@ -57,7 +57,7 @@ namespace SV {
 		#pragma endregion
 
 		#pragma region Orc
-		table.addShadow(8,    6);													// Orc Rally Point - top
+		//table.addShadow(8,    6);													// Orc Rally Point - top [conflict]
 		table.addShadow(32,   18);													// Orc Rally Point - body
 		/* Heroes */
 		table.addShadow(42,   41);													// Blasdemaster - top
@@ -144,6 +144,19 @@ namespace SV {
 		table.addShadow(60,   66);													// Priest of the Moon - top
 		table.addShadow(50,   26);													// Priest of the Moon - bow
 		table.addShadow(419,  394);													// Priest of the Moon - body
+		/* New Heroes */
+		/*
+		table.addShadow(1484, 1322);												// New Warden - wraps
+		table.addShadow(150,  202);													// New Warden - cloak
+		table.addShadow(123,  140);													// New Warden - helmet
+		table.addShadow(122,  184);													// New Warden - leg
+		table.addShadow(158,  228);													// New Warden - feet
+		table.addShadow(78,   108);													// New Warden - hand
+		table.addShadow(424,  528);													// New Warden - body
+		table.addShadow(2244, 748);													// New Tyrand - tiger
+		table.addShadow(1793, 590);													// New Tyrand - rider
+		table.addShadow(223,  76);													// New Tyrand - cloak
+		*/
 		/* Units */
 		table.addShadow(73,   37);													// Archer - top
 		table.addShadow(331,  380);													// Archer - body
@@ -160,7 +173,7 @@ namespace SV {
 		table.addShadow(22,   16);													// Druid of the Talon - death top cloak
 		table.addShadow(232,  234);													// Druid of the Talon - death body
 		table.addShadow(136,  151);													// Druid of the Talon - death body2
-		table.addShadow(28,   16);													// Druid of the Claw - top
+		table.addShadow(28,   16,   SHW_USE_TRANSFORMATION);						// Druid of the Claw - top
 		table.addShadow(486,  489);													// Druid of the Claw - body
 		//table.addShadow(116,  144);												// Druid of the Claw - backpack
 		table.addShadow(22,   16);													// Druid of the Claw - bear top
@@ -178,6 +191,9 @@ namespace SV {
 		table.addShadow(22,   14);													// Small Ghost - top
 		table.addShadow(521,  413);													// Small Ghost - body
 		table.addShadow(825,  649);													// Big Ghost - body
+		/* New Units */
+		table.addShadow(731,  1038);												// New Mountain Giant - top
+
 		/* Flying Units */
 		/*
 		table.addShadow(53,   54,   SHW_FLYING_UNIT);								// Chimaera - top [leak]
@@ -251,7 +267,20 @@ namespace SV {
 		/* Heroes */
 		table.addShadow(90,   83);													// Naga Sea Witch - top
 		table.addShadow(1073, 760);													// Naga Sea Witch - body
-
+		//table.addShadow(90,   52);												// Enchantress - top (performance)
+		//table.addShadow(52,   190);												// Enchantress - wraps (performance)
+		//table.addShadow(755,  3880);												// Enchantress - body (performance)
+		table.addShadow(2046, 2128);												// Murloc Hero - body
+		table.addShadow(252,  408);													// Tidal Baron - top
+		table.addShadow(948,  808);													// Tidal Baron - body
+		//table.addShadow(369,  190);												// Tidal Baron - fin
+		table.addShadow(214,  356,  SHW_USE_TRANSFORMATION);						// Tidal Baron - weapon
+		//table.addShadow(326,  381);												// Illidan - wing (performance)
+		//table.addShadow(534,  823);												// Illidan - hand (performance)
+		//table.addShadow(574,  724);												// Illidan - face (performance)
+		//table.addShadow(1221, 1513);												// Illidan - lower body (performance)
+		//table.addShadow(1566, 2078);												// Illidan - upper body (performance)
+		//table.addShadow(538,  740,  SHW_USE_TRANSFORMATION);						// Illidan - weapon (performance)
 		/* Units */
 		table.addShadow(77,   80);													// Couatl - top
 		table.addShadow(90,   52);													// Naga Siren - top
@@ -267,6 +296,51 @@ namespace SV {
 		//table.addShadow(94,   58);												// Naga Loyal Guard - spikes
 		table.addShadow(90,   83);													// Murloc Slave - top
 		table.addShadow(238,  207);													// Murloc Slave - body
+		table.addShadow(21,   7);													// Murloc Catapult - basket
+		table.addShadow(273,  210);													// Murloc Catapult - body
+		//table.addShadow(68,   88);												// Hunting Shark - body (performance)
+		//table.addShadow(35,   64);												// Hunting Shark - legs (performance)
+		//table.addShadow(40,   90);												// Hunting Shark - arms (performance)
+		//table.addShadow(182,  222);												// Hunting Shark - head (performance)
+		#pragma endregion
+
+		#pragma region IceTroll
+		/* Heroes */
+		table.addShadow(1141, 1460);												// Shadow Warlock - top
+		table.addShadow(69,   118,  SHW_USE_TRANSFORMATION);						// Shadow Warlock - top rod
+		table.addShadow(58,   57,   SHW_USE_TRANSFORMATION);						// Shadow Warlock - top skull
+		table.addShadow(473,  565);													// Bloodrager - top
+		table.addShadow(154,  110,  SHW_USE_TRANSFORMATION);						// Bloodrager - weapon
+		table.addShadow(506,  469);													// Bloodrager - body
+		table.addShadow(59,   34);													// Voodoo Priest - top
+		table.addShadow(390,  321);													// Voodoo Priest - body
+		table.addShadow(197,  209,  SHW_USE_TRANSFORMATION);						// Voodoo Priest - weapon
+		/* Units */
+		table.addShadow(542,  418);													// Voodoo Doll - top
+		table.addShadow(20,   12);													// Gold Digger - hair
+		table.addShadow(176,  156);													// Gold Digger - body
+		table.addShadow(156,  166);													// Gold Digger - axe
+		table.addShadow(18,   24);													// Voodoo Wishman - top
+		table.addShadow(240,  217,  SHW_USE_TRANSFORMATION);						// Voodoo Wishman - body
+		table.addShadow(328,  261,  SHW_USE_TRANSFORMATION);						// Voodoo Wishman - head
+		//table.addShadow(49,   40,   SHW_USE_TRANSFORMATION);						// Totemist - top
+		//table.addShadow(40,   25,   SHW_USE_TRANSFORMATION);						// Totemist - top hair
+		//table.addShadow(57,   24,   SHW_USE_TRANSFORMATION);						// Totemist - top gen
+		//table.addShadow(59,   72,   SHW_USE_TRANSFORMATION);						// Totemist - top rod
+		//table.addShadow(42,   30,   SHW_USE_TRANSFORMATION);						// Totemist - face
+		//table.addShadow(435,  262,  SHW_USE_TRANSFORMATION);						// Totemist - upper body
+		//table.addShadow(36,   32,   SHW_USE_TRANSFORMATION);						// Totemist - skirt edge
+		//table.addShadow(30,   32,   SHW_USE_TRANSFORMATION);						// Totemist - skirt
+		//table.addShadow(59,   46,   SHW_USE_TRANSFORMATION);						// Totemist - skull
+		table.addShadow(18,   14);													// Catapult - top
+		table.addShadow(368,  271);													// Catapult - body
+		table.addShadow(22,   32,   SHW_USE_TRANSFORMATION);						// IceTroll Warrior - left axe
+		table.addShadow(21,   32,   SHW_USE_TRANSFORMATION);						// IceTroll Warrior - right axe
+		table.addShadow(23,   30,   SHW_USE_TRANSFORMATION);						// Mocking Totem
+		table.addShadow(246,  282,  SHW_USE_TRANSFORMATION);						// Healing Ward
+		table.addShadow(622,  562);													// Imp - body
+		table.addShadow(66,   32);													// Imp - hair
+		table.addShadow(243,  282,  SHW_USE_TRANSFORMATION);						// Statsis Trap
 		#pragma endregion
 
 		#pragma region Neutral
@@ -367,7 +441,7 @@ namespace SV {
 		table.addShadow(426,  486);													// Tuskarr - body2
 		table.addShadow(34,   48);													// Mammoth - top
 		table.addShadow(541,  515);													// Mammoth - body
-		table.addShadow(40,   20);													// Arachnathid - top
+		table.addShadow(40,   20,   SHW_USE_TRANSFORMATION);						// Arachnathid - top
 		table.addShadow(617,  518);													// Arachnathid - body
 		table.addShadow(52,   52);													// Magnataur - top
 		table.addShadow(733,  741);													// Magnataur - body

@@ -40,8 +40,8 @@ namespace SV {
 		WORD*       pIndicesData;
 
 		// Lock the geometry buffers
-		pVertexBuffer->Lock(0, 0, (LPVOID*)&pVerticesData, 0);
-		pIndexBuffer->Lock(0, 0, (LPVOID*)&pIndicesData, 0);
+		pVertexBuffer->Lock(0, 0, (LPVOID*)&pVerticesData, D3DLOCK_DONOTWAIT | D3DLOCK_READONLY | D3DLOCK_NOOVERWRITE | D3DLOCK_NOSYSLOCK | D3DLOCK_NO_DIRTY_UPDATE);
+		pIndexBuffer->Lock(0, 0, (LPVOID*)&pIndicesData, D3DLOCK_DONOTWAIT | D3DLOCK_READONLY | D3DLOCK_NOOVERWRITE | D3DLOCK_NOSYSLOCK | D3DLOCK_NO_DIRTY_UPDATE );
 		DWORD dwNumFaces    = primCount;
 
 		// Allocate a temporary edge list

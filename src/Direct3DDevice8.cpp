@@ -15,6 +15,7 @@
 #include "HDRScene.h"				// external...
 #include "DebugUtils.h"				// external...
 #include "ShadowVolumeHandler.h"	// external...
+#include "ShadowType.h"
 
 CDirect3DDevice8::CDirect3DDevice8(IDirect3DDevice9* device, CDirect3D8* d3d)
 : pDevice9(device)
@@ -282,8 +283,6 @@ STDMETHODIMP CDirect3DDevice8::Present(THIS_ CONST RECT* pSourceRect, CONST RECT
 	resetRenderStage();
 	PP::g_presented = false;
 	SV::g_rendered = false;
-	SV::g_finishUnitShadow = false;
-	SV::g_enterUnitShadow = false;
 	NP::EXCP::CheckAll();	// check exception list
 	return pDevice9->Present(pSourceRect, pDestRect, hDestWindowOverride, pDirtyRegion);
 }
@@ -833,6 +832,14 @@ STDMETHODIMP CDirect3DDevice8::DrawPrimitive(THIS_ D3DPRIMITIVETYPE PrimitiveTyp
 	return pDevice9->DrawPrimitive(PrimitiveType, StartVertex, PrimitiveCount);
 }
 
+// A curde fix
+inline bool isComplexMesh(D3DTRANSFORMSTATETYPE transState, UINT numVertices, UINT primCount)
+{
+	if (transState==2)
+		return (numVertices>128 && primCount>64);
+	return true;
+}
+
 STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type, UINT minIndex, UINT NumVertices, UINT startIndex, UINT primCount)
 {
 	// Disable all Effects
@@ -871,12 +878,20 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 		{
 			// Disable default unit shadows
 			if (CTRL::g_DisableUnitShadow)
-				return D3D_OK;
+			{
+				if (CTRL::g_EnableSV)	// If shadowVolume is enabled, keep the original shadow for special models (performance reason).
+				{
+					if (!SV::IsHeroShadow(pDevice9, g_pStreamData9, g_pIndexData9, startIndex, primCount, g_baseVertexIndex))
+						return D3D_OK;
+				}
+				else
+					return D3D_OK;
+			}
 		}
 		break;
 	case STAGE_UNIT:
 		{
-			if (g_Stride == 32 && Type == 4 && g_FVFHandle == 274 && ((DWORD)g_State == 256  || (DWORD)g_State == 17 || (DWORD)g_State == 16) && g_DRS[D3DRS_DESTBLEND]!=2)	// filter out non-unit meshes
+			if (g_Stride == 32 && Type == 4 && g_FVFHandle == 274 && ((DWORD)g_State == 256  || (DWORD)g_State == 17 || (DWORD)g_State == 16 || isComplexMesh(g_State, NumVertices, primCount))) //&& g_DRS[D3DRS_DESTBLEND]!=2)	// filter out non-unit meshes
 			{
 				HRESULT hr = D3DERR_INVALIDCALL;
 				// Render Normal Map

@@ -16,11 +16,9 @@ namespace SV {
 	extern ShadowTable g_shwTable;
 	extern bool g_rendered;
 	extern LPDIRECT3DVERTEXBUFFER9 g_pBigSquareVB;
-	extern ShadowVolume g_HumBaseShadow;
+	extern ShadowVolume g_baseShadow;
 	extern UINT g_deviceHeight;
 	extern UINT g_deviceWidth;
-	extern bool g_enterUnitShadow;
-	extern bool g_finishUnitShadow;
 	extern UINT g_NumVertices_last;
 	extern UINT g_PrimCount_last;
 	extern int g_shwParam_last;
