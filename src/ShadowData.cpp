@@ -128,6 +128,28 @@ namespace SV {
 		*/
 		#pragma endregion
 
+		#pragma region FelOrc
+		/* Heroes */
+		table.addShadow(695,  742);													// New Blademaster - top lower body (performance)
+		table.addShadow(619,  826);													// New Blademaster - top upper body (performance)
+		table.addShadow(36,   50);													// New Blademaster - top flag (performance)
+		table.addShadow(87,   84,   SHW_USE_TRANSFORMATION);						// New Blademaster - top stick (performance)
+		table.addShadow(62,   59,   SHW_USE_TRANSFORMATION);						// New Blademaster - blade (performance)
+		/* Units */
+		table.addShadow(59,   63);													// Fel Grunt - top
+		table.addShadow(435,  342);													// Fel Grunt - body
+		table.addShadow(181,  151);													// Fel Grunt - unknown
+		table.addShadow(85,   96);													// Crossbowman - top lower body
+		table.addShadow(96,   114);													// Crossbowman - top upper body
+		table.addShadow(235,  186);													// Crossbowman - top crossbow
+		table.addShadow(25,   13);													// Crossbowman - top arm
+		table.addShadow(62,   48);													// Warlock - top
+		table.addShadow(220,  234);													// Warlock - body
+		table.addShadow(46,   28,   SHW_USE_TRANSFORMATION);						// War Station - top
+		table.addShadow(673,  393);													// War Station - body
+		table.addShadow(314,  159,  SHW_USE_TRANSFORMATION);						// War Station - tower
+		#pragma endregion
+
 		#pragma region Night Elf
 		table.addShadow(72,   40,   SHW_USE_TRANSFORMATION);						// NightElf Rally Point - top
 		table.addShadow(12,   6,    SHW_USE_TRANSFORMATION);						// NightElf Rally Point - body
@@ -144,19 +166,6 @@ namespace SV {
 		table.addShadow(60,   66);													// Priest of the Moon - top
 		table.addShadow(50,   26);													// Priest of the Moon - bow
 		table.addShadow(419,  394);													// Priest of the Moon - body
-		/* New Heroes */
-		/*
-		table.addShadow(1484, 1322);												// New Warden - wraps
-		table.addShadow(150,  202);													// New Warden - cloak
-		table.addShadow(123,  140);													// New Warden - helmet
-		table.addShadow(122,  184);													// New Warden - leg
-		table.addShadow(158,  228);													// New Warden - feet
-		table.addShadow(78,   108);													// New Warden - hand
-		table.addShadow(424,  528);													// New Warden - body
-		table.addShadow(2244, 748);													// New Tyrand - tiger
-		table.addShadow(1793, 590);													// New Tyrand - rider
-		table.addShadow(223,  76);													// New Tyrand - cloak
-		*/
 		/* Units */
 		table.addShadow(73,   37);													// Archer - top
 		table.addShadow(331,  380);													// Archer - body
@@ -343,6 +352,71 @@ namespace SV {
 		table.addShadow(243,  282,  SHW_USE_TRANSFORMATION);						// Statsis Trap
 		#pragma endregion
 
+		#pragma region BloodElf
+		/* Heroes */
+		table.addShadow(63,   136);													// BloodKnight - top
+		table.addShadow(749,  430);													// BloodKnight - body
+		table.addShadow(50,   75,   SHW_USE_TRANSFORMATION);						// BloodKnight - sword
+		table.addShadow(116,  120);													// BloodKnight - hair
+		//table.addShadow(102,  124);												// Arcanist - top [leak]
+		//table.addShadow(887,  1368);												// Arcanist - body [leak]
+		table.addShadow(63,   54);													// Arcane Ranger - hair
+		table.addShadow(16,   16);													// Arcane Ranger - scarf1
+		table.addShadow(36,   36);													// Arcane Ranger - scarf2
+		table.addShadow(100,  104);													// Arcane Ranger - bow
+		table.addShadow(42,   48);													// Arcane Ranger - boots
+		table.addShadow(67,   68);													// Arcane Ranger - pants
+		table.addShadow(32,   32,   SHW_USE_TRANSFORMATION);						// Arcane Ranger - sleeves
+		//table.addShadow(34,   24);												// Arcane Ranger - top cloak
+		table.addShadow(36,   24);													// Arcane Ranger - cloak
+		table.addShadow(129,  68);													// Arcane Ranger - shoulder
+		/* Units */
+		table.addShadow(253,  241);													// Engineer - body
+		table.addShadow(45,   64);													// Swordsman - top leg
+		table.addShadow(46,   60);													// Swordsman - top waist
+		table.addShadow(52,   56);													// Swordsman - top shoulder
+		table.addShadow(303,  165);													// Swordsman - head
+		table.addShadow(230,  231);													// Swordsman - sword
+		table.addShadow(95,   67);													// Swordsman - helmet
+		table.addShadow(12,   9);													// Shieldsman - shield
+		table.addShadow(284,  279);													// Shieldsman - sword
+		table.addShadow(90,   73);													// Peacemaker - top shoulder
+		table.addShadow(111,  71);													// Peacemaker - top cloak
+		table.addShadow(78,   26,   SHW_USE_TRANSFORMATION);						// Peacemaker - weapon
+		table.addShadow(206,  90,   SHW_USE_TRANSFORMATION);						// Peacemaker - weapon handle
+		table.addShadow(453,  354,  SHW_USE_TRANSFORMATION);						// Peacemaker - body
+		table.addShadow(76,   67,   SHW_USE_TRANSFORMATION);						// Peacemaker - shield
+		table.addShadow(22,   23);													// Archer - top cloak
+		table.addShadow(112,  99);													// Archer - top shoulder
+		table.addShadow(28,   30);													// Archer - thigh
+		table.addShadow(70,   80);													// Archer - leg
+		table.addShadow(135,  131);													// Archer - head
+		table.addShadow(37,   34);													// Archer - bow
+		table.addShadow(117,  69);													// Archer - hair
+		table.addShadow(459,  483);													// Juggernaut - top
+		table.addShadow(599,  601);													// Juggernaut - body
+		//table.addShadow(211,  374);												// Blood Priest - top [leak]
+		//table.addShadow(131,  220);												// Blood Priest - body [leak]
+		//table.addShadow(323,  183);												// Blood Priest - head [leak]
+		table.addShadow(24,   40);													// Arcane Golem - top shoulder
+		table.addShadow(159,  96);													// Arcane Golem - hand
+		table.addShadow(73,   32);													// Arcane Golem - feet
+		table.addShadow(65,   80);													// Arcane Golem - body
+		table.addShadow(77,   41,   SHW_USE_TRANSFORMATION);						// Arcane Golem - head
+		table.addShadow(68,   52);													// Arcane Golem - arm
+		table.addShadow(16,   8,    SHW_USE_TRANSFORMATION);						// Arcane Golem - center gem
+		table.addShadow(26,   44);													// Arcane Golem - decoration
+		table.addShadow(20,   18);													// Wrenched warrior - top
+		table.addShadow(369,  350);													// Wrenched warrior - body
+		table.addShadow(125,  123,  SHW_USE_TRANSFORMATION);						// Wrenched mage - head
+		table.addShadow(164,  166);													// Wrenched mage - body
+		table.addShadow(20,   22);													// Wrenched mage - cloth
+		//table.addShadow(284,  488);												// Wraith small (performance)
+		table.addShadow(271,  514);													// Wraith big
+		table.addShadow(95,   90,   SHW_USE_TRANSFORMATION);						// Wraith big wrist
+		table.addShadow(46,   48,   SHW_USE_TRANSFORMATION);						// Holy Knight weapon
+		#pragma endregion
+
 		#pragma region Neutral
 		/* Heroes */
 		table.addShadow(26,   28);													// Tinker - top
@@ -395,7 +469,6 @@ namespace SV {
 		table.addShadow(209,  215);													// Ice Revenant - body
 		table.addShadow(24,   16);													// Doom Guard - top
 		table.addShadow(652,  507);													// Doom Guard - body
-		table.addShadow(24,   16);													// Sea Giant - top
 		table.addShadow(688,  566);													// Sea Giant - body
 		table.addShadow(92,   72);													// Sea Giant - hat
 		table.addShadow(30,   32);													// Skeletal Orc - top
