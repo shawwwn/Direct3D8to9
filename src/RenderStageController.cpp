@@ -41,7 +41,7 @@ inline bool isUnitShadowStage(UINT stride, D3DPRIMITIVETYPE primType, DWORD hFVF
 }
 inline bool isUIStage(UINT stride, D3DPRIMITIVETYPE primType, DWORD hFVF, DWORD stateType, UINT numVertices, UINT primCount)
 {
-	return (stateType==2 && stride==36 && numVertices==4 && primCount==2 && g_DRS[D3DRS_ALPHAREF]==192);
+	return (primType==5 && stateType==2 && stride==36 && numVertices==4 && primCount==2 && g_DRS[D3DRS_ALPHAREF]==192);
 }
 
 int checkRenderStage(UINT stride, D3DPRIMITIVETYPE primType, DWORD hFVF, DWORD stateType, UINT numVertices, UINT primCount, IDirect3DTexture9* pTexture)
