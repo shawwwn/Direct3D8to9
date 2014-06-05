@@ -18,6 +18,7 @@ namespace NP {
 		 * Format: 
 		 * Stride, NumVertices, PrimCount, Width, Height, Inverted, IsMask(optional), NormalAlphaRef(optional), TransplantAlphaRef(optional)
 		 */
+		#pragma region Human
 		texTable.addTextureEntry(32,  1053, 511,  256, 256, false);								// Human Construction Set
 		//texTable.addTextureEntry(32,  20,   10,   256, 256, false, true, 192, 4);				// Human Farm - top
 		texTable.addTextureEntry(32,  320,  153,  256, 256, false);								// Human Farm - body
@@ -57,7 +58,9 @@ namespace NP {
 		texTable.addTextureEntry(32,  216,  123,  256, 128, true);								// Human Guard Tower - body
 		//texTable.addTextureEntry(32,  32,   20,   256, 128, true, true, 192, 4);				// Human Cannon Tower - top
 		texTable.addTextureEntry(32,  300,  189,  256, 128, true);								// Human Cannon Tower - body
+		#pragma endregion
 
+		#pragma region Orc
 		texTable.addTextureEntry(32,  300,  252,  256, 256, false);								// Orc Construction Set - large fence
 		texTable.addTextureEntry(32,  264,  228,  256, 256, false);								// Orc Construction Set - medium fence
 		texTable.addTextureEntry(32,  198,  164,  256, 256, false);								// Orc Construction Set - small fence
@@ -97,7 +100,9 @@ namespace NP {
 		texTable.addTextureEntry(32,  52,   26,   256, 256, true,  true, 192, 4);				// Orc Spirit Lounge - top
 		texTable.addTextureEntry(32,  323,  221,  256, 256, false);								// Orc Tauren Totem - body
 		texTable.addTextureEntry(32,  57,   67,   256, 256, false, true, 192, 4);				// Orc Tauren Totem - top
+		#pragma endregion
 
+		#pragma region Undead
 		//texTable.addTextureEntry(32,  294,  211,  64,  128, false);							// Undead Construction Set [trouble display]
 		//texTable.addTextureEntry(32,  52,   32,   256, 256, false, true, 192, 4);				// Undead Necropolis - top [trouble display]
 		texTable.addTextureEntry(32,  350,  246,  256, 256, false);								// Undead Necropolis - body
@@ -126,7 +131,9 @@ namespace NP {
 		texTable.addTextureEntry(32,  364,  311,  256, 256, false);								// Undead Sacrificial Pit - body
 		texTable.addTextureEntry(32,  44,   22,   256, 256, false, true, 192, 4);				// Undead Boneyard - top
 		texTable.addTextureEntry(32,  582,  436,  256, 256, false);								// Undead Boneyard - body
+		#pragma endregion
 
+		#pragma region NightElf
 		texTable.addTextureEntry(32,  229,  143,  256, 256, false);								// NightElf Construction Set - Medium
 		texTable.addTextureEntry(32,  431,  234,  256, 256, false);								// NightElf Construction Set - Large
 		texTable.addTextureEntry(32,  424,  231,  256, 256, false);								// NightElf Construction Set - Large
@@ -176,7 +183,9 @@ namespace NP {
 		texTable.addTextureEntry(32,  136,  92,   256, 256, false);								// NightElf Acient Protector - feets
 		texTable.addTextureEntry(32,  115,  64,   256, 256, false);								// NightElf Acient Protector - leaves
 		texTable.addTextureEntry(32,  92,   87,   256, 256, false, true, 192, 4);				// NightElf Acient Protector - top
+		#pragma endregion
 
+		#pragma region Naga
 		texTable.addTextureEntry(32,  61,   108,  256, 256, true);								// Nage Construction Set - base
 		//texTable.addTextureEntry(32,  173,  186,  32,  32,  true);							// Nage Construction Set - water big
 		//texTable.addTextureEntry(32,  246,  222,  32,  32,  true);							// Nage Construction Set - water big tentacle
@@ -229,7 +238,9 @@ namespace NP {
 		texTable.addTextureEntry(32,  16,   12,   128, 256, true);								// Nage Reef Ruin - banner [conflict]
 		texTable.addTextureEntry(32,  107,  160,  128, 256, true);								// Nage Reef Ruin - shell
 		texTable.addTextureEntry(32,  1502, 2306, 512, 512, false);								// Nage Reef Ruin - murloc
+		#pragma endregion
 
+		#pragma region IceTroll
 		texTable.addTextureEntry(32,  180,  94,   256, 256, true);								// IceTroll Barracks - body [messy]
 		texTable.addTextureEntry(32,  356,  182,  256, 256, false);								// IceTroll Barracks - roof
 		//texTable.addTextureEntry(32,  80,    32,  256, 256, false, true, 192, 4);				// IceTroll Barracks - tusks [display issue]
@@ -249,7 +260,9 @@ namespace NP {
 		texTable.addTextureEntry(32,  161,  175,  256, 256, false, true, 192, 4);				// IceTroll Igloo - top
 		texTable.addTextureEntry(32,  424,  350,  256, 256, false);								// IceTroll War Mill - body
 		texTable.addTextureEntry(32,  22,   17,   256, 256, true);								// IceTroll War Mill - top
+		#pragma endregion
 
+		#pragma region BloodElf
 		texTable.addTextureEntry(32,  942,  70,   256, 256, false);								// BloodElf Structure - base
 		texTable.addTextureEntry(32,  460,  205,  256, 256, true);								// BloodElf Structure - home
 		texTable.addTextureEntry(32,  30,   14,   128, 128, false);								// BloodElf Structure - cube
@@ -309,7 +322,67 @@ namespace NP {
 		texTable.addTextureEntry(32,  121,  80,   256, 256, false);								// BloodElf Tower - mage tower
 		texTable.addTextureEntry(32,  201,  54,   256, 256, false, true, 192, 4);				// BloodElf Arcane Vault - top
 		texTable.addTextureEntry(32,  661,  130,  256, 256, false);								// BloodElf Arcane Vault - body
+		#pragma endregion
 
+		#pragma region FelOrc
+		texTable.addTextureEntry(32,  6,    4,    256, 256, false);								// FelOrc Structure Base fence
+		texTable.addTextureEntry(32,  99,   55,   256, 256, false);								// FelOrc Structure Base stake
+		texTable.addTextureEntry(32,  198,  131,  256, 256, false, true, 192, 4);				// FelOrc Fortress - top
+		texTable.addTextureEntry(32,  48,   37,   256, 256, false);								// FelOrc Fortress - fence
+		//texTable.addTextureEntry(32,  116,  158,  256, 256, false);							// FelOrc Stronghold - top tusk
+		texTable.addTextureEntry(32,  32,   13,   256, 256, false, true, 192, 4);				// FelOrc Stronghold - top
+		texTable.addTextureEntry(32,  35,   17,   256, 256, true, true, 192, 4);				// FelOrc Stronghold - top roof
+		texTable.addTextureEntry(32,  271,  198,  256, 256, false);								// FelOrc Stronghold - body roof
+		//texTable.addTextureEntry(32,  176,  120,  256, 256, false);							// FelOrc Stronghold - body skull
+		//texTable.addTextureEntry(32,  180,  270,  256, 256, false);							// FelOrc Stronghold - body tusk
+		texTable.addTextureEntry(32,  54,   56,   256, 256, true);								// FelOrc Stronghold - body
+		texTable.addTextureEntry(32,  65,   44,   256, 256, true);								// FelOrc Stronghold - body2
+		texTable.addTextureEntry(32,  168,  72,   256, 256, false);								// FelOrc Stronghold - spire
+		texTable.addTextureEntry(32,  45,   35,   256, 256, false);								// FelOrc Stronghold - fence
+		texTable.addTextureEntry(32,  76,   38,   256, 256, false, true, 192, 4);				// FelOrc Great Hall - top
+		//texTable.addTextureEntry(32,  135,  184,  256, 256, false);							// FelOrc Great Hall - top tusk
+		texTable.addTextureEntry(32,  146,  74,   256, 256, false, true, 192, 4);				// FelOrc Great Hall - top acne
+		texTable.addTextureEntry(32,  47,   37,   256, 256, false);								// FelOrc Great Hall - fence
+		texTable.addTextureEntry(32,  144,  90,   256, 256, false);								// FelOrc Great Hall - spire
+		texTable.addTextureEntry(32,  32,   16,   256, 256, false);								// FelOrc Great Hall - body
+		texTable.addTextureEntry(32,  57,   30,   256, 256, false, true, 192, 4);				// FelOrc PigFarm - top
+		texTable.addTextureEntry(32,  112,  48,   256, 256, false);								// FelOrc PigFarm - spire
+		texTable.addTextureEntry(32,  311,  202,  256, 256, false);								// FelOrc PigFarm - body
+		//texTable.addTextureEntry(32,  205,  151,  256, 256, false);							// FelOrc PigFarm - flower
+		//texTable.addTextureEntry(32,  816,  56,   256, 256, false);							// FelOrc Watch Tower - top
+		//texTable.addTextureEntry(32,  816,  64,   256, 256, false);							// FelOrc Watch Tower - top fringe
+		//texTable.addTextureEntry(32,  408,  26,   256, 256, false);							// FelOrc Watch Tower - top fringe2
+		texTable.addTextureEntry(32,  205,  9,    256, 256, false);								// FelOrc Watch Tower - top panel
+		texTable.addTextureEntry(32,  222,  16,   256, 256, false, true, 192, 4);				// FelOrc Watch Tower - top roof
+		//texTable.addTextureEntry(32,  21,   24,   256, 256, false);							// FelOrc Shadowmoon Faire - top entrance
+		texTable.addTextureEntry(32,  408,  26,   256, 256, false);								// FelOrc Shadowmoon Faire - top fringe
+		texTable.addTextureEntry(32,  666,  48,   256, 256, false);								// FelOrc Shadowmoon Faire - top
+		texTable.addTextureEntry(32,  24,   16,   256, 256, false, true, 192, 4);				// FelOrc War Mill - top
+		texTable.addTextureEntry(32,  279,  293,  256, 256, false);								// FelOrc War Mill - body
+		//texTable.addTextureEntry(32,  50,   70,   256, 256, false);							// FelOrc War Mill - body tusk
+		texTable.addTextureEntry(32,  56,   24,   256, 256, false);								// FelOrc War Mill - body spire
+		texTable.addTextureEntry(32,  144,  74,   256, 256, false);								// FelOrc War Mill - body furnace
+		texTable.addTextureEntry(32,  308,  132,  256, 256, false);								// FelOrc Warlock Monument - body
+		texTable.addTextureEntry(32,  132,  79,   256, 256, false);								// FelOrc Warlock Monument - base
+		//texTable.addTextureEntry(32,  56,   96,   256, 256, false);							// FelOrc Warlock Monument - skull
+		texTable.addTextureEntry(32,  106,  48,   256, 256, false);								// FelOrc Warlock Monument - wall
+		//texTable.addTextureEntry(32,  2090, 1692, 256, 256, false);							// FelOrc Blood Furnace - body
+		texTable.addTextureEntry(32,  433,  432,  256, 256, false);								// FelOrc Blood Furnace - fence
+		//texTable.addTextureEntry(32,  388,  328,  256, 256, false);							// FelOrc Blood Furnace - throns
+		texTable.addTextureEntry(32,  56,   46,   256, 256, false);								// FelOrc Blood Furnace - ring
+		texTable.addTextureEntry(32,  137,  96,   256, 256, true);								// FelOrc Dungeon - entrance
+		texTable.addTextureEntry(32,  22,   16,   256, 256, true);								// FelOrc Dungeon - entrance
+		texTable.addTextureEntry(32,  170,  76,   256, 256, false);								// FelOrc Dungeon - fence
+		texTable.addTextureEntry(32,  282,  449,  256, 256, true);								// FelOrc Dungeon - mountain
+		texTable.addTextureEntry(32,  46,   37,   256, 256, false);								// FelOrc Barracks - fence
+		//texTable.addTextureEntry(32,  192,  88,   256, 256, false);							// FelOrc Altar - torch
+		//texTable.addTextureEntry(32,  39,   23,   256, 256, false);							// FelOrc Altar - body
+		//texTable.addTextureEntry(32,  97,   51,   256, 256, false);							// FelOrc Altar - body2
+		texTable.addTextureEntry(32,  60,   90,   256, 256, false);								// FelOrc Altar - tusk
+		texTable.addTextureEntry(32,  65,   62,   64,  64,  false);								// FelOrc Altar - skull
+		#pragma endregion
+
+		#pragma region Neutral
 		texTable.addTextureEntry(32,  271,  239,  256, 256, false);								// Gold Mine - mine
 		texTable.addTextureEntry(32,  84,   51,   64,  64,  false);								// Gold Mine - gold
 		texTable.addTextureEntry(32,  123,  60,   256, 256, false);								// Gold Mine - base
@@ -324,15 +397,12 @@ namespace NP {
 		texTable.addTextureEntry(32,  94,   46,   256, 256, true, true, 192, 4);				// Marketplace - top
 		texTable.addTextureEntry(32,  305,  222,  256, 256, false);								// Way Gate - body
 		texTable.addTextureEntry(32,  58,   44,   256, 256, false,true, 192, 4);				// Way Gate - top
+		#pragma endregion
 
+		#pragma region Terrain Decoration
 		texTable.addTextureEntry(32,  328,  316,  256, 256, false);								// Swordsman Statue1
-		texTable.addTextureEntry(32,  178,  116,  256, 256, false);								// Item - book
-		texTable.addTextureEntry(32,  76,   48,   256, 256, false);								// Item - treasure box
-
 		//texTable.addTextureEntry(32,  36,   28,  256, 256, false);							// Tree
 		//texTable.addTextureEntry(32,  247,  336, 256, 256, false);							// Test Subject
-
-		//texTable.addTextureEntry(32,  1065, 1143,256, 256, false);							// Main Screen
-		// TODO: add more...
+		#pragma endregion
 	}
 }

@@ -179,7 +179,7 @@ namespace SV {
 		table.addShadow(62,   52);													// Druid of the Talon - top
 		table.addShadow(514,  402);													// Druid of the Talon - body
 		table.addShadow(41,   38);													// Druid of the Talon - death top
-		table.addShadow(22,   16);													// Druid of the Talon - death top cloak
+		table.addShadow(22,   16,   SHW_USE_TRANSFORMATION);						// Druid of the Talon - death top cloak
 		table.addShadow(232,  234);													// Druid of the Talon - death body
 		table.addShadow(136,  151);													// Druid of the Talon - death body2
 		table.addShadow(28,   16,   SHW_USE_TRANSFORMATION);						// Druid of the Claw - top
@@ -326,7 +326,7 @@ namespace SV {
 		table.addShadow(197,  209,  SHW_USE_TRANSFORMATION);						// Voodoo Priest - weapon
 		/* Units */
 		table.addShadow(542,  418);													// Voodoo Doll - top
-		table.addShadow(20,   12);													// Gold Digger - hair
+		//table.addShadow(20,   12,   SHW_USE_TRANSFORMATION);						// Gold Digger - hair
 		table.addShadow(176,  156);													// Gold Digger - body
 		table.addShadow(156,  166);													// Gold Digger - axe
 		table.addShadow(18,   24);													// Voodoo Wishman - top
@@ -364,7 +364,7 @@ namespace SV {
 		table.addShadow(16,   16);													// Arcane Ranger - scarf1
 		table.addShadow(36,   36);													// Arcane Ranger - scarf2
 		table.addShadow(100,  104);													// Arcane Ranger - bow
-		table.addShadow(42,   48);													// Arcane Ranger - boots
+		table.addShadow(42,   48,   SHW_USE_TRANSFORMATION);						// Arcane Ranger - boots
 		table.addShadow(67,   68);													// Arcane Ranger - pants
 		table.addShadow(32,   32,   SHW_USE_TRANSFORMATION);						// Arcane Ranger - sleeves
 		//table.addShadow(34,   24);												// Arcane Ranger - top cloak
@@ -467,7 +467,7 @@ namespace SV {
 		table.addShadow(269,  140);													// Nerubian warrior - claws
 		table.addShadow(111,  71);													// Ice Revenant - top
 		table.addShadow(209,  215);													// Ice Revenant - body
-		table.addShadow(24,   16);													// Doom Guard - top
+		table.addShadow(24,   16,   SHW_USE_TRANSFORMATION);						// Doom Guard - top
 		table.addShadow(652,  507);													// Doom Guard - body
 		table.addShadow(688,  566);													// Sea Giant - body
 		table.addShadow(92,   72);													// Sea Giant - hat
@@ -520,7 +520,7 @@ namespace SV {
 		table.addShadow(733,  741);													// Magnataur - body
 		table.addShadow(17,   14);													// Spider - top
 		table.addShadow(392,  334);													// Spider - body
-		table.addShadow(56,   46);													// Bear - top
+		table.addShadow(56,   46,   SHW_USE_TRANSFORMATION);						// Bear - top
 		table.addShadow(457,  396);													// Bear - body
 		table.addShadow(46,   42);													// Clockwreck Goblin - top
 		table.addShadow(350,  219);													// Clockwreck Goblin - top
@@ -571,7 +571,7 @@ namespace SV {
 		table.addShadow(48,   39);													// Reject - top
 		table.addShadow(290,  228);													// Reject - body
 		table.addShadow(303,  283);													// Zombie - body
-		table.addShadow(48,   40);													// Dragonspawn - top
+		table.addShadow(48,   40,   SHW_USE_TRANSFORMATION);						// Dragonspawn - top
 		table.addShadow(571,  526);													// Dragonspawn - body
 		table.addShadow(104,  110);													// Dragonspawn - tail
 		table.addShadow(21,   36,   SHW_USE_TRANSFORMATION);						// Dragonspawn - weapon
