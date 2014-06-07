@@ -14,7 +14,6 @@ namespace SV {
 
 	struct ShadowItem
 	{
-		ub4 m_Hash;
 		ub4 m_Key;
 		int m_ShadowParameter;
 	};
