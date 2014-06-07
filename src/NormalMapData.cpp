@@ -404,5 +404,9 @@ namespace NP {
 		//texTable.addTextureEntry(32,  36,   28,  256, 256, false);							// Tree
 		//texTable.addTextureEntry(32,  247,  336, 256, 256, false);							// Test Subject
 		#pragma endregion
+
+		#ifdef _DEBUG
+		texTable.writeKeysToFile();
+		#endif
 	}
 }

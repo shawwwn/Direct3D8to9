@@ -38,6 +38,7 @@ namespace NP {
 		UINT m_NormalAlphaRef;
 	};
 
+	typedef std::map<TextureKeys, TextureItem> NormalMapTable;
 	class TextureTable
 	{
 		public:
@@ -59,8 +60,9 @@ namespace NP {
 			IDirect3DTexture9* queryNormalTexture(TextureKeys &keys);
 			void computeNormalTextures();
 			void cleanup();
+			void writeKeysToFile();
 
 			// member variables
-			std::map<TextureKeys, TextureItem> m_Table;
+			NormalMapTable m_Table;
 	};
 }

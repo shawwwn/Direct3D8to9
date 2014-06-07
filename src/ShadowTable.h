@@ -1,6 +1,8 @@
 #include <map>
 #include <stdexcept>		// std::out_of_range
 #include "SysUtils.h"
+#include <fstream>
+#include <stdio.h>
 
 namespace SV {
     const int SHW_X_INVERTED            = 1;        // 0x01
@@ -17,14 +19,16 @@ namespace SV {
 		DWORD m_PrimCount;
 	};
 
+	typedef std::map<ShadowKeys, int> ShadowMapTable;
 	class ShadowTable
 	{
 		public:
 			ShadowTable();
 			int getShadowParam(DWORD numVertices, DWORD primCount);
 			void addShadow(DWORD numVertices, DWORD primCount, int inversion=0);
+			void writeKeysToFile();
 
 			// member variables
-			std::map<ShadowKeys, int> m_Table;
+			ShadowMapTable m_Table;
 	};
 }

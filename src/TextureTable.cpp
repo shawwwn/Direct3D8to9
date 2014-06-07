@@ -141,4 +141,20 @@ namespace NP {
 		}
 		m_Table.clear();
 	}
+	void TextureTable::writeKeysToFile()
+	{
+		FILE* pKeyFile;
+		FILE* pValueFile;
+		fopen_s(&pKeyFile, "NormalMap_keys.txt", "w");
+		fopen_s(&pValueFile, "NormalMap_vals.txt", "w");
+		for(NormalMapTable::iterator it = m_Table.begin(); it != m_Table.end(); ++it)
+		{
+		  TextureKeys key = it->first;
+		  TextureItem& item = it->second;
+		  fprintf(pKeyFile, "%04d%04d\n", key.m_NumVertices, key.m_PrimCount);
+		  fprintf(pValueFile, "%3d, %3d - %d, %d\n", item.m_Height, item.m_Width, item.m_Inverted, item.m_IsMask);
+		}
+		fclose(pKeyFile);
+		fclose(pValueFile);
+	}
 }

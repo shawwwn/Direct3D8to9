@@ -45,15 +45,13 @@ namespace SV {
 		table.addShadow(206,  134,  SHW_FLYING_UNIT);								// Water Element - upper part
 		table.addShadow(72,   38,   SHW_FLYING_UNIT);								// Water Element - body
 		/* Flying Units */
-		/*
-		table.addShadow(32,   40,   SHW_FLYING_UNIT);								// Griffin - top [leak]
-		table.addShadow(451,  369,  SHW_FLYING_UNIT);								// Griffin - body [leak]
-		table.addShadow(21,   22,   SHW_FLYING_UNIT);								// Griffin - hammer
-		table.addShadow(104,  77,   SHW_FLYING_UNIT);								// DragonHawk - top [leak]
-		table.addShadow(558,  391,  SHW_FLYING_UNIT);								// DragonHawk - body [leak]
-		table.addShadow(89,   53,   SHW_FLYING_UNIT);								// Helicopter - top
-		table.addShadow(445,  374,  SHW_FLYING_UNIT);								// Helicopter - body (dislay issue)
-		*/
+		//table.addShadow(32,   40,   SHW_FLYING_UNIT);								// Griffin - top [leak]
+		//table.addShadow(451,  369,  SHW_FLYING_UNIT);								// Griffin - body [leak]
+		//table.addShadow(21,   22,   SHW_FLYING_UNIT);								// Griffin - hammer
+		//table.addShadow(104,  77,   SHW_FLYING_UNIT);								// DragonHawk - top [leak]
+		//table.addShadow(558,  391,  SHW_FLYING_UNIT);								// DragonHawk - body [leak]
+		//table.addShadow(89,   53,   SHW_FLYING_UNIT);								// Helicopter - top
+		//table.addShadow(445,  374,  SHW_FLYING_UNIT);								// Helicopter - body (dislay issue)
 		#pragma endregion
 
 		#pragma region Orc
@@ -116,16 +114,14 @@ namespace SV {
 		table.addShadow(643,  389);													// Demolisher - body
 		//table.addShadow(53,   40,   SHW_USE_TRANSFORMATION | SHW_FLYING_UNIT);	// Demolisher - rock [projectile]
 		/* Flying Units */
-		/*
-		table.addShadow(88,   91,   SHW_FLYING_UNIT);								// Wyvern - top
+		//table.addShadow(88,   91,   SHW_FLYING_UNIT);								// Wyvern - top
 		//table.addShadow(4,    4,    SHW_FLYING_UNIT);								// Wyvern - spear
-		table.addShadow(395,  383,  SHW_FLYING_UNIT);								// Wyvern - body
-		table.addShadow(29,   22,   SHW_FLYING_UNIT | SHW_USE_TRANSFORMATION);		// Wyvern - spear2
-		table.addShadow(37,   34,   SHW_FLYING_UNIT);								// Troll Batrider - top
-		table.addShadow(398,  379,  SHW_FLYING_UNIT);								// Troll Batrider - body
-		table.addShadow(20,   12,   SHW_FLYING_UNIT | SHW_USE_TRANSFORMATION);		// Troll Batrider - bomb [projectile]
-		table.addShadow(108,  73,   SHW_FLYING_UNIT);								// Troll Batrider - wings
-		*/
+		//table.addShadow(395,  383,  SHW_FLYING_UNIT);								// Wyvern - body
+		//table.addShadow(29,   22,   SHW_FLYING_UNIT | SHW_USE_TRANSFORMATION);	// Wyvern - spear2
+		//table.addShadow(37,   34,   SHW_FLYING_UNIT);								// Troll Batrider - top
+		//table.addShadow(398,  379,  SHW_FLYING_UNIT);								// Troll Batrider - body
+		//table.addShadow(20,   12,   SHW_FLYING_UNIT | SHW_USE_TRANSFORMATION);	// Troll Batrider - bomb [projectile]
+		//table.addShadow(108,  73,   SHW_FLYING_UNIT);								// Troll Batrider - wings
 		#pragma endregion
 
 		#pragma region FelOrc
@@ -204,20 +200,18 @@ namespace SV {
 		table.addShadow(731,  1038);												// New Mountain Giant - top
 
 		/* Flying Units */
-		/*
-		table.addShadow(53,   54,   SHW_FLYING_UNIT);								// Chimaera - top [leak]
-		table.addShadow(500,  418,  SHW_FLYING_UNIT);								// Chimaera - body [leak]
-		table.addShadow(87,   85,   SHW_FLYING_UNIT);								// Hippogryph - top [leak]
-		table.addShadow(325,  259,  SHW_FLYING_UNIT);								// Hippogryph - body [leak]
-		table.addShadow(81,   81,   SHW_FLYING_UNIT);								// Hippogryph - mounted top wing [leak]
-		table.addShadow(90,   48,   SHW_FLYING_UNIT);								// Hippogryph - mounted top archer cloak [leak]
-		table.addShadow(246,  253,  SHW_FLYING_UNIT);								// Hippogryph - mounted archer [leak]
-		table.addShadow(290,  239,  SHW_FLYING_UNIT);								// Hippogryph - mounted body [leak]
-		table.addShadow(76,   80,   SHW_FLYING_UNIT);								// Faerie Dragon - top [leak]
-		table.addShadow(264,  260,  SHW_FLYING_UNIT);								// Faerie Dragon - body [leak]
-		table.addShadow(42,   32,   SHW_FLYING_UNIT);								// Druid of the Talon - bird top [leak]
-		table.addShadow(205,  224,  SHW_FLYING_UNIT);								// Druid of the Talon - bird body [leak]
-		*/
+		//table.addShadow(53,   54,   SHW_FLYING_UNIT);								// Chimaera - top [leak]
+		//table.addShadow(500,  418,  SHW_FLYING_UNIT);								// Chimaera - body [leak]
+		//table.addShadow(87,   85,   SHW_FLYING_UNIT);								// Hippogryph - top [leak]
+		//table.addShadow(325,  259,  SHW_FLYING_UNIT);								// Hippogryph - body [leak]
+		//table.addShadow(81,   81,   SHW_FLYING_UNIT);								// Hippogryph - mounted top wing [leak]
+		//table.addShadow(90,   48,   SHW_FLYING_UNIT);								// Hippogryph - mounted top archer cloak [leak]
+		//table.addShadow(246,  253,  SHW_FLYING_UNIT);								// Hippogryph - mounted archer [leak]
+		//table.addShadow(290,  239,  SHW_FLYING_UNIT);								// Hippogryph - mounted body [leak]
+		//table.addShadow(76,   80,   SHW_FLYING_UNIT);								// Faerie Dragon - top [leak]
+		//table.addShadow(264,  260,  SHW_FLYING_UNIT);								// Faerie Dragon - body [leak]
+		//table.addShadow(42,   32,   SHW_FLYING_UNIT);								// Druid of the Talon - bird top [leak]
+		//table.addShadow(205,  224,  SHW_FLYING_UNIT);								// Druid of the Talon - bird body [leak]
 		#pragma endregion
 
 		#pragma region Undead
@@ -261,15 +255,13 @@ namespace SV {
 		table.addShadow(36,   40);													// Skeleton Mage - top
 		table.addShadow(363,  321);													// Skeleton Mage - body
 		/* Flying Unit */
-		/*
-		table.addShadow(102,  83,   SHW_FLYING_UNIT);								// Gargoyle fly - top
-		table.addShadow(485,  385,  SHW_FLYING_UNIT);								// Gargoyle fly - body
-		table.addShadow(53,   64,   SHW_FLYING_UNIT);								// Destroyer - top
-		table.addShadow(500,  549,  SHW_FLYING_UNIT);								// Destroyer - body
-		table.addShadow(89,   56,   SHW_FLYING_UNIT);								// Frost Wyrm - top
-		table.addShadow(125,  110,  SHW_FLYING_UNIT);								// Frost Wyrm - rib
-		table.addShadow(358,  279,  SHW_FLYING_UNIT);								// Frost Wyrm - body
-		*/
+		//table.addShadow(102,  83,   SHW_FLYING_UNIT);								// Gargoyle fly - top
+		//table.addShadow(485,  385,  SHW_FLYING_UNIT);								// Gargoyle fly - body
+		//table.addShadow(53,   64,   SHW_FLYING_UNIT);								// Destroyer - top
+		//table.addShadow(500,  549,  SHW_FLYING_UNIT);								// Destroyer - body
+		//table.addShadow(89,   56,   SHW_FLYING_UNIT);								// Frost Wyrm - top
+		//table.addShadow(125,  110,  SHW_FLYING_UNIT);								// Frost Wyrm - rib
+		//table.addShadow(358,  279,  SHW_FLYING_UNIT);								// Frost Wyrm - body
 		#pragma endregion
 
 		#pragma region Naga
@@ -592,5 +584,9 @@ namespace SV {
 		table.addShadow(178,  116,  SHW_USE_TRANSFORMATION);						// Book
 		table.addShadow(76,   48,   SHW_USE_TRANSFORMATION);						// Treasure Box
 		#pragma endregion
+
+		#ifdef _DEBUG
+		table.writeKeysToFile();
+		#endif
 	}
 }

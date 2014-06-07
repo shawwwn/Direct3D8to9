@@ -45,4 +45,20 @@ namespace SV {
 		ShadowKeys keys(numVertices, primCount);
 		m_Table.insert(std::pair<ShadowKeys, int>(keys, inversion));
 	}
+	void ShadowTable::writeKeysToFile()
+	{
+		FILE* pKeyFile;
+		FILE* pValueFile;
+		fopen_s(&pKeyFile, "ShadowVolume_keys.txt", "w");
+		fopen_s(&pValueFile, "ShadowVolume_vals.txt", "w");
+		for(ShadowMapTable::iterator it = m_Table.begin(); it != m_Table.end(); ++it)
+		{
+		  ShadowKeys key = it->first;
+		  int value = it->second;
+		  fprintf(pKeyFile, "%04d%04d\n", key.m_NumVertices, key.m_PrimCount);
+		  fprintf(pValueFile, "%d\n", value);
+		}
+		fclose(pKeyFile);
+		fclose(pValueFile);
+	}
 }
