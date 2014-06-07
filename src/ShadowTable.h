@@ -1,8 +1,9 @@
-#include <map>
-#include <stdexcept>		// std::out_of_range
 #include "SysUtils.h"
 #include <fstream>
 #include <stdio.h>
+extern "C" {
+#include "mphf/svHash.h"
+}
 
 namespace SV {
     const int SHW_X_INVERTED            = 1;        // 0x01
@@ -11,24 +12,21 @@ namespace SV {
     const int SHW_USE_TRANSFORMATION    = 1 << 3;   // 0x08
     const int SHW_FLYING_UNIT           = 1 << 4;   // 0x10
 
-	struct ShadowKeys
+	struct ShadowItem
 	{
-		ShadowKeys(DWORD numVertices, DWORD primCount);
-		bool operator <(const ShadowKeys &right) const;
+		ub4 m_Key;
 		DWORD m_NumVertices;
 		DWORD m_PrimCount;
+		int m_ShadowParameter;
 	};
 
-	typedef std::map<ShadowKeys, int> ShadowMapTable;
 	class ShadowTable
 	{
-		public:
-			ShadowTable();
-			int getShadowParam(DWORD numVertices, DWORD primCount);
-			void addShadow(DWORD numVertices, DWORD primCount, int inversion=0);
-			void writeKeysToFile();
-
-			// member variables
-			ShadowMapTable m_Table;
+	public:
+		ShadowTable() {};
+		~ShadowTable() {};
+		int getShadowParam(DWORD numVertices, DWORD primCount);
+	private:
+		ShadowItem m_hashtable[SVHASHNKEYS];
 	};
 }

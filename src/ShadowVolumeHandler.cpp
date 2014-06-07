@@ -209,7 +209,7 @@ namespace SV {
 	void onCreateDevice(IDirect3DDevice9* pd3dDevice)
 	{
 		m_pDevice = pd3dDevice;
-		InitShadowTable(g_shwTable);
+		//InitShadowTable(g_shwTable);
 		setupScreenDimensions(pd3dDevice);
 		initTemporaryResources(pd3dDevice);
 	}

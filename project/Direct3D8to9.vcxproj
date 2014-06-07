@@ -29,6 +29,8 @@
     <ClCompile Include="..\src\EffectController.cpp" />
     <ClCompile Include="..\src\ExceptionalMeshTable.cpp" />
     <ClCompile Include="..\src\HDRScene.cpp" />
+    <ClCompile Include="..\src\mphf\lookupa.c" />
+    <ClCompile Include="..\src\mphf\svHash.c" />
     <ClCompile Include="..\src\NormalMapData.cpp" />
     <ClCompile Include="..\src\NormalMapExceptionHandler.cpp" />
     <ClCompile Include="..\src\NormalMapHandler.cpp" />
@@ -73,6 +75,9 @@
     <ClInclude Include="..\src\EffectController.h" />
     <ClInclude Include="..\src\ExceptionalMeshTable.h" />
     <ClInclude Include="..\src\HDRScene.h" />
+    <ClInclude Include="..\src\mphf\lookupa.h" />
+    <ClInclude Include="..\src\mphf\svHash.h" />
+    <ClInclude Include="..\src\mphf\standard.h" />
     <ClInclude Include="..\src\Nirvana_ext_export.h" />
     <ClInclude Include="..\src\NormalMapExceptionHandler.h" />
     <ClInclude Include="..\src\NormalMapHandler.h" />

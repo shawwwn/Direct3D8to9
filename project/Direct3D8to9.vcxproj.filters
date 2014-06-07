@@ -164,6 +164,12 @@
     <ClCompile Include="..\src\ShadowType.cpp">
       <Filter>effect\ShadowVolume</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\mphf\lookupa.c">
+      <Filter>effect\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mphf\svHash.c">
+      <Filter>effect\ShadowVolume\data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Direct3D8.h">
@@ -300,6 +306,15 @@
     </ClInclude>
     <ClInclude Include="..\src\ShadowType.h">
       <Filter>effect\ShadowVolume</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mphf\lookupa.h">
+      <Filter>effect\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mphf\standard.h">
+      <Filter>effect\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mphf\svHash.h">
+      <Filter>effect\ShadowVolume\data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
