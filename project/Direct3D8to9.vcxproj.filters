@@ -54,6 +54,9 @@
     <Filter Include="effect\HDR">
       <UniqueIdentifier>{5109dc9e-6894-4a1a-b854-0bfc67fd6763}</UniqueIdentifier>
     </Filter>
+    <Filter Include="effect\ShadowVolume\data\debug">
+      <UniqueIdentifier>{55e5cfc3-9fa4-4f48-a440-ac52d845b1b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Direct3D8.cpp">
@@ -169,6 +172,12 @@
     </ClCompile>
     <ClCompile Include="..\src\mphf\svHash.c">
       <Filter>effect\ShadowVolume\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\debug\ShadowData.cpp">
+      <Filter>effect\ShadowVolume\data\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\debug\ShadowTable.cpp">
+      <Filter>effect\ShadowVolume\data\debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -315,6 +324,9 @@
     </ClInclude>
     <ClInclude Include="..\src\mphf\svHash.h">
       <Filter>effect\ShadowVolume\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\debug\ShadowTable.h">
+      <Filter>effect\ShadowVolume\data\debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

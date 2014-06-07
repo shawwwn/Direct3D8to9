@@ -900,9 +900,9 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 					hr = NP::PerformNormalMappping(pDevice9, g_pTexture9, Type, g_baseVertexIndex, minIndex, startIndex,
 													g_Stride, NumVertices, primCount, alphaRef, (DWORD)g_State);
 				}
-				if (FAILED(hr) && CTRL::g_EnableSV && g_DRS[D3DRS_ZWRITEENABLE]==1)	// We only need the solid color mesh, so filter out the rest
+				if (CTRL::g_EnableSV && g_DRS[D3DRS_ZWRITEENABLE]==1)	// We only need the solid color mesh, so filter out the rest
 				{
-					// TODO: Wrap below inside ShadowVolumeController
+					// TODO: Wrap belows inside ShadowVolumeController
 					int shwParam = -1;
 					if (NumVertices==SV::g_NumVertices_last && primCount==SV::g_PrimCount_last)
 					{
@@ -917,11 +917,8 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 					}
 					if (shwParam != -1)
 					{
-						/* Old way, accurate but costly. */
-						//if (FAILED(hr))	// If NormalMapHandler hasn't rendered an object, render it here.
-						//	pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
-
-						pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
+						if (FAILED(hr))	// If NormalMapHandler hasn't rendered an object, render it here.
+							pDevice9->DrawIndexedPrimitive(Type, g_baseVertexIndex, minIndex, NumVertices, startIndex, primCount);
 						SV::GenerateShadow(pDevice9, g_pStreamData9, g_pIndexData9, g_baseVertexIndex, startIndex, NumVertices, primCount, shwParam);
 						pDevice9->SetTexture(g_Stage, NULL);
 						//SV::RenderShadowVolume(pDevice9);	// for debug...	

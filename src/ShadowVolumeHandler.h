@@ -6,7 +6,11 @@
 #include "DxUtils.h"
 #include "EffectController.h"
 #include "ShadowVolume.h"
+#if _DEBUG
+#include "debug/ShadowTable.h"
+#else
 #include "ShadowTable.h"
+#endif
 
 namespace SV {
 	const D3DXVECTOR3 wc3Light(0.675f, 0.406f, -0.616f);	// WC3's default directional light in most scenerios
@@ -23,7 +27,6 @@ namespace SV {
 	extern UINT g_PrimCount_last;
 	extern int g_shwParam_last;
 
-	void InitShadowTable(ShadowTable& table);
 	void GenerateShadow(IDirect3DDevice9* pd3dDevice, IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer,
 						DWORD baseVertexIndex, DWORD startIndex,
 						DWORD numVertices, DWORD primCount,

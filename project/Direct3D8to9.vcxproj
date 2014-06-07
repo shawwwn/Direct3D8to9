@@ -12,6 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\DebugUtils.cpp" />
+    <ClCompile Include="..\src\debug\ShadowData.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\src\debug\ShadowTable.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\src\Direct3D8.cpp" />
     <ClCompile Include="..\src\Direct3D8Guid.cpp" />
     <ClCompile Include="..\src\Direct3DBaseTexture8.cpp" />
@@ -30,7 +36,9 @@
     <ClCompile Include="..\src\ExceptionalMeshTable.cpp" />
     <ClCompile Include="..\src\HDRScene.cpp" />
     <ClCompile Include="..\src\mphf\lookupa.c" />
-    <ClCompile Include="..\src\mphf\svHash.c" />
+    <ClCompile Include="..\src\mphf\svHash.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\src\NormalMapData.cpp" />
     <ClCompile Include="..\src\NormalMapExceptionHandler.cpp" />
     <ClCompile Include="..\src\NormalMapHandler.cpp" />
@@ -40,8 +48,12 @@
     <ClCompile Include="..\src\PostProcessHDR.cpp" />
     <ClCompile Include="..\src\PostProcessSMAA.cpp" />
     <ClCompile Include="..\src\RenderStageController.cpp" />
-    <ClCompile Include="..\src\ShadowData.cpp" />
-    <ClCompile Include="..\src\ShadowTable.cpp" />
+    <ClCompile Include="..\src\ShadowData.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\src\ShadowTable.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\src\ShadowType.cpp" />
     <ClCompile Include="..\src\ShadowVolume.cpp" />
     <ClCompile Include="..\src\ShadowVolumeHandler.cpp" />
@@ -56,6 +68,9 @@
     <ClInclude Include="..\src\compiler.h" />
     <ClInclude Include="..\src\ComptrGurad.h" />
     <ClInclude Include="..\src\DebugUtils.h" />
+    <ClInclude Include="..\src\debug\ShadowTable.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\src\Direct3D8.h" />
     <ClInclude Include="..\src\Direct3D8to9.h" />
     <ClInclude Include="..\src\Direct3D8to9Caps.h" />
@@ -76,7 +91,9 @@
     <ClInclude Include="..\src\ExceptionalMeshTable.h" />
     <ClInclude Include="..\src\HDRScene.h" />
     <ClInclude Include="..\src\mphf\lookupa.h" />
-    <ClInclude Include="..\src\mphf\svHash.h" />
+    <ClInclude Include="..\src\mphf\svHash.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\src\mphf\standard.h" />
     <ClInclude Include="..\src\Nirvana_ext_export.h" />
     <ClInclude Include="..\src\NormalMapExceptionHandler.h" />
@@ -90,7 +107,9 @@
     <ClInclude Include="..\src\RenderStageController.h" />
     <ClInclude Include="..\src\SearchTex.h" />
     <ClInclude Include="..\src\ShaderResource.h" />
-    <ClInclude Include="..\src\ShadowTable.h" />
+    <ClInclude Include="..\src\ShadowTable.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\src\ShadowType.h" />
     <ClInclude Include="..\src\ShadowVolume.h" />
     <ClInclude Include="..\src\ShadowVolumeHandler.h" />
