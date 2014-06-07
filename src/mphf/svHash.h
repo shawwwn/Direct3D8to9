@@ -5,7 +5,7 @@
 #ifndef SVHASH
 #define SVHASH
 
-extern ub2 tab[];
+extern ub2 sv_table[];
 #define SVHASHLEN 0x80  /* length of hash mapping table */
 #define SVHASHNKEYS 432  /* How many keys were hashed */
 #define SVHASHRANGE 512  /* Range any input might map to */

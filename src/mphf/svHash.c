@@ -10,7 +10,7 @@
 #endif /* LOOKUPA */
 
 /* small adjustments to _a_ to make values distinct */
-ub2 tab[] = {
+ub2 sv_table[] = {
 36,0,260,264,256,230,36,481,0,131,0,166,324,36,342,445,
 0,430,13,391,468,6,281,162,398,53,409,26,3,0,395,468,
 330,0,405,65,0,0,264,481,468,445,468,0,97,338,10,258,
@@ -32,7 +32,7 @@ ub4 val;
   val ^= (val >> 4);
   b = (val >> 13) & 0x7f;
   a = (val + (val << 23)) >> 24;
-  rsl = (a^tab[b]);
+  rsl = (a^sv_table[b]);
   return rsl;
 }
 
