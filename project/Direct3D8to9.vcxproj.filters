@@ -113,9 +113,6 @@
     <ClCompile Include="..\src\NormalMapExceptionHandler.cpp">
       <Filter>effect\NormalMap</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\TextureTable.cpp">
-      <Filter>effect\NormalMap\data</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\TextureException.cpp">
       <Filter>effect\NormalMap\data</Filter>
     </ClCompile>
@@ -178,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="..\src\debug\ShadowTable.cpp">
       <Filter>effect\ShadowVolume\data\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NormalTable.cpp">
+      <Filter>effect\NormalMap\data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -248,9 +248,6 @@
       <Filter>effect\NormalMap</Filter>
     </ClInclude>
     <ClInclude Include="..\src\TextureException.h">
-      <Filter>effect\NormalMap\data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\TextureTable.h">
       <Filter>effect\NormalMap\data</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ShaderResource.h">
@@ -327,6 +324,9 @@
     </ClInclude>
     <ClInclude Include="..\src\debug\ShadowTable.h">
       <Filter>effect\ShadowVolume\data\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\NormalTable.h">
+      <Filter>effect\NormalMap\data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

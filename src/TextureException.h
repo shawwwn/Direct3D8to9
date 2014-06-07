@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TextureTable.h"
+#include "NormalTable.h"
 
 namespace NP { namespace EXCP {
 

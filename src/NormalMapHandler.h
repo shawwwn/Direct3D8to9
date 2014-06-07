@@ -2,7 +2,7 @@
 
 #include <d3d9.h>
 #include <d3dx9.h>
-#include "TextureTable.h"
+#include "NormalTable.h"
 #include "DxUtils.h"
 #include "ExceptionalMeshTable.h"
 #include "NormalMapExceptionHandler.h"
@@ -10,7 +10,7 @@
 namespace NP {
 	#define NORMAL_AMPLITUDE -100
 	#define MAX_EXCEPTIONAL_MESH_COUNT 10
-	extern TextureTable g_texTable;
+	extern TextureTable g_npTable;
 	extern const ExceptionalMeshKeys g_exceptionalMeshes[MAX_EXCEPTIONAL_MESH_COUNT];
 	extern UINT g_NumVertices_last;
 	extern UINT g_PrimCount_last;

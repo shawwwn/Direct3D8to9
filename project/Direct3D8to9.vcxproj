@@ -60,7 +60,7 @@
     <ClCompile Include="..\src\SpinLock.cpp" />
     <ClCompile Include="..\src\SysUtils.cpp" />
     <ClCompile Include="..\src\TextureException.cpp" />
-    <ClCompile Include="..\src\TextureTable.cpp" />
+    <ClCompile Include="..\src\NormalTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\res\SMAA.h" />
@@ -116,7 +116,7 @@
     <ClInclude Include="..\src\SpinLock.h" />
     <ClInclude Include="..\src\SysUtils.h" />
     <ClInclude Include="..\src\TextureException.h" />
-    <ClInclude Include="..\src\TextureTable.h" />
+    <ClInclude Include="..\src\NormalTable.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

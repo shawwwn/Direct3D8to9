@@ -3,7 +3,7 @@
 #pragma comment(lib, "dxguid.lib")
 
 namespace NP {
-	TextureTable g_texTable;
+	TextureTable g_npTable;
 	UINT g_NumVertices_last = NULL;
 	UINT g_PrimCount_last = NULL;
 	IDirect3DBaseTexture9* g_pBaseTexture_last = NULL;
@@ -40,7 +40,7 @@ namespace NP {
 
 	HRESULT Init(IDirect3DDevice9* pd3dDevice)
 	{
-		InitTextureTable(g_texTable);
+		InitTextureTable(g_npTable);
 		return D3D_OK;
 	}
 
@@ -75,10 +75,9 @@ namespace NP {
 			//
 			// Query For Normal Map Texture
 			//
-			TextureKeys keys(Stride, NumVertices, primCount);
 			try
 			{
-				TextureItem* pItem = &(g_texTable.at(keys));	// check if item exists, return in reference
+				TextureItem* pItem = &(g_npTable.getData(Stride, NumVertices, primCount));	// check if item exists, return in reference
 				g_pItem_last = pItem;
 
 				// Check if the TextureItem is excluded temporary
@@ -275,7 +274,7 @@ namespace NP {
 
 	void onDestroy(IDirect3DDevice9* pd3dDevice)
 	{
-		g_texTable.cleanup();
+		g_npTable.cleanup();
 	}
 	#pragma endregion
 }
