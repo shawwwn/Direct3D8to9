@@ -12,6 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\DebugUtils.cpp" />
+    <ClCompile Include="..\src\debug\NormalMapData.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\src\debug\NormalTable.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\src\debug\ShadowData.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -39,7 +45,9 @@
     <ClCompile Include="..\src\mphf\svHash.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\src\NormalMapData.cpp" />
+    <ClCompile Include="..\src\NormalMapData.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\src\NormalMapExceptionHandler.cpp" />
     <ClCompile Include="..\src\NormalMapHandler.cpp" />
     <ClCompile Include="..\src\PostProcess.cpp" />
@@ -60,7 +68,9 @@
     <ClCompile Include="..\src\SpinLock.cpp" />
     <ClCompile Include="..\src\SysUtils.cpp" />
     <ClCompile Include="..\src\NormalException.cpp" />
-    <ClCompile Include="..\src\NormalTable.cpp" />
+    <ClCompile Include="..\src\NormalTable.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\res\SMAA.h" />
@@ -68,6 +78,9 @@
     <ClInclude Include="..\src\compiler.h" />
     <ClInclude Include="..\src\ComptrGurad.h" />
     <ClInclude Include="..\src\DebugUtils.h" />
+    <ClInclude Include="..\src\debug\NormalTable.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\src\debug\ShadowTable.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
@@ -116,7 +129,9 @@
     <ClInclude Include="..\src\SpinLock.h" />
     <ClInclude Include="..\src\SysUtils.h" />
     <ClInclude Include="..\src\NormalException.h" />
-    <ClInclude Include="..\src\NormalTable.h" />
+    <ClInclude Include="..\src\NormalTable.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

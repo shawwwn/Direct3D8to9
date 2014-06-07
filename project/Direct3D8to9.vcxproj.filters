@@ -57,6 +57,10 @@
     <Filter Include="effect\ShadowVolume\data\debug">
       <UniqueIdentifier>{55e5cfc3-9fa4-4f48-a440-ac52d845b1b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="effect\NormalMap\data\debug">
+      <UniqueIdentifier>{3007938a-7e0a-4790-bf3c-58cc50a0f9a5}</UniqueIdentifier>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Direct3D8.cpp">
@@ -178,6 +182,12 @@
     </ClCompile>
     <ClCompile Include="..\src\NormalExceptionTable.cpp">
       <Filter>effect\NormalMap\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\debug\NormalMapData.cpp">
+      <Filter>effect\NormalMap\data\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\debug\NormalTable.cpp">
+      <Filter>effect\NormalMap\data\debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -327,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="..\src\NormalExceptionTable.h">
       <Filter>effect\NormalMap\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\debug\NormalTable.h">
+      <Filter>effect\NormalMap\data\debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
