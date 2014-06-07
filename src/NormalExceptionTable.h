@@ -4,7 +4,7 @@
 #include <d3dx9.h>
 
 namespace NP {
-	struct ExceptionalMeshKeys
+	struct NormalExceptionKey
 	{
 		DWORD m_NumVertices;
 		DWORD m_PrimCount;

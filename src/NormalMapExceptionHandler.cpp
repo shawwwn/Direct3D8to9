@@ -1,14 +1,14 @@
 #include "NormalMapExceptionHandler.h"
 
 namespace NP { namespace EXCP {
-	std::vector<TextureException*> g_ExceptionList;
-	std::vector<TextureItem*> g_ExcludedList;
+	std::vector<NormalException*> g_ExceptionList;
+	std::vector<NormalData*> g_ExcludedList;
 
 	/**
 	*	check the present of an Texture Item in the
 	*	excluded list.
 	*/
-	bool isExcluded(TextureItem* pWhichTextureItem)
+	bool isExcluded(NormalData* pWhichTextureItem)
 	{
 		return (std::find(g_ExcludedList.begin(), g_ExcludedList.end(), pWhichTextureItem) != g_ExcludedList.end());
 	}
@@ -16,9 +16,9 @@ namespace NP { namespace EXCP {
 	/**
 	*	Remove an item from the excluded list
 	*/
-	void RemoveExclude(TextureItem* pWhichTextureItem)
+	void RemoveExclude(NormalData* pWhichTextureItem)
 	{
-		std::vector<TextureItem*>::iterator it = std::find(g_ExcludedList.begin(), g_ExcludedList.end(), pWhichTextureItem);
+		std::vector<NormalData*>::iterator it = std::find(g_ExcludedList.begin(), g_ExcludedList.end(), pWhichTextureItem);
 		if (it != g_ExcludedList.end())
 			g_ExcludedList.erase(it);
 	}
@@ -27,7 +27,7 @@ namespace NP { namespace EXCP {
 	*	Add an Texture Item to the excluded list,
 	*	but check its present first.
 	*/
-	void AddExclude(TextureItem* pWhichTextureItem)
+	void AddExclude(NormalData* pWhichTextureItem)
 	{
 		if (!isExcluded(pWhichTextureItem))
 			g_ExcludedList.push_back(pWhichTextureItem);
@@ -38,14 +38,14 @@ namespace NP { namespace EXCP {
 	*	if item not exist, otherwise, increase exception count
 	*	on the existing item.
 	*/
-	bool AddException(TextureItem* pWhichTextureItem)
+	bool AddException(NormalData* pWhichTextureItem)
 	{
 		// Search for existing exception 
 		int index = 0;
-		std::vector<TextureException*>::iterator it;
+		std::vector<NormalException*>::iterator it;
 		for (it=g_ExceptionList.begin(); it!=g_ExceptionList.end(); ++it, ++index)
 		{
-			TextureException*& pException = *it;
+			NormalException*& pException = *it;
 			if (pException->m_pTextureItem == pWhichTextureItem)
 			{
 				pException->m_FailCount++;
@@ -60,7 +60,7 @@ namespace NP { namespace EXCP {
 		}
 
 		// Construct an new exception
-		TextureException* pTE = new TextureException(pWhichTextureItem);
+		NormalException* pTE = new NormalException(pWhichTextureItem);
 		g_ExceptionList.push_back(pTE);
 		pTE=NULL;
 		return true;
@@ -71,7 +71,7 @@ namespace NP { namespace EXCP {
 	*	Returns true if the frame count reaches maximum, 
 	*	otherwise, returns false.
 	*/
-	bool CheckExceptionFrameCount(TextureException* pWhichException)
+	bool CheckExceptionFrameCount(NormalException* pWhichException)
 	{
 		pWhichException->m_FrameCount++;
 		if (pWhichException->m_pTextureItem->m_Computed || pWhichException->m_FrameCount >= MAX_FRAME_COUNT)
@@ -83,9 +83,9 @@ namespace NP { namespace EXCP {
 	*	Delete an exception and free its memory from the global
 	*	exception list.
 	*/
-	inline void DeleteException(std::vector<TextureException*>::iterator &whichIterator)
+	inline void DeleteException(std::vector<NormalException*>::iterator &whichIterator)
 	{
-		TextureException* pException = *whichIterator;
+		NormalException* pException = *whichIterator;
 		whichIterator = g_ExceptionList.erase(whichIterator);
 		delete pException;
 	}
@@ -100,9 +100,9 @@ namespace NP { namespace EXCP {
 		if (g_ExceptionList.empty())
 			return;
 
-		for (std::vector<TextureException*>::iterator it=g_ExceptionList.begin(); it!=g_ExceptionList.end(); )
+		for (std::vector<NormalException*>::iterator it=g_ExceptionList.begin(); it!=g_ExceptionList.end(); )
 		{
-			TextureException* pException = *it;
+			NormalException* pException = *it;
 			if (CheckExceptionFrameCount(pException))
 			{
 				RemoveExclude(pException->m_pTextureItem);

@@ -113,9 +113,6 @@
     <ClCompile Include="..\src\NormalMapExceptionHandler.cpp">
       <Filter>effect\NormalMap</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\TextureException.cpp">
-      <Filter>effect\NormalMap\data</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\NormalMapHandler.cpp">
       <Filter>effect\NormalMap</Filter>
     </ClCompile>
@@ -136,9 +133,6 @@
     </ClCompile>
     <ClCompile Include="..\src\PostProcess.cpp">
       <Filter>effect\PostProcess\effect</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ExceptionalMeshTable.cpp">
-      <Filter>effect\NormalMap\data</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ShadowVolume.cpp">
       <Filter>effect\ShadowVolume</Filter>
@@ -177,6 +171,12 @@
       <Filter>effect\ShadowVolume\data\debug</Filter>
     </ClCompile>
     <ClCompile Include="..\src\NormalTable.cpp">
+      <Filter>effect\NormalMap\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NormalException.cpp">
+      <Filter>effect\NormalMap\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NormalExceptionTable.cpp">
       <Filter>effect\NormalMap\data</Filter>
     </ClCompile>
   </ItemGroup>
@@ -247,9 +247,6 @@
     <ClInclude Include="..\src\NormalMapExceptionHandler.h">
       <Filter>effect\NormalMap</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\TextureException.h">
-      <Filter>effect\NormalMap\data</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\ShaderResource.h">
       <Filter>effect\PostProcess</Filter>
     </ClInclude>
@@ -282,9 +279,6 @@
     </ClInclude>
     <ClInclude Include="..\src\PostProcessHDR.h">
       <Filter>effect\PostProcess\effect</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ExceptionalMeshTable.h">
-      <Filter>effect\NormalMap\data</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ShadowVolume.h">
       <Filter>effect\ShadowVolume</Filter>
@@ -326,6 +320,12 @@
       <Filter>effect\ShadowVolume\data\debug</Filter>
     </ClInclude>
     <ClInclude Include="..\src\NormalTable.h">
+      <Filter>effect\NormalMap\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\NormalException.h">
+      <Filter>effect\NormalMap\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\NormalExceptionTable.h">
       <Filter>effect\NormalMap\data</Filter>
     </ClInclude>
   </ItemGroup>

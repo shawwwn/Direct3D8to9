@@ -4,18 +4,18 @@
 #include <d3dx9.h>
 #include "NormalTable.h"
 #include "DxUtils.h"
-#include "ExceptionalMeshTable.h"
+#include "NormalExceptionTable.h"
 #include "NormalMapExceptionHandler.h"
 
 namespace NP {
 	#define NORMAL_AMPLITUDE -100
 	#define MAX_EXCEPTIONAL_MESH_COUNT 10
-	extern TextureTable g_npTable;
-	extern const ExceptionalMeshKeys g_exceptionalMeshes[MAX_EXCEPTIONAL_MESH_COUNT];
+	extern NormalTable g_npTable;
+	extern const NormalExceptionKey g_exceptionalMeshes[MAX_EXCEPTIONAL_MESH_COUNT];
 	extern UINT g_NumVertices_last;
 	extern UINT g_PrimCount_last;
 	extern IDirect3DBaseTexture9* g_pBaseTexture_last;
-	extern TextureItem* g_pItem_last;
+	extern NormalData* g_pItem_last;
 	extern DWORD g_dwAlphaValue;
 	extern DWORD g_dwNormalTextureAlpha;
 
@@ -30,7 +30,7 @@ namespace NP {
 	// Is mesh a exceptional mesh
 	bool IsExceptionalMesh(UINT numVertices, UINT primCount, DWORD srcBlend, DWORD destBlend, DWORD alphaRef);
 	// Initialize normal map texture table
-	void InitTextureTable(TextureTable &texTable);
+	void InitTextureTable(NormalTable &texTable);
 	// Init global settings
 	HRESULT Init(IDirect3DDevice9* pd3dDevice);
 	// Query texture and perform normal mapping

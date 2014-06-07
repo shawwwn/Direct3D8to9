@@ -33,7 +33,7 @@
     <ClCompile Include="..\src\Direct3DVolumeTexture8.cpp" />
     <ClCompile Include="..\src\DxUtils.cpp" />
     <ClCompile Include="..\src\EffectController.cpp" />
-    <ClCompile Include="..\src\ExceptionalMeshTable.cpp" />
+    <ClCompile Include="..\src\NormalExceptionTable.cpp" />
     <ClCompile Include="..\src\HDRScene.cpp" />
     <ClCompile Include="..\src\mphf\lookupa.c" />
     <ClCompile Include="..\src\mphf\svHash.c">
@@ -59,7 +59,7 @@
     <ClCompile Include="..\src\ShadowVolumeHandler.cpp" />
     <ClCompile Include="..\src\SpinLock.cpp" />
     <ClCompile Include="..\src\SysUtils.cpp" />
-    <ClCompile Include="..\src\TextureException.cpp" />
+    <ClCompile Include="..\src\NormalException.cpp" />
     <ClCompile Include="..\src\NormalTable.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -88,7 +88,7 @@
     <ClInclude Include="..\src\Direct3DVolumeTexture8.h" />
     <ClInclude Include="..\src\DxUtils.h" />
     <ClInclude Include="..\src\EffectController.h" />
-    <ClInclude Include="..\src\ExceptionalMeshTable.h" />
+    <ClInclude Include="..\src\NormalExceptionTable.h" />
     <ClInclude Include="..\src\HDRScene.h" />
     <ClInclude Include="..\src\mphf\lookupa.h" />
     <ClInclude Include="..\src\mphf\svHash.h">
@@ -115,7 +115,7 @@
     <ClInclude Include="..\src\ShadowVolumeHandler.h" />
     <ClInclude Include="..\src\SpinLock.h" />
     <ClInclude Include="..\src\SysUtils.h" />
-    <ClInclude Include="..\src\TextureException.h" />
+    <ClInclude Include="..\src\NormalException.h" />
     <ClInclude Include="..\src\NormalTable.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

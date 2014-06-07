@@ -2,20 +2,20 @@
 
 #include <vector>
 #include <algorithm>    // std::find
-#include "TextureException.h"
+#include "NormalException.h"
 
 namespace NP { namespace EXCP {
 	#define MAX_FAIL_COUNT 3
 	#define MAX_FRAME_COUNT 6000
 
-	extern std::vector<TextureException*> g_ExceptionList;
-	extern std::vector<TextureItem*> g_ExcludedList;
+	extern std::vector<NormalException*> g_ExceptionList;
+	extern std::vector<NormalData*> g_ExcludedList;
 
-	bool isExcluded(TextureItem* pWhichTextureItem);
-	void RemoveExclude(TextureItem* pWhichTextureItem);
-	void AddExclude(TextureItem* pWhichTextureItem);
-	bool AddException(TextureItem* pWhichTextureItem);
-	bool CheckExceptionFrameCount(TextureException* pWhichException);
-	inline void DeleteExceptionDeleteException(std::vector<TextureException*>::iterator &whichIterator);
+	bool isExcluded(NormalData* pWhichTextureItem);
+	void RemoveExclude(NormalData* pWhichTextureItem);
+	void AddExclude(NormalData* pWhichTextureItem);
+	bool AddException(NormalData* pWhichTextureItem);
+	bool CheckExceptionFrameCount(NormalException* pWhichException);
+	inline void DeleteExceptionDeleteException(std::vector<NormalException*>::iterator &whichIterator);
 	void CheckAll();
 }}

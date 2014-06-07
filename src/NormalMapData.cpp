@@ -1,7 +1,7 @@
 #include "NormalMapHandler.h"
 
 namespace NP {
-	const ExceptionalMeshKeys g_exceptionalMeshes[MAX_EXCEPTIONAL_MESH_COUNT] = {
+	const NormalExceptionKey g_exceptionalMeshes[MAX_EXCEPTIONAL_MESH_COUNT] = {
 		/* 
 		 * Format:
 		 * NumVertices, PrimCount, SrcBlend, DestBlend, AlphaRef (0 is the wildcard here)
@@ -11,7 +11,7 @@ namespace NP {
 		EMK_END(),
 	};
 
-	void InitTextureTable(TextureTable &texTable)
+	void InitTextureTable(NormalTable &texTable)
 	{
 		texTable.cleanup();
 		/*

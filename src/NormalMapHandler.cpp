@@ -3,11 +3,11 @@
 #pragma comment(lib, "dxguid.lib")
 
 namespace NP {
-	TextureTable g_npTable;
+	NormalTable g_npTable;
 	UINT g_NumVertices_last = NULL;
 	UINT g_PrimCount_last = NULL;
 	IDirect3DBaseTexture9* g_pBaseTexture_last = NULL;
-	TextureItem* g_pItem_last;
+	NormalData* g_pItem_last;
 	DWORD g_dwAlphaValue = D3DCOLOR_ARGB(178,0,0,255);	// 70% transparency for transpant models
 	DWORD g_dwNormalTextureAlpha = D3DCOLOR_ARGB(255,0,0,255);	// 100% opacity for normal models
 
@@ -21,8 +21,8 @@ namespace NP {
 
 	bool IsExceptionalMesh(UINT numVertices, UINT primCount, DWORD srcBlend, DWORD destBlend, DWORD alphaRef)
 	{
-		ExceptionalMeshKeys endKey = EMK_END();
-		for (int i=0; memcmp(&(g_exceptionalMeshes[i]), &endKey, sizeof(ExceptionalMeshKeys))!=0; i++)
+		NormalExceptionKey endKey = EMK_END();
+		for (int i=0; memcmp(&(g_exceptionalMeshes[i]), &endKey, sizeof(NormalExceptionKey))!=0; i++)
 		{
 			if (g_exceptionalMeshes[i].m_NumVertices==numVertices && g_exceptionalMeshes[i].m_PrimCount==primCount)
 			{
@@ -77,10 +77,10 @@ namespace NP {
 			//
 			try
 			{
-				TextureItem* pItem = &(g_npTable.getData(Stride, NumVertices, primCount));	// check if item exists, return in reference
+				NormalData* pItem = &(g_npTable.getData(Stride, NumVertices, primCount));	// check if item exists, return in reference
 				g_pItem_last = pItem;
 
-				// Check if the TextureItem is excluded temporary
+				// Check if the NormalData is excluded temporary
 				if (EXCP::isExcluded(pItem))
 				{
 					return D3DERR_INVALIDCALL;
