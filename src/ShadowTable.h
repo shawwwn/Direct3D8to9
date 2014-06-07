@@ -14,9 +14,8 @@ namespace SV {
 
 	struct ShadowItem
 	{
+		ub4 m_Hash;
 		ub4 m_Key;
-		DWORD m_NumVertices;
-		DWORD m_PrimCount;
 		int m_ShadowParameter;
 	};
 
@@ -27,6 +26,6 @@ namespace SV {
 		~ShadowTable() {};
 		int getShadowParam(DWORD numVertices, DWORD primCount);
 	private:
-		ShadowItem m_hashtable[SVHASHNKEYS];
+		static const ShadowItem m_hashtable[SVHASHNKEYS];
 	};
 }

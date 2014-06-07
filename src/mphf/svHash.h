@@ -11,7 +11,7 @@ extern ub2 sv_table[];
 #define SVHASHRANGE 512  /* Range any input might map to */
 #define SVHASHSALT 0xe270ac26 /* internal, initialize normal hash */
 
-ub4 phash(ub4 val);
+ub4 svHash(ub4 val);
 
 #endif  /* SVHASH */
 
