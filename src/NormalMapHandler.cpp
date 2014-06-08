@@ -7,7 +7,7 @@ namespace NP {
 	UINT g_NumVertices_last = NULL;
 	UINT g_PrimCount_last = NULL;
 	IDirect3DBaseTexture9* g_pBaseTexture_last = NULL;
-	NormalData* g_pItem_last;
+	NormalItem* g_pItem_last;
 	DWORD g_dwAlphaValue = D3DCOLOR_ARGB(178,0,0,255);	// 70% transparency for transpant models
 	DWORD g_dwNormalTextureAlpha = D3DCOLOR_ARGB(255,0,0,255);	// 100% opacity for normal models
 
@@ -40,7 +40,7 @@ namespace NP {
 
 	HRESULT Init(IDirect3DDevice9* pd3dDevice)
 	{
-		InitTextureTable(g_npTable);
+		//InitTextureTable(g_npTable);
 		return D3D_OK;
 	}
 
@@ -77,10 +77,10 @@ namespace NP {
 			//
 			try
 			{
-				NormalData* pItem = &(g_npTable.getData(Stride, NumVertices, primCount));	// check if item exists, return in reference
+				NormalItem* pItem = &(g_npTable.getData(Stride, NumVertices, primCount));	// check if item exists, return in reference
 				g_pItem_last = pItem;
 
-				// Check if the NormalData is excluded temporary
+				// Check if the NormalItem is excluded temporary
 				if (EXCP::isExcluded(pItem))
 				{
 					return D3DERR_INVALIDCALL;

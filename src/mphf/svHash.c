@@ -4,14 +4,14 @@
 #endif /* STANDARD */
 #ifndef SVHASH
 #include "svHash.h"
-#endif /* PHASH */
+#endif /* SVHASH */
 #ifndef LOOKUPA
 #include "lookupa.h"
 #endif /* LOOKUPA */
 
 /* small adjustments to _a_ to make values distinct */
 ub2 sv_table[] = {
-	36,0,260,264,256,230,36,481,0,131,0,166,324,36,342,445,
+  36,0,260,264,256,230,36,481,0,131,0,166,324,36,342,445,
 	0,430,13,391,468,6,281,162,398,53,409,26,3,0,395,468,
 	330,0,405,65,0,0,264,481,468,445,468,0,97,338,10,258,
 	62,468,468,472,327,440,66,0,0,24,0,258,103,117,0,16,

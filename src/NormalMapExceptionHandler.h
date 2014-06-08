@@ -9,12 +9,12 @@ namespace NP { namespace EXCP {
 	#define MAX_FRAME_COUNT 6000
 
 	extern std::vector<NormalException*> g_ExceptionList;
-	extern std::vector<NormalData*> g_ExcludedList;
+	extern std::vector<NormalItem*> g_ExcludedList;
 
-	bool isExcluded(NormalData* pWhichTextureItem);
-	void RemoveExclude(NormalData* pWhichTextureItem);
-	void AddExclude(NormalData* pWhichTextureItem);
-	bool AddException(NormalData* pWhichTextureItem);
+	bool isExcluded(NormalItem* pWhichTextureItem);
+	void RemoveExclude(NormalItem* pWhichTextureItem);
+	void AddExclude(NormalItem* pWhichTextureItem);
+	bool AddException(NormalItem* pWhichTextureItem);
 	bool CheckExceptionFrameCount(NormalException* pWhichException);
 	inline void DeleteExceptionDeleteException(std::vector<NormalException*>::iterator &whichIterator);
 	void CheckAll();

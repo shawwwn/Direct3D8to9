@@ -189,6 +189,9 @@
     <ClCompile Include="..\src\debug\NormalTable.cpp">
       <Filter>effect\NormalMap\data\debug</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\mphf\npHash.c">
+      <Filter>effect\NormalMap\data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Direct3D8.h">
@@ -340,6 +343,9 @@
     </ClInclude>
     <ClInclude Include="..\src\debug\NormalTable.h">
       <Filter>effect\NormalMap\data\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mphf\npHash.h">
+      <Filter>effect\NormalMap\data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

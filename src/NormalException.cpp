@@ -2,7 +2,7 @@
 
 namespace NP { namespace EXCP {
 
-	NormalException::NormalException(NormalData* pWhichItem)
+	NormalException::NormalException(NormalItem* pWhichItem)
 	{
 		m_pTextureItem = pWhichItem;
 		m_FrameCount = 0;

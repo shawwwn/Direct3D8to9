@@ -1,6 +1,10 @@
 #pragma once
 
+#ifdef _DEBUG
+#include "debug/NormalTable.h"
+#else
 #include "NormalTable.h"
+#endif
 
 namespace NP { namespace EXCP {
 
@@ -11,18 +15,18 @@ namespace NP { namespace EXCP {
 	//	Stores the exception count and the frame count.
 	//	@m_FailCount :  For counting D3DXComputeTexture exception.
 	//	@m_FrameCount : For counting the frame past after the exception happen.
-	//	@m_pWhichItem : The failing NormalData 
+	//	@m_pWhichItem : The failing NormalItem 
 	//
 	//==========================================================================
 	struct NormalException
 	{
 		public:
-			NormalException(NormalData* pWhichItem);
+			NormalException(NormalItem* pWhichItem);
 			~NormalException();
 
 			UINT m_FrameCount;
 			UINT m_FailCount;
-			NormalData* m_pTextureItem;
+			NormalItem* m_pTextureItem;
 	};
 
 }}

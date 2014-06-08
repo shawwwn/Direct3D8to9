@@ -30,10 +30,10 @@ namespace NP {
 	}
 
 	//
-	// struct NormalData
+	// struct NormalItem
 	//
-	NormalData::NormalData() {}
-	NormalData::NormalData(bool computed, IDirect3DTexture9* pBaseTexture, IDirect3DTexture9* pNormalTexture, UINT width, UINT height, bool inverted, bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef)
+	NormalItem::NormalItem() {}
+	NormalItem::NormalItem(bool computed, IDirect3DTexture9* pBaseTexture, IDirect3DTexture9* pNormalTexture, UINT width, UINT height, bool inverted, bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef)
 	{
 		m_Computed = computed;
 		m_pBaseTexture = pBaseTexture;
@@ -45,7 +45,7 @@ namespace NP {
 		m_NormalAlphaRef = normalAlphaRef;
 		m_TransplantAlphaRef = transplantAlphaRef;
 	}
-	bool NormalData::operator ==(const NormalData &right) const
+	bool NormalItem::operator ==(const NormalItem &right) const
 	{
 		return m_pBaseTexture == right.m_pBaseTexture;
 	}
@@ -53,8 +53,11 @@ namespace NP {
 	//
 	// class NormalTable
 	//
-	NormalTable::NormalTable() {}
-	NormalData& NormalTable::getData(DWORD stride, DWORD numVertices, DWORD primCount)
+	NormalTable::NormalTable()
+	{
+		InitNormalTable();
+	}
+	NormalItem& NormalTable::getData(DWORD stride, DWORD numVertices, DWORD primCount)
 	{
 		TextureKeys key(stride, numVertices, primCount);
 		return m_Table.at(key);
@@ -64,10 +67,10 @@ namespace NP {
 		IDirect3DTexture9* pBaseTexture, IDirect3DTexture9* pNormalTexture)
 	{
 		TextureKeys keys(stride, numVertices, primCount);
-		NormalData item(false, pBaseTexture, pNormalTexture, width, height, inverted, isMask, normalAlphaRef, transplantAlphaRef);
+		NormalItem item(false, pBaseTexture, pNormalTexture, width, height, inverted, isMask, normalAlphaRef, transplantAlphaRef);
 		addTexture(keys, item);
 	}
-	void NormalTable::addTexture(TextureKeys &keys, NormalData &item)
+	void NormalTable::addTexture(TextureKeys &keys, NormalItem &item)
 	{
 		try
 		{
@@ -76,7 +79,7 @@ namespace NP {
 		}
 		catch (const std::out_of_range)
 		{
-			m_Table.insert(std::pair<TextureKeys, NormalData>(keys, item));	// not exists
+			m_Table.insert(std::pair<TextureKeys, NormalItem>(keys, item));	// not exists
 		}
 	
 	}
@@ -89,7 +92,7 @@ namespace NP {
 	void NormalTable::addTextureEntry(TextureKeys &keys, UINT width, UINT height,
 		bool inverted, bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef)
 	{
-		// TODO: Pass an constructed NormalData and use addTexture instead
+		// TODO: Pass an constructed NormalItem and use addTexture instead
 		try
 		{
 			m_Table.at(keys);	// check if item exists
@@ -97,8 +100,8 @@ namespace NP {
 		}
 		catch (const std::out_of_range)
 		{
-			NormalData item(false, NULL, NULL, width, height, inverted, isMask, normalAlphaRef, transplantAlphaRef);	// not exists
-			m_Table.insert(std::pair<TextureKeys, NormalData>(keys, item));
+			NormalItem item(false, NULL, NULL, width, height, inverted, isMask, normalAlphaRef, transplantAlphaRef);	// not exists
+			m_Table.insert(std::pair<TextureKeys, NormalItem>(keys, item));
 		}
 	}
 	void NormalTable::removeTexture(DWORD stride, DWORD numVertices, DWORD primCount)
@@ -134,9 +137,9 @@ namespace NP {
 	}
 	void NormalTable::cleanup()
 	{
-		for (std::map<TextureKeys, NormalData>::iterator it=m_Table.begin(); it!=m_Table.end(); ++it)
+		for (std::map<TextureKeys, NormalItem>::iterator it=m_Table.begin(); it!=m_Table.end(); ++it)
 		{
-			NormalData &item = it->second;
+			NormalItem &item = it->second;
 			item.m_pBaseTexture = NULL;
 			SAFE_RELEASE(item.m_pNormalTexture);
 		}
@@ -151,9 +154,9 @@ namespace NP {
 		for(NormalMapTable::iterator it = m_Table.begin(); it != m_Table.end(); ++it)
 		{
 		  TextureKeys key = it->first;
-		  NormalData& item = it->second;
-		  fprintf(pKeyFile, "%04d%04d\n", key.m_NumVertices, key.m_PrimCount);
-		  fprintf(pValueFile, "%3d, %3d - %d, %d\n", item.m_Height, item.m_Width, item.m_Inverted, item.m_IsMask);
+		  NormalItem& item = it->second;
+		  fprintf(pKeyFile, "%02d%04d%04d\n", key.m_Stride, key.m_NumVertices, key.m_PrimCount);
+		  fprintf(pValueFile, "%3d %3d %1d %1d\n", item.m_Height, item.m_Width, item.m_Inverted, item.m_IsMask);
 		}
 		fclose(pKeyFile);
 		fclose(pValueFile);

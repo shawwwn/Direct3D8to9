@@ -19,12 +19,12 @@ namespace NP {
 		DWORD m_PrimCount;	// primCount
 	};
 
-	struct NormalData
+	struct NormalItem
 	{
-		NormalData();
-		NormalData(bool computed, IDirect3DTexture9* pBaseTexture, IDirect3DTexture9* pNormalTexture, 
+		NormalItem();
+		NormalItem(bool computed, IDirect3DTexture9* pBaseTexture, IDirect3DTexture9* pNormalTexture, 
 					UINT width, UINT height, bool inverted, bool isMask, UINT normalAlphaRef, UINT transplantAlphaRef);
-		bool NormalData::operator ==(const NormalData &right) const;
+		bool NormalItem::operator ==(const NormalItem &right) const;
 			
 		// member variables
 		IDirect3DTexture9* m_pBaseTexture;
@@ -38,16 +38,17 @@ namespace NP {
 		UINT m_NormalAlphaRef;
 	};
 
-	typedef std::map<TextureKeys, NormalData> NormalMapTable;
+	typedef std::map<TextureKeys, NormalItem> NormalMapTable;
 	class NormalTable
 	{
 		public:
 			NormalTable();
-			NormalData& NormalTable::getData(DWORD stride, DWORD numVertices, DWORD primCount);
+			NormalItem& NormalTable::getData(DWORD stride, DWORD numVertices, DWORD primCount);
+			void InitNormalTable();
 			void addTexture(DWORD stride, DWORD numVertices, DWORD primCount, UINT width, UINT height, bool inverted,
 				bool isMask=false, UINT normalAlphaRef=DEFAULT_NORMAL_ALPHAREF, UINT transplantAlphaRef=DEFAULT_TRANSPLANT_ALPHAREF,
 				IDirect3DTexture9* pBaseTexture=NULL, IDirect3DTexture9* pNormalTexture=NULL);
-			void addTexture(TextureKeys &keys, NormalData &item);
+			void addTexture(TextureKeys &keys, NormalItem &item);
 			void addTextureEntry(DWORD stride, DWORD numVertices, DWORD primCount, UINT width, UINT height, bool inverted,
 				bool isMask=false, UINT normalAlphaRef=DEFAULT_NORMAL_ALPHAREF, UINT transplantAlphaRef=DEFAULT_TRANSPLANT_ALPHAREF);
 			void addTextureEntry(TextureKeys &keys, UINT width, UINT height, bool inverted,
@@ -61,7 +62,6 @@ namespace NP {
 			void computeNormalTextures();
 			void cleanup();
 			void writeKeysToFile();
-
 			// member variables
 			NormalMapTable m_Table;
 	};

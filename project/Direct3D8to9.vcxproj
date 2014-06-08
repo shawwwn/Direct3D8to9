@@ -39,6 +39,9 @@
     <ClCompile Include="..\src\Direct3DVolumeTexture8.cpp" />
     <ClCompile Include="..\src\DxUtils.cpp" />
     <ClCompile Include="..\src\EffectController.cpp" />
+    <ClCompile Include="..\src\mphf\npHash.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\src\NormalExceptionTable.cpp" />
     <ClCompile Include="..\src\HDRScene.cpp" />
     <ClCompile Include="..\src\mphf\lookupa.c" />
@@ -101,6 +104,9 @@
     <ClInclude Include="..\src\Direct3DVolumeTexture8.h" />
     <ClInclude Include="..\src\DxUtils.h" />
     <ClInclude Include="..\src\EffectController.h" />
+    <ClInclude Include="..\src\mphf\npHash.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\src\NormalExceptionTable.h" />
     <ClInclude Include="..\src\HDRScene.h" />
     <ClInclude Include="..\src\mphf\lookupa.h" />

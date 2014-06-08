@@ -2,13 +2,13 @@
 
 namespace NP { namespace EXCP {
 	std::vector<NormalException*> g_ExceptionList;
-	std::vector<NormalData*> g_ExcludedList;
+	std::vector<NormalItem*> g_ExcludedList;
 
 	/**
 	*	check the present of an Texture Item in the
 	*	excluded list.
 	*/
-	bool isExcluded(NormalData* pWhichTextureItem)
+	bool isExcluded(NormalItem* pWhichTextureItem)
 	{
 		return (std::find(g_ExcludedList.begin(), g_ExcludedList.end(), pWhichTextureItem) != g_ExcludedList.end());
 	}
@@ -16,9 +16,9 @@ namespace NP { namespace EXCP {
 	/**
 	*	Remove an item from the excluded list
 	*/
-	void RemoveExclude(NormalData* pWhichTextureItem)
+	void RemoveExclude(NormalItem* pWhichTextureItem)
 	{
-		std::vector<NormalData*>::iterator it = std::find(g_ExcludedList.begin(), g_ExcludedList.end(), pWhichTextureItem);
+		std::vector<NormalItem*>::iterator it = std::find(g_ExcludedList.begin(), g_ExcludedList.end(), pWhichTextureItem);
 		if (it != g_ExcludedList.end())
 			g_ExcludedList.erase(it);
 	}
@@ -27,7 +27,7 @@ namespace NP { namespace EXCP {
 	*	Add an Texture Item to the excluded list,
 	*	but check its present first.
 	*/
-	void AddExclude(NormalData* pWhichTextureItem)
+	void AddExclude(NormalItem* pWhichTextureItem)
 	{
 		if (!isExcluded(pWhichTextureItem))
 			g_ExcludedList.push_back(pWhichTextureItem);
@@ -38,7 +38,7 @@ namespace NP { namespace EXCP {
 	*	if item not exist, otherwise, increase exception count
 	*	on the existing item.
 	*/
-	bool AddException(NormalData* pWhichTextureItem)
+	bool AddException(NormalItem* pWhichTextureItem)
 	{
 		// Search for existing exception 
 		int index = 0;
