@@ -180,9 +180,6 @@
     <ClCompile Include="..\src\NormalException.cpp">
       <Filter>effect\NormalMap\data</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\NormalExceptionTable.cpp">
-      <Filter>effect\NormalMap\data</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\debug\NormalMapData.cpp">
       <Filter>effect\NormalMap\data\debug</Filter>
     </ClCompile>
@@ -336,9 +333,6 @@
       <Filter>effect\NormalMap\data</Filter>
     </ClInclude>
     <ClInclude Include="..\src\NormalException.h">
-      <Filter>effect\NormalMap\data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\NormalExceptionTable.h">
       <Filter>effect\NormalMap\data</Filter>
     </ClInclude>
     <ClInclude Include="..\src\debug\NormalTable.h">

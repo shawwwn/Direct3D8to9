@@ -7,25 +7,6 @@ namespace NP {
 	DWORD g_dwAlphaValue = D3DCOLOR_ARGB(178,0,0,255);	// 70% transparency for transpant models
 	DWORD g_dwNormalTextureAlpha = D3DCOLOR_ARGB(255,0,0,255);	// 100% opacity for normal models
 
-	bool IsExceptionalMesh(UINT numVertices, UINT primCount, DWORD srcBlend, DWORD destBlend, DWORD alphaRef)
-	{
-		NormalExceptionKey endKey = EMK_END();
-		for (int i=0; memcmp(&(g_exceptionalMeshes[i]), &endKey, sizeof(NormalExceptionKey))!=0; i++)
-		{
-			if (g_exceptionalMeshes[i].m_NumVertices==numVertices && g_exceptionalMeshes[i].m_PrimCount==primCount)
-			{
-				if (g_exceptionalMeshes[i].m_SrcBlend!=0 && g_exceptionalMeshes[i].m_SrcBlend!=srcBlend)
-					continue;
-				if (g_exceptionalMeshes[i].m_DestBlend!=0 && g_exceptionalMeshes[i].m_DestBlend!=destBlend)
-					continue;
-				if (g_exceptionalMeshes[i].m_AlphaRef!=0 && g_exceptionalMeshes[i].m_AlphaRef!=alphaRef)
-					continue;
-				return true;
-			}
-		}
-		return false;
-	}
-
 	HRESULT Init(IDirect3DDevice9* pd3dDevice)
 	{
 		//InitTextureTable(g_npTable);
@@ -36,14 +17,12 @@ namespace NP {
                                   D3DPRIMITIVETYPE Type, UINT baseVertexIndex, UINT minIndex, UINT startIndex,
                                   UINT Stride, UINT NumVertices, UINT primCount, DWORD AlphaRef, DWORD TransformStateType)
 	{
-		bool isExceptionalMesh =false;//= IsExceptionalMesh(NumVertices, primCount, g_DRS[D3DRS_SRCBLEND], g_DRS[D3DRS_DESTBLEND], AlphaRef); // exceptional mesh flag
-
-		if (!isExceptionalMesh && TransformStateType==2) { return D3DERR_INVALIDCALL; }	// filter out terrain texture
+		if (TransformStateType==2) { return D3DERR_INVALIDCALL; }	// filter out terrain texture
+		
 		HRESULT hr = D3D_OK;
 		IDirect3DTexture9* pNormalTexture = NULL;
 		bool isPureColorMesh = false;
 		bool isAlphaBlendEnable = (g_DRS[D3DRS_ALPHATESTENABLE]==1 && g_DRS[D3DRS_ALPHABLENDENABLE]==1);
-
 
 		//
 		// Query For Normal Map Texture

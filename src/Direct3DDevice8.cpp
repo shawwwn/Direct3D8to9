@@ -904,17 +904,7 @@ STDMETHODIMP CDirect3DDevice8::DrawIndexedPrimitive(THIS_ D3DPRIMITIVETYPE Type,
 				{
 					// TODO: Wrap belows inside ShadowVolumeController
 					int shwParam = -1;
-					if (NumVertices==SV::g_NumVertices_last && primCount==SV::g_PrimCount_last)
-					{
-						shwParam = SV::g_shwParam_last;
-					}
-					else
-					{
-						shwParam = SV::g_shwTable.getShadowParam(NumVertices, primCount);
-						SV::g_shwParam_last = shwParam;
-						SV::g_NumVertices_last = NumVertices;
-						SV::g_PrimCount_last = primCount;
-					}
+					shwParam = SV::g_shwTable.getShadowParam(NumVertices, primCount);
 					if (shwParam != -1)
 					{
 						if (FAILED(hr))	// If NormalMapHandler hasn't rendered an object, render it here.

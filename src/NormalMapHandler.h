@@ -8,18 +8,12 @@
 #include "NormalTable.h"
 #endif
 #include "DxUtils.h"
-#include "NormalExceptionTable.h"
 #include "NormalMapExceptionHandler.h"
 
 namespace NP {
 	#define NORMAL_AMPLITUDE -100
-	#define MAX_EXCEPTIONAL_MESH_COUNT 10
 	extern NormalTable g_npTable;
-	extern const NormalExceptionKey g_exceptionalMeshes[MAX_EXCEPTIONAL_MESH_COUNT];
 
-
-	// Is mesh a exceptional mesh
-	bool IsExceptionalMesh(UINT numVertices, UINT primCount, DWORD srcBlend, DWORD destBlend, DWORD alphaRef);
 	// Init global settings
 	HRESULT Init(IDirect3DDevice9* pd3dDevice);
 	// Query texture and perform normal mapping

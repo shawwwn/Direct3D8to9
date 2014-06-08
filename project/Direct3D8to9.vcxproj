@@ -42,7 +42,6 @@
     <ClCompile Include="..\src\mphf\npHash.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\src\NormalExceptionTable.cpp" />
     <ClCompile Include="..\src\HDRScene.cpp" />
     <ClCompile Include="..\src\mphf\lookupa.c" />
     <ClCompile Include="..\src\mphf\svHash.c">
@@ -107,7 +106,6 @@
     <ClInclude Include="..\src\mphf\npHash.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\src\NormalExceptionTable.h" />
     <ClInclude Include="..\src\HDRScene.h" />
     <ClInclude Include="..\src\mphf\lookupa.h" />
     <ClInclude Include="..\src\mphf\svHash.h">

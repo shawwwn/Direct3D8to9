@@ -1,17 +1,7 @@
-#include "../NormalMapHandler.h"
-//#include "NormalTable.h"
+#include "NormalTable.h"
 
 namespace NP {
-	const NormalExceptionKey g_exceptionalMeshes[MAX_EXCEPTIONAL_MESH_COUNT] = {
-		/* 
-		 * Format:
-		 * NumVertices, PrimCount, SrcBlend, DestBlend, AlphaRef (0 is the wildcard here)
-		 */
-		{ 466, 295,  5, 0, 0 },			// Orc Watch Tower - body
-		{ 384, 249,  5, 0, 0 },			// Orc Stronghold - body
-		EMK_END(),
-	};
-
+	// Normal Table Entries
 	void NormalTable::InitNormalTable()
 	{
 		cleanup();

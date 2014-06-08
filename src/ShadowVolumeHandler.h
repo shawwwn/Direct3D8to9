@@ -23,9 +23,6 @@ namespace SV {
 	extern ShadowVolume g_baseShadow;
 	extern UINT g_deviceHeight;
 	extern UINT g_deviceWidth;
-	extern UINT g_NumVertices_last;
-	extern UINT g_PrimCount_last;
-	extern int g_shwParam_last;
 
 	void GenerateShadow(IDirect3DDevice9* pd3dDevice, IDirect3DVertexBuffer9* pVertexBuffer, IDirect3DIndexBuffer9* pIndexBuffer,
 						DWORD baseVertexIndex, DWORD startIndex,
