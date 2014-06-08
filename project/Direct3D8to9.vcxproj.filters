@@ -400,5 +400,8 @@
       <Filter>effect\shaders</Filter>
     </None>
     <None Include="..\README.md" />
+    <None Include="RenderCraft.def">
+      <Filter>misc\other</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -3,13 +3,14 @@
 #include <stdlib.h>     // atoi
 
 namespace CTRL {
-	bool g_EnableEffect = false;
-	bool g_EnableHDR = false;
-	bool g_EnableNP  = false;
-	bool g_EnablePP  = false;
-	bool g_EnableSV  = false;
-	bool g_DisableUnitShadow = false;
+	bool g_EnableEffect = true;
+	bool g_EnableHDR = true;
+	bool g_EnableNP  = true;
+	bool g_EnablePP  = true;
+	bool g_EnableSV  = true;
+	bool g_DisableUnitShadow = true;
 
+#ifndef NORMALD3D
 	void InitController()
 	{
 		Plugin* plg=getPluginInfo("Nir_Plugin_RenderCraft.dll");
@@ -37,4 +38,5 @@ namespace CTRL {
 			pParam = NULL;
 		}
 	}
+#endif
 }

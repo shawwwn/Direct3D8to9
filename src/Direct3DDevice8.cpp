@@ -25,8 +25,10 @@ CDirect3DDevice8::CDirect3DDevice8(IDirect3DDevice9* device, CDirect3D8* d3d)
 {
 	pDevice9->GetCreationParameters(&deviceCreationParameters);
 
+#ifndef NORMALD3D
 	// initialize effect controller
 	CTRL::InitController();
+#endif
 	// initialize effect handler
 	HDR::onCreateDevice(pDevice9);
 	PP::onCreateDevice(pDevice9);

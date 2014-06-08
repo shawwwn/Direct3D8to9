@@ -1,0 +1,3 @@
+LIBRARY "Nir_Plugin_RenderCraft"
+EXPORTS
+	Direct3DCreate8to9
