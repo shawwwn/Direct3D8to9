@@ -1,0 +1,42 @@
+Generate mininal perfect hashtable in C++ code.
+
+---------------------------
+
+######Disclaimer:
+The MPHF generator was originally written by Bob Jekins using his mininal perfect hash algorithm.
+http://burtleburtle.net/bob/hash/perfect.html
+All rights are reserved by Bob Jekins.
+
+---------------------------
+
+######File Description:
+Input/				- Input directory, where you put your definition files of keys and static values.
+Output/				- output directory, all generated mphf class and cpp table will be putted here. 
+compile.cmd			- Compile the perfect hash generator(You don't have to necessarily run this since I've already included the generator's bianry file).
+generate_cpp.cmd	- Generate hashtable's cpp codes.
+clean.cmd			- Clean up leftovers.
+
+---------------------------
+
+###### How To Use:
+0. Before you used hit You must have GNU compiler installed on your computer(Be sure to check you have the GNU Make installed and be in your SYSTEM PATH as well)
+
+1. Compile RenderCraft in debug mode then run it. Grab the following 4 files under your WC3's directory and put them into Input/
+	NormalMap_keys.txt
+	NormalMap_vals.txt
+	ShadowVolume_keys.txt
+	ShadowVolume_vals.txt
+
+2. Run generate_cpp.cmd
+
+3. Copy the following files to {project_root}/src/mphf/
+	npHash.h
+	npHash.c
+	svHash.h
+	svHash.c
+
+4. Copy the generated codes from Output/sv_cpp.txt and place them into {project_root}/src/ShadowData.cpp to replace the old codes.
+
+5. Copy the generated codes from Output/np_cpp.txt and place them into {project_root}/src/NormalMapData.cpp to replace the old codes.
+
+6. All done! Now you can compile RenderCraft to see if it works.
