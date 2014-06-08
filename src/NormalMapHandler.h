@@ -16,20 +16,7 @@ namespace NP {
 	#define MAX_EXCEPTIONAL_MESH_COUNT 10
 	extern NormalTable g_npTable;
 	extern const NormalExceptionKey g_exceptionalMeshes[MAX_EXCEPTIONAL_MESH_COUNT];
-	extern UINT g_NumVertices_last;
-	extern UINT g_PrimCount_last;
-	extern IDirect3DBaseTexture9* g_pBaseTexture_last;
-	extern NormalItem* g_pItem_last;
-	extern DWORD g_dwAlphaValue;
-	extern DWORD g_dwNormalTextureAlpha;
 
-	extern DWORD g_dwColorArg1_0;
-	extern DWORD g_dwColorOp_0;
-	extern DWORD g_dwColorArg2_0;
-	extern DWORD g_dwAlphaOp_0;
-	extern DWORD g_dwAlphaArg1_0;
-	extern DWORD g_dwAlphaArg2_0;
-	extern DWORD g_dwTexCoordIndex_0;
 
 	// Is mesh a exceptional mesh
 	bool IsExceptionalMesh(UINT numVertices, UINT primCount, DWORD srcBlend, DWORD destBlend, DWORD alphaRef);
@@ -39,10 +26,6 @@ namespace NP {
 	HRESULT PerformNormalMappping(IDirect3DDevice9* pd3dDevice, IDirect3DBaseTexture9* pBaseTexture,
                                   D3DPRIMITIVETYPE Type, UINT baseVertexIndex, UINT minIndex, UINT startIndex,
                                   UINT Stride, UINT NumVertices, UINT primCount, DWORD AlphaRef, DWORD TransformStateType);
-	// Backup TextureStageStates
-	void backupTextureStageStates(IDirect3DDevice9* pd3dDevice);
-	// Restore TextureStageStates
-	void restoreTextureStageStates(IDirect3DDevice9* pd3dDevice);
 
 	//
 	// Standard Procedure Functions
