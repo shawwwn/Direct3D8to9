@@ -45,10 +45,17 @@
     <ClCompile Include="..\src\Direct3DVertexBuffer8.cpp" />
     <ClCompile Include="..\src\Direct3DVolume8.cpp" />
     <ClCompile Include="..\src\Direct3DVolumeTexture8.cpp" />
+    <ClCompile Include="..\src\dllMain.cpp" />
     <ClCompile Include="..\src\DxUtils.cpp" />
     <ClCompile Include="..\src\EffectController.cpp" />
-    <ClCompile Include="..\src\GameHook.cpp" />
-    <ClCompile Include="..\src\HookBase.cpp" />
+    <ClCompile Include="..\src\GameHook.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NormalD3D|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\src\HookBase.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NormalD3D|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\src\mphf\npHash.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -115,8 +122,14 @@
     <ClInclude Include="..\src\Direct3DVolumeTexture8.h" />
     <ClInclude Include="..\src\DxUtils.h" />
     <ClInclude Include="..\src\EffectController.h" />
-    <ClInclude Include="..\src\GameHook.h" />
-    <ClInclude Include="..\src\HookBase.h" />
+    <ClInclude Include="..\src\GameHook.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NormalD3D|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\src\HookBase.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NormalD3D|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\src\mphf\npHash.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>

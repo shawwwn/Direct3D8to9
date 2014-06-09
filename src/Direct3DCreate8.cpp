@@ -1,5 +1,4 @@
 #include "Direct3D8.h"
-#include "GameHook.h"
 
 #ifndef D3D9_USE_DYNAMIC_LIBRARY
 #pragma comment(lib, "d3d9.lib")
@@ -31,8 +30,6 @@ IDirect3D8* __stdcall Direct3DCreate8to9(UINT /*sdk_version*/)
 		return NULL;
 	}
 	#endif
-
-	HOOK::deployHooks();
 
 	IDirect3D9* d3d = Direct3DCreate9(D3D_SDK_VERSION);
 	return d3d ? new CDirect3D8(d3d): NULL;

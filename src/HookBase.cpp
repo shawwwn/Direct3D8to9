@@ -14,10 +14,8 @@ namespace HOOK {
 	}
 
 	// Read the function pointer from a call or a jmp
-	void* getFuncPtr(DWORD address)
+	DWORD getFuncPtr(DWORD address)
 	{
-		DWORD pFunc = *(DWORD*)address;
-		pFunc = pFunc + address + 4;
-		return (void*)pFunc;
+		return *(DWORD*)address + address + 4;
 	}
 }
