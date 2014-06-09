@@ -61,6 +61,9 @@
       <UniqueIdentifier>{3007938a-7e0a-4790-bf3c-58cc50a0f9a5}</UniqueIdentifier>
       <ParseFiles>false</ParseFiles>
     </Filter>
+    <Filter Include="misc\hook">
+      <UniqueIdentifier>{b654943a-f78f-4cc8-b295-6c9300109919}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Direct3D8.cpp">
@@ -188,6 +191,12 @@
     </ClCompile>
     <ClCompile Include="..\src\mphf\npHash.c">
       <Filter>effect\NormalMap\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\HookBase.cpp">
+      <Filter>misc\hook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GameHook.cpp">
+      <Filter>misc\hook</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +349,12 @@
     </ClInclude>
     <ClInclude Include="..\src\mphf\npHash.h">
       <Filter>effect\NormalMap\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\HookBase.h">
+      <Filter>misc\hook</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GameHook.h">
+      <Filter>misc\hook</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
