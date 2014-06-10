@@ -17,8 +17,6 @@ namespace NP {
                                   D3DPRIMITIVETYPE Type, UINT baseVertexIndex, UINT minIndex, UINT startIndex,
                                   UINT Stride, UINT NumVertices, UINT primCount, DWORD AlphaRef, DWORD TransformStateType)
 	{
-		if (TransformStateType==2) { return D3DERR_INVALIDCALL; }	// filter out terrain texture
-		
 		HRESULT hr = D3D_OK;
 		IDirect3DTexture9* pNormalTexture = NULL;
 		bool isPureColorMesh = false;

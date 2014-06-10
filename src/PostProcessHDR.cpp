@@ -69,7 +69,6 @@ namespace PP {
 			//m_pDevice->EndScene(); // End the scene
 			return D3D_OK;
 		}
-		return D3DERR_INVALIDCALL;
 	}
 	void PostProcessHDR::onCreateDevice(IDirect3DDevice9* pd3dDevice, UINT width, UINT height)
 	{

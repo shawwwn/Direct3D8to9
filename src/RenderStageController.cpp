@@ -23,8 +23,9 @@ int checkRenderStage(UINT stride, D3DPRIMITIVETYPE primType, DWORD hFVF, DWORD s
 			return STAGE_UI;
 		return STAGE_UNKNOWN;
 	}
-
-	if (rs != HOOK::STATE_UNIT_AND_EFFECT)
+	else if (rs == HOOK::STATE_PORTRAIT)
+		return STAGE_UNIT;
+	else if (rs != HOOK::STATE_UNIT_AND_EFFECT)
 		return STAGE_UNKNOWN;
 
 	switch (HOOK::g_CurrentRenderTarget)
@@ -51,8 +52,7 @@ int checkRenderStage(UINT stride, D3DPRIMITIVETYPE primType, DWORD hFVF, DWORD s
 		return STAGE_TERRAIN_DECORATION;
 		break;
 	case 0x0B:
-		if (HOOK::g_CurrentRenderType == HOOK::D3D_MESH)
-			return STAGE_UNIT;
+		return STAGE_UNIT;
 		break;
 	case 0x0E:
 		return STAGE_WATER;
@@ -64,5 +64,4 @@ int checkRenderStage(UINT stride, D3DPRIMITIVETYPE primType, DWORD hFVF, DWORD s
 		return STAGE_UNKNOWN;
 		break;
 	}
-	return STAGE_UNKNOWN;
 }

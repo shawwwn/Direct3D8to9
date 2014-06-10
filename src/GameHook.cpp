@@ -118,7 +118,7 @@ namespace HOOK {
 			return STATE_UNIT_AND_EFFECT;
 			break;
 		case RENDER_UNKNOWN_1_FUNC:
-			return STATE_UNKNOWN_1;
+			return STATE_PORTRAIT;
 			break;
 		case RENDER_MAYJOR_UI_FUNC:
 			return STATE_MAYJOR_UI;
