@@ -8,8 +8,11 @@
 #include <iostream>
 #include <fstream>
 #include <direct.h>
+#if defined(_DEBUG) || defined(NORMALD3D)
+#include "debug/RenderStageController.h"
+#else
 #include "RenderStageController.h"
-
+#endif
 namespace DB {
 	extern bool g_dbDebugOn;
 	extern int g_dbDrawPrimitiveCount;

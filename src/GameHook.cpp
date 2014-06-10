@@ -47,7 +47,7 @@ namespace HOOK {
 		}
 
 		next_line = address_render_target_switch + 9; // 9 bytes after the original address
-	
+
 		// Restore the original code
 		__asm
 		{
@@ -109,29 +109,29 @@ namespace HOOK {
 		JmpPatch(render_particle, (void*)address_render_particle);
 	}
 
-	RENDER_TARGET getCurrentRenderTarget()
+	RENDER_STATE getCurrentRenderState()
 	{
 		int offest = currentRenderCall - g_GameBase;
 		switch (offest)
 		{
 		case RENDER_UNIT_AND_EFFECT_FUNC:
-			return TARGET_UNIT_AND_EFFECT;
+			return STATE_UNIT_AND_EFFECT;
 			break;
 		case RENDER_UNKNOWN_1_FUNC:
-			return TARGET_UNKNOWN_1;
+			return STATE_UNKNOWN_1;
 			break;
 		case RENDER_MAYJOR_UI_FUNC:
-			return TARGET_MAYJOR_UI;
+			return STATE_MAYJOR_UI;
 			break;
 		case RENDER_MINOR_UI_FUNC:
-			return TARGET_MINOR_UI;
+			return STATE_MINOR_UI;
 			break;
 		case RENDER_MINI_MAP_FUNC:
-			return TARGET_MINI_MAP;
+			return STATE_MINI_MAP;
 			break;
 		default:
 			break;
 		}
-		return TARGET_NULL;
+		return STATE_NULL;
 	}
 }

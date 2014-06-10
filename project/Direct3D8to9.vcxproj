@@ -24,6 +24,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NormalD3D|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\src\debug\RenderStageController.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\src\debug\ShadowData.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NormalD3D|Win32'">true</ExcludedFromBuild>
@@ -74,7 +77,10 @@
     <ClCompile Include="..\src\PostProcessHandler.cpp" />
     <ClCompile Include="..\src\PostProcessHDR.cpp" />
     <ClCompile Include="..\src\PostProcessSMAA.cpp" />
-    <ClCompile Include="..\src\RenderStageController.cpp" />
+    <ClCompile Include="..\src\RenderStageController.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NormalD3D|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\src\ShadowData.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -100,6 +106,9 @@
     <ClInclude Include="..\src\debug\NormalTable.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NormalD3D|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\src\debug\RenderStageController.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\src\debug\ShadowTable.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -148,7 +157,10 @@
     <ClInclude Include="..\src\PostProcessHandler.h" />
     <ClInclude Include="..\src\PostProcessHDR.h" />
     <ClInclude Include="..\src\PostProcessSMAA.h" />
-    <ClInclude Include="..\src\RenderStageController.h" />
+    <ClInclude Include="..\src\RenderStageController.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NormalD3D|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\src\SearchTex.h" />
     <ClInclude Include="..\src\ShaderResource.h" />
     <ClInclude Include="..\src\ShadowTable.h">

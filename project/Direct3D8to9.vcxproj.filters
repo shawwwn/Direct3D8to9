@@ -64,6 +64,9 @@
     <Filter Include="misc\hook">
       <UniqueIdentifier>{b654943a-f78f-4cc8-b295-6c9300109919}</UniqueIdentifier>
     </Filter>
+    <Filter Include="effect\debug">
+      <UniqueIdentifier>{87ae731f-c02d-4729-8870-fe80f2d86f0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Direct3D8.cpp">
@@ -200,6 +203,9 @@
     </ClCompile>
     <ClCompile Include="..\src\dllMain.cpp">
       <Filter>misc\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\debug\RenderStageController.cpp">
+      <Filter>effect\debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -358,6 +364,9 @@
     </ClInclude>
     <ClInclude Include="..\src\GameHook.h">
       <Filter>misc\hook</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\debug\RenderStageController.h">
+      <Filter>effect\debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

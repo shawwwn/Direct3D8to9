@@ -2,7 +2,11 @@
 
 #include <d3d9.h>
 #include <d3dx9.h>
+#if defined(_DEBUG) || defined(NORMALD3D)
+#include "debug/RenderStageController.h"
+#else
 #include "RenderStageController.h"
+#endif
 
 void GetRotation(D3DMATRIX* pMatrix, float& Yaw, float& Pitch, float& Roll);
 // Check render state before setting

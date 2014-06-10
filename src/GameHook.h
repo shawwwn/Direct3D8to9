@@ -2,10 +2,11 @@
 
 #include "HookBase.h"
 #include "SysUtils.h"
+#include "EffectController.h"
 
 namespace HOOK {
 	enum RENDER_TYPE { D3D_MESH, D3D_PARTICLE };
-	enum RENDER_TARGET { TARGET_NULL, TARGET_UNIT_AND_EFFECT, TARGET_UNKNOWN_1, TARGET_MAYJOR_UI, TARGET_MINOR_UI, TARGET_MINI_MAP };
+	enum RENDER_STATE { STATE_NULL, STATE_UNIT_AND_EFFECT, STATE_UNKNOWN_1, STATE_MAYJOR_UI, STATE_MINOR_UI, STATE_MINI_MAP };
 	#define RENDER_STATE_SEQUENCE				0x005FD84D
 	#define RENDER_UNIT_AND_EFFECT_FUNC			0x00395900
 	#define RENDER_UNKNOWN_1_FUNC				0x0033AE70
@@ -35,5 +36,5 @@ namespace HOOK {
 
 	// Deploy hooks to capture render call
 	void deployHooks();
-	RENDER_TARGET getCurrentRenderTarget();
+	RENDER_STATE getCurrentRenderState();
 }

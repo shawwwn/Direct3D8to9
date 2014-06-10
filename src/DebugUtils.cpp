@@ -61,6 +61,12 @@ namespace DB {
 		myfile << "pVertexBuffer: " << (UINT)pVertexData << "\n";
 		myfile << "pIndexBuffer: " << (UINT)pIndexData << "\n";
 		myfile << "RenderStage: " << checkRenderStage(Stride, Type, FVFHandle, State, NumVertices, primCount, (IDirect3DTexture9*)pTexture) << "\n";
+		
+#ifdef RENDER_STATE_SEQUENCE
+		myfile << "HOOK::RENDER_TYPE: " << HOOK::g_CurrentRenderType << "\n";
+		myfile << "HOOK::RENDER_STATE: " << HOOK::getCurrentRenderState() << "\n";
+		myfile << "HOOK::RENDER_TARGET: " << HOOK::g_CurrentRenderTarget << "\n";
+#endif
 		myfile.close();
 	}
 	void saveBackBufferToImage(IDirect3DDevice9* pd3dDevice, bool post)
